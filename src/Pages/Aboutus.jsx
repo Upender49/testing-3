@@ -4,7 +4,7 @@ import BackgroundEffects from '../components/BackgroundEffects';
  
 export  function AboutUs() {
   useEffect(() => {
-    // Initialize ScrollReveal safely inside the hook
+    // Initialize ScrollReveal safely inside the hook 
     const sr = ScrollReveal({
       origin: 'bottom',
       distance: '30px',
