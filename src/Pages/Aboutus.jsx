@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
 import BackgroundEffects from '../components/BackgroundEffects';
-
+ 
 export  function AboutUs() {
   useEffect(() => {
     // Initialize ScrollReveal safely inside the hook
