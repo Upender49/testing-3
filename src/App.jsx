@@ -7,6 +7,7 @@ import { Colleges } from "./Pages/Colleges";
 import { AboutUs } from "./Pages/Aboutus";
 import { ContactUs } from "./Pages/ContactUs";
 import {Services}from "./Pages/Services";
+import { Home } from "./Pages/Home";
 function App() {
   const router = createBrowserRouter([
     {
@@ -35,6 +36,9 @@ function App() {
     },{
       path : '/services',
       element : <Services/>
+    },{
+      path : '/home',
+      element : <Home/>
     }
   ])
   return(
