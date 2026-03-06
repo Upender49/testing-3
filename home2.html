@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduCore — AI Integrated College Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Sora', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          screens: {
+            'nav': '900px',
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a', 950: '#172554',
+            },
+          },
+          animation: {
+            'float-drift-1': 'floatDrift1 28s ease-in-out infinite',
+            'float-drift-2': 'floatDrift2 32s ease-in-out infinite',
+            'float-drift-4': 'floatDrift4 30s ease-in-out infinite',
+            'float-drift-5': 'floatDrift5 26s ease-in-out infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'float-slow': 'float 8s ease-in-out infinite',
+            'float-delayed': 'float 7s ease-in-out infinite 1s',
+            'marquee': 'marquee 30s linear infinite',
+          },
+          keyframes: {
+            floatDrift1: { '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' }, '25%': { transform: 'translate(40px, -30px) rotate(5deg)' }, '50%': { transform: 'translate(-20px, 40px) rotate(-3deg)' }, '75%': { transform: 'translate(30px, 20px) rotate(4deg)' } },
+            floatDrift2: { '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' }, '33%': { transform: 'translate(-50px, 30px) rotate(-5deg)' }, '66%': { transform: 'translate(40px, -40px) rotate(6deg)' } },
+            floatDrift4: { '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' }, '33%': { transform: 'translate(50px, -50px) rotate(-6deg)' }, '66%': { transform: 'translate(-30px, 30px) rotate(5deg)' } },
+            floatDrift5: { '0%, 100%': { transform: 'translate(0, 0) rotate(0deg)' }, '20%': { transform: 'translate(-40px, -30px) rotate(4deg)' }, '40%': { transform: 'translate(30px, 40px) rotate(-7deg)' }, '60%': { transform: 'translate(-20px, 20px) rotate(3deg)' }, '80%': { transform: 'translate(40px, -20px) rotate(-5deg)' } },
+            float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-15px)' } },
+            marquee: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } },
+          },
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-slate-50 font-body text-slate-600 antialiased selection:bg-brand-100 selection:text-brand-900 flex flex-col min-h-screen">
+
+  <!-- ========================================== -->
+  <!-- 2. MID SECTION (Hero & Call to Actions)    -->
+  <!-- ========================================== -->
+  <main class="flex-grow flex items-center relative overflow-hidden mt-8 md:mt-12 lg:mt-24 mb-16">
+    <!-- --- Background Elements --- -->
+    <div class="absolute inset-0 z-0 pointer-events-none">
+      <!-- Glow Orbs -->
+      <div class="absolute top-20 left-[10%] w-[500px] h-[500px] bg-brand-200/40 rounded-full blur-[100px]"></div>
+      <div class="absolute bottom-10 right-[10%] w-[600px] h-[600px] bg-brand-100/50 rounded-full blur-[120px]"></div>
+      
+      <!-- Hexagonal SVG Pattern (from services.html) -->
+      <svg class="absolute inset-0 w-full h-full opacity-[0.25]" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <style>
+            .hex-line { stroke: #94a3b8; stroke-width: 1.2; fill: none; }
+            .hex-line-thick { stroke: #94a3b8; stroke-width: 1.8; fill: none; }
+            .hex-dot { fill: #94a3b8; }
+            .hex-light { stroke: #cbd5e1; stroke-width: 0.8; fill: none; }
+          </style>
+        </defs>
+        <!-- Large hexagons (left cluster) -->
+        <polygon class="hex-line-thick" points="120,80 200,40 280,80 280,160 200,200 120,160"/>
+        <polygon class="hex-line" points="280,80 340,50 400,80 400,140 340,170 280,140"/>
+        <!-- Right cluster -->
+        <polygon class="hex-line-thick" points="850,120 950,70 1050,120 1050,220 950,270 850,220"/>
+        <!-- Dots at key vertices -->
+        <circle class="hex-dot" cx="200" cy="40" r="3.5"/>
+        <circle class="hex-dot" cx="280" cy="80" r="3"/>
+        <circle class="hex-dot" cx="950" cy="70" r="4"/>
+        <circle class="hex-dot" cx="1050" cy="120" r="3.5"/>
+      </svg>
+
+      <!-- Wavy Edges -->
+      <div class="absolute top-[10%] left-0 w-[80px] h-[500px] pointer-events-none">
+        <svg viewBox="0 0 80 500" fill="none" class="w-full h-full opacity-40">
+          <path d="M0 0 C0 0, 45 60, 25 120 C5 180, 55 220, 35 280 C15 340, 60 400, 30 460 C15 490, 0 500, 0 500 Z" fill="url(#wave1)"/>
+          <defs><linearGradient id="wave1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs>
+        </svg>
+      </div>
+
+      <!-- Floating Icons (Using existing images) -->
+      <img src="images/admin.png" alt="" class="absolute top-[15%] left-[20%] w-16 h-16 opacity-[0.2] animate-float-drift-1" />
+      <img src="images/faculty.png" alt="" class="absolute top-[75%] left-[15%] w-20 h-20 opacity-[0.15] animate-float-drift-4" />
+      <img src="images/exam.png" alt="" class="absolute top-[25%] right-[25%] w-14 h-14 opacity-[0.25] animate-float-drift-2" />
+      <img src="images/chatbot.png" alt="" class="absolute bottom-[20%] right-[15%] w-16 h-16 opacity-[0.2] animate-float-drift-5" />
+    </div>
+
+    <!-- --- Hero Content --- -->
+    <div class="p-10 relative w-full max-w-7xl mx-auto px-6 lg:px-10 z-10 grid lg:grid-cols-2 gap-16 items-center">
+      
+      <!-- Text Area -->
+      <div class="reveal pt-10 lg:pt-0">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-brand-200 shadow-sm mb-6 scale-95 origin-left">
+          <span class="flex h-2.5 w-2.5 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          </span>
+          <span class="text-xs font-bold text-slate-700 tracking-wider uppercase">ERP is Live</span>
+        </div>
+
+        <h1 class="text-[2.5rem] sm:text-5xl md:text-4xl font-heading font-extrabold text-slate-900 leading-[1.1] mb-2 tracking-tight">
+          Manage your Campus with <br class="hidden sm:block"/>
+          <span class="relative inline-block mt-2">
+            <span class="relative z-10 bg-gradient-to-br from-brand-700 via-brand-900 to-slate-900 bg-clip-text text-transparent">Intelligent Precision</span>
+          </span>
+        </h1>
+
+        <p class="text-slate-600 font-body text-lg md:text-sm leading-relaxed mb-10 max-w-xl font-light">
+          A centralized, Web-Based AI integrated platform designed to simplify academic operations, connect stakeholders, and automate administration.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="services.html" class="bg-brand-600 text-white font-heading font-semibold shadow-lg shadow-brand-100 hover:bg-brand-700 hover:shadow-brand-200 hover:-translate-y-0.5 transition-all active:scale-95 px-2 py-3 rounded-xl flex items-center justify-center gap-2 group">
+            Explore Website/Demo Login
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
+          </a>
+          <a href="colleges.html" class="border-2 border-slate-200 text-slate-700 font-heading font-semibold bg-white shadow-sm hover:border-slate-300 hover:bg-slate-50 transition-all active:scale-95 px-6 py-3 rounded-xl flex items-center justify-center gap-2 group">
+            <span class="group-hover:text-brand-700 transition-colors">Register</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Graphic Area -->
+      <div class="relative hidden lg:block reveal reveal-delay-2 group " id="hero-feature-container">
+        <!-- Decoration backing -->
+        <div class=" absolute inset-0 bg-gradient-to-tr from-brand-100 to-white rounded-[2.5rem] transform rotate-3 scale-105 border border-brand-200/50 shadow-lg transition-transform duration-700"></div>
+        
+        <!-- Main Image Container -->
+        <div class="relative bg-slate-900 rounded-[2.5rem] p-2.5 shadow-2xl animate-float-slow border-[4px] border-slate-800 z-10 transition-transform duration-500 hover:scale-[1.02]">
+          <div class="aspect-[4/3] w-full rounded-[2rem] overflow-hidden relative bg-white border border-slate-200">
+            <!-- Carousel Main Image -->
+            <img id="feature-main-img" src="images/erp_dashboard.png" alt="ERP Dashboard Mockup" class="w-full h-full object-cover object-left-top transition-all duration-700 ease-in-out" />
+            
+            <!-- Glass Overlay Header -->
+            <div class="absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-slate-900/40 to-transparent flex items-center px-4">
+               <div class="flex gap-1.5">
+                  <div class="w-2.5 h-2.5 rounded-full bg-rose-400"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating UI Element 1 -->
+        <div id="feature-float-1" class="absolute -left-12 top-20 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-xl shadow-brand-900/10 border border-brand-100 z-20 animate-float-delayed flex items-center gap-3 transition-opacity duration-500 ease-in-out">
+          <div class="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center p-2">
+            <img id="feature-float1-img" src="images/chat_svc_1772303896375.png" class="w-full h-full object-contain" alt="Feature Icon 1" />
+          </div>
+          <div>
+            <p id="feature-float1-lbl1" class="text-[10px] text-brand-600 font-bold uppercase tracking-wider mb-0.5">Live Module</p>
+            <p id="feature-float1-lbl2" class="font-heading font-bold text-sm text-slate-800">Secure Messaging</p>
+          </div>
+        </div>
+
+        <!-- Floating UI Element 2 -->
+        <div id="feature-float-2" class="absolute -right-8 bottom-24 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-xl shadow-emerald-900/10 border border-emerald-100 z-20 animate-float flex items-center gap-3 transition-opacity duration-500 ease-in-out">
+           <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center p-2.5">
+            <img id="feature-float2-img" src="images/attendance_svc_1772303556216.png" class="w-full h-full object-contain" alt="Feature Icon 2" />
+          </div>
+          <div>
+            <p id="feature-float2-lbl1" class="text-[10px] text-slate-500 font-medium mb-0.5">Today's Avg</p>
+            <p id="feature-float2-lbl2" class="font-heading font-extrabold text-lg text-emerald-600 leading-none">94.2%</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- End Hero Grind -->
+    
+  </main>
+    
+  <!-- Endless Scrolling Logo Ticker -->
+  <section class="w-full overflow-hidden bg-white border-y border-slate-200 py-8 relative z-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 mb-6 text-center">
+      <p class="text-[11px] font-heading font-bold uppercase tracking-widest text-slate-400">Trusted by Leading Institutions</p>
+    </div>
+    <div class="flex animate-marquee w-max items-center gap-16 md:gap-24 px-8">
+      
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/cvr_logo.png" class="h-14 w-auto object-contain" alt="CVR" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">CVRH</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/vasavi_logo.gif" class="h-14 w-auto object-contain" alt="Vasavi" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">VCE</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/cbit_logo.png" class="h-14 w-auto object-contain" alt="CBIT" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">CBIT</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/jntuh_logo.png" class="h-14 w-auto object-contain" alt="JNTUH" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">JNTUH</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/ou_logo.png" class="h-14 w-auto object-contain" alt="OU" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">OUCE</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/vnrvjiet_logo.png" class="h-14 w-auto object-contain" alt="VNR" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">VJIT</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/griet_logo.png" class="h-14 w-auto object-contain" alt="GRIET" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">GRRR</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/mgit_logo.jpeg" class="h-14 w-auto object-contain" alt="MGIT" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">MGIT</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/snist_logo.png" class="h-14 w-auto object-contain" alt="SNIST" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">SNIST</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/kitsw_logo.png" class="h-14 w-auto object-contain" alt="KITS" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">KITS</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/vardhaman_logo.jpeg" class="h-14 w-auto object-contain" alt="Vardhaman" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">VARDHAM</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/bvrit_logo.png" class="h-14 w-auto object-contain" alt="BVRIT" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">BVRIT</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/anurag_logo.png" class="h-14 w-auto object-contain" alt="Anurag" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">ANURAG</span>
+      </div>
+
+      <!-- Set 2 (Duplicate for seamless scroll) -->
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/cvr_logo.png" class="h-14 w-auto object-contain" alt="CVR" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">CVRH</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/vasavi_logo.gif" class="h-14 w-auto object-contain" alt="Vasavi" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">VCE</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/cbit_logo.png" class="h-14 w-auto object-contain" alt="CBIT" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">CBIT</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/jntuh_logo.png" class="h-14 w-auto object-contain" alt="JNTUH" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">JNTUH</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/ou_logo.png" class="h-14 w-auto object-contain" alt="OU" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">OUCE</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/vnrvjiet_logo.png" class="h-14 w-auto object-contain" alt="VNR" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">VJIT</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/griet_logo.png" class="h-14 w-auto object-contain" alt="GRIET" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">GRRR</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/mgit_logo.jpeg" class="h-14 w-auto object-contain" alt="MGIT" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">MGIT</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/snist_logo.png" class="h-14 w-auto object-contain" alt="SNIST" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">SNIST</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/kitsw_logo.png" class="h-14 w-auto object-contain" alt="KITS" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">KITS</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/vardhaman_logo.jpeg" class="h-14 w-auto object-contain" alt="Vardhaman" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">VARDHAM</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/bvrit_logo.png" class="h-14 w-auto object-contain" alt="BVRIT" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">BVRIT</span>
+      </div>
+      <div class="flex flex-col items-center justify-center gap-2 max-w-[120px]">
+        <img src="Img/anurag_logo.png" class="h-14 w-auto object-contain" alt="Anurag" />
+        <span class="text-[11px] font-bold text-slate-600 tracking-widest uppercase text-center mt-1">ANURAG</span>
+      </div>
+
+    </div>
+  </section>
+
+
+  <script>
+    // --- Scroll Reveal ---
+    document.addEventListener('DOMContentLoaded', () => {
+      if(typeof ScrollReveal !== 'undefined') {
+        const sr = ScrollReveal({
+          origin: 'bottom',
+          distance: '30px',
+          duration: 800,
+          delay: 100,
+          easing: 'cubic-bezier(0.5, 0, 0, 1)'
+        });
+        sr.reveal('.reveal');
+        sr.reveal('.reveal-delay-2', { delay: 300 });
+      }
+
+      // --- Feature Carousel Javascript ---
+      const features = [
+        {
+          mainImg: 'images/erp_dashboard.png',
+          f1Img: 'images/chat_svc_1772303896375.png', f1L1: 'Live Module', f1L2: 'Secure Messaging',
+          f2Img: 'images/attendance_svc_1772303556216.png', f2L1: "Today's Avg", f2L2: '94.2%'
+        },
+        {
+          mainImg: 'images/exams_svc_1772303644185.png',
+          f1Img: 'images/exam.png', f1L1: 'Automated', f1L2: 'Exam Processing',
+          f2Img: 'images/doc.png', f2L1: 'Reports Gen.', f2L2: '1,204 DBs'
+        },
+        {
+          mainImg: 'images/forum_svc_1772303916545.png',
+          f1Img: 'images/discussion.png', f1L1: 'Active', f1L2: 'Community Forum',
+          f2Img: 'images/student.jpg', f2L1: 'Users Online', f2L2: '342 Active'
+        }
+      ];
+
+      let currentIndex = 0;
+      const mainImg = document.getElementById('feature-main-img');
+      const float1Img = document.getElementById('feature-float1-img');
+      const float1Lbl1 = document.getElementById('feature-float1-lbl1');
+      const float1Lbl2 = document.getElementById('feature-float1-lbl2');
+      const float2Img = document.getElementById('feature-float2-img');
+      const float2Lbl1 = document.getElementById('feature-float2-lbl1');
+      const float2Lbl2 = document.getElementById('feature-float2-lbl2');
+      
+      const float1Container = document.getElementById('feature-float-1');
+      const float2Container = document.getElementById('feature-float-2');
+
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % features.length;
+        const feature = features[currentIndex];
+
+        // Fade out transition
+        mainImg.style.opacity = '0.3';
+        float1Container.style.opacity = '0';
+        float2Container.style.opacity = '0';
+
+        setTimeout(() => {
+          // Swap contents
+          mainImg.src = feature.mainImg;
+          float1Img.src = feature.f1Img;
+          float1Lbl1.textContent = feature.f1L1;
+          float1Lbl2.textContent = feature.f1L2;
+          float2Img.src = feature.f2Img;
+          float2Lbl1.textContent = feature.f2L1;
+          float2Lbl2.textContent = feature.f2L2;
+
+          // Fade back in
+          mainImg.style.opacity = '1';
+          float1Container.style.opacity = '1';
+          float2Container.style.opacity = '1';
+        }, 500); // Wait for fade out to complete before swapping
+      }, 5000); // Rotate every 5 seconds
+    });
+  </script>
+</body>
+</html>

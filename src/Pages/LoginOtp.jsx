@@ -7,11 +7,16 @@ export function LoginOtp() {
     message : "",
     type : "info",
     show : false
+
   }
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(location.state?.user || null);
-  const [filter, setFilter] = useState(defaultFilter);
+  const [filter, setFilter] = useState(location.state?.user ?{
+      message: `OTP is sent to ${location.state?.user.email}`,
+      type: "info",
+      show: true,
+    }:defaultFilter);
   const [time, setTime] = useState(20);
   const [showbtn, setShowbtn] = useState(false);
   
@@ -20,15 +25,7 @@ export function LoginOtp() {
       navigate("/loginpage/otp",{replace : true});
     }
   }, []);
-  useEffect(() => {
-  if (user) {
-    setFilter({
-      message: `OTP is sent to ${user.email}`,
-      type: "info",
-      show: true,
-    });
-  }
-}, [user]);
+
   useEffect(() => {
     if(filter.show){
       const timeer = setInterval(() => {
@@ -61,6 +58,9 @@ export function LoginOtp() {
     let min = Math.floor(seconds/60);
     let sec = seconds % 60;
     return `${min} : ${sec < 10 ? "0" : ""}${sec}`;
+  }
+  function handleVerifyClick(){
+    navigate("/dashboard");
   }
   return (
     <>
@@ -133,7 +133,7 @@ export function LoginOtp() {
             <button
               type="submit"
               className="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-cyan-500/25 transition-all transform active:scale-95"
-              onClick={() => navigate("/dashboard")}
+              onClick={handleVerifyClick}
             >
               Verify
             </button>

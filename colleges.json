@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "name": "CVR College of Engineering",
+    "address": "Vastunagar, Mangalpalli(V), Ibrahimpatnam(M), R.R Dist - 501510, Telangana, India",
+    "image": "cvr_image.png",
+    "type": "Engineering",
+    "logo": "cvr_logo.png"
+  },
+  {
+    "id": 2,
+    "name": "Vasavi College of Engineering",
+    "address": "9-5-81, Ibrahimbagh, Hyderabad - 500031, Telangana, India",
+    "image": "vasavi_image.jpg",
+    "type": "Engineering",
+    "logo": "vasavi_logo.gif"
+  },
+  {
+    "id": 3,
+    "name": "Chaitanya Bharathi Institute of Technology (CBIT)",
+    "address": "Kokapet (V), Gandipet, Hyderabad - 500075, Telangana, India",
+    "image": "cbit_image.jpeg",
+    "type": "Institute",
+    "logo": "cbit_logo.png"
+  },
+  {
+    "id": 4,
+    "name": "Jawaharlal Nehru Technological University Hyderabad (JNTUH)",
+    "address": "Kukatpally, Hyderabad - 500085, Telangana, India",
+    "image": "jntu_image.jpg",
+    "type": "University",
+    "logo": "jntuh_logo.png"
+  },
+  {
+    "id": 5,
+    "name": "Osmania University College of Engineering (OUCE)",
+    "address": "Osmania University Main Rd, Amberpet, Hyderabad - 500007, Telangana, India",
+    "image": "ou_image.jpeg",
+    "type": "University",
+    "logo": "ou_logo.png"
+  },
+  {
+    "id": 6,
+    "name": "VNR Vignana Jyothi Institute of Engineering and Technology (VNRVJIET)",
+    "address": "Pragathi Nagar, Nizampet, Hyderabad - 500090, Telangana, India",
+    "image": "vnrvjiet_image.png",
+    "type": "Institute",
+    "logo": "vnrvjiet_logo.png"
+  },
+  {
+    "id": 7,
+    "name": "Gokaraju Rangaraju Institute of Engineering and Technology (GRIET)",
+    "address": "Bachupally, Kukatpally, Hyderabad - 500090, Telangana, India",
+    "image": "griet_image.png",
+    "type": "Institute",
+    "logo": "griet_logo.png"
+  },
+  {
+    "id": 8,
+    "name": "Mahatma Gandhi Institute of Technology (MGIT)",
+    "address": "Gandipet, Hyderabad - 500075, Telangana, India",
+    "image": "mgit_image.jpeg",
+    "type": "Institute",
+    "logo": "mgit_logo.jpeg"
+  },
+  {
+    "id": 9,
+    "name": "Sreenidhi Institute of Science and Technology (SNIST)",
+    "address": "Yamnampet, Ghatkesar, Hyderabad - 501301, Telangana, India",
+    "image": "snist_image.png",
+    "type": "Institute",
+    "logo": "snist_logo.png"
+  },
+  {
+    "id": 10,
+    "name": "Kakatiya Institute of Technology & Science (KITS)",
+    "address": "Hasanparthy, Warangal - 506015, Telangana, India",
+    "image": "kitsw_image.png",
+    "type": "Institute",
+    "logo": "kitsw_logo.png"
+  },
+  {
+    "id": 11,
+    "name": "Vardhaman College of Engineering",
+    "address": "Shamshabad, Hyderabad - 501218, Telangana, India",
+    "image": "vardhaman_image.jpeg",
+    "type": "Engineering",
+    "logo": "vardhaman_logo.jpeg"
+  },
+  {
+    "id": 12,
+    "name": "BVRIT Hyderabad College of Engineering for Women",
+    "address": "Bachupally, Hyderabad - 500090, Telangana, India",
+    "image": "bvrit_image.png",
+    "type": "Engineering",
+    "logo": "bvrit_logo.png"
+  },
+  {
+    "id": 13,
+    "name": "Anurag University",
+    "address": "Ghatkesar, Hyderabad - 500088, Telangana, India",
+    "image": "anurag_image.png",
+    "type": "University",
+    "logo": "anurag_logo.png"
+  }
+]

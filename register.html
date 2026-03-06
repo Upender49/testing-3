@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register College — EduCore</title>
+  <meta name="description" content="Register your college on the EduCore platform for AI-integrated campus management." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Sora', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a',950:'#172554',
+            },
+          },
+          keyframes: {
+            fadeSlide: {
+              '0%': { opacity: '0', transform: 'translateY(16px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' }
+            }
+          },
+          animation: {
+            fadeSlide: 'fadeSlide 0.4s ease forwards'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-slate-50 font-body text-slate-600 antialiased min-h-screen">
+
+  <!-- Background decorations -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-brand-100/30 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-brand-200/20 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-brand-50/40 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 mb-4">
+        <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-200">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.827a1 1 0 00-.788 0l-7 3a1 1 0 000 1.846l7 3a1 1 0 00.788 0l7-3a1 1 0 000-1.846l-7-3zM3.172 10.757a1 1 0 011.105-.271l5.505 2.359 5.505-2.359a1 1 0 11.788 1.846l-6 2.571a1 1 0 01-.788 0l-6-2.571a1 1 0 01-.505-1.214z"/></svg>
+        </div>
+        <span class="font-heading font-extrabold text-lg text-slate-800 tracking-tight">EDU<span class="text-brand-600">CORE</span></span>
+      </div>
+      <h1 class="font-heading font-bold text-3xl md:text-4xl text-slate-900 mb-2">Register Your College</h1>
+      <p class="text-slate-500 max-w-xl mx-auto">Complete the form below to register your institution on the EduCore platform. All fields marked <span class="text-red-500">*</span> are required.</p>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="flex items-center justify-center gap-0 mb-10 px-4" id="stepIndicator">
+      <div class="flex flex-col items-center gap-1 cursor-pointer" onclick="goToStep(1)">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 bg-gradient-to-br from-brand-600 to-brand-500 text-white shadow-[0_4px_14px_rgba(37,99,235,0.35)]" id="dot1">1</div>
+        <span class="text-[11px] font-heading font-semibold text-brand-600 hidden sm:block" id="label1">Basic Info</span>
+      </div>
+      <div class="h-[3px] flex-1 rounded transition-colors duration-300 bg-slate-200" id="line1"></div>
+      <div class="flex flex-col items-center gap-1 cursor-pointer" onclick="goToStep(2)">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 bg-slate-200 text-slate-400" id="dot2">2</div>
+        <span class="text-[11px] font-heading font-semibold text-slate-400 hidden sm:block" id="label2">Address</span>
+      </div>
+      <div class="h-[3px] flex-1 rounded transition-colors duration-300 bg-slate-200" id="line2"></div>
+      <div class="flex flex-col items-center gap-1 cursor-pointer" onclick="goToStep(3)">
+        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 bg-slate-200 text-slate-400" id="dot3">3</div>
+        <span class="text-[11px] font-heading font-semibold text-slate-400 hidden sm:block" id="label3">Contact (College & Person)</span>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <form id="registrationForm" novalidate>
+      <div class="bg-white/80 backdrop-blur-xl rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden">
+
+        <!-- ═══ STEP 1: Basic Info ═══ -->
+        <div class="block animate-fadeSlide p-6 sm:p-10" id="panel1">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21"/></svg>
+            </div>
+            <div>
+              <h2 class="font-heading font-bold text-xl text-slate-900">Basic Information</h2>
+              <p class="text-slate-400 text-sm">Institution details & accreditation</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <!-- College Name -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="name">College Name <span class="text-red-500">*</span></label>
+              <input type="text" id="name" name="name" required placeholder="e.g. Indian Institute of Technology, Delhi" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+            </div>
+
+            <!-- Category & College Code -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="category">Category <span class="text-red-500">*</span></label>
+                <select id="category" name="category" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 cursor-pointer">
+                  <option value="">Select Category</option>
+                  <option value="Central University">Central University</option>
+                  <option value="State University">State University</option>
+                  <option value="Deemed University">Deemed University</option>
+                  <option value="Private University">Private University</option>
+                  <option value="Autonomous College">Autonomous College</option>
+                  <option value="Affiliated College">Affiliated College</option>
+                  <option value="Institute">Institute</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="college_code">College Code Type <span class="text-red-500">*</span></label>
+                <select id="college_code" name="college_code" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 cursor-pointer">
+                  <option value="">Select Code Type</option>
+                  <option value="aishe">AISHE</option>
+                  <option value="udise">UDISE</option>
+                  <option value="aicte">AICTE</option>
+                  <option value="ugc">UGC</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Code & Affiliated To -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="code">Code <span class="text-red-500">*</span></label>
+                <input type="text" id="code" name="code" required placeholder="e.g. C-12345" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="affiliatedTo">Affiliated To <span class="text-red-500">*</span></label>
+                <input type="text" id="affiliatedTo" name="affiliatedTo" required placeholder="e.g. JNTU Hyderabad" value="Independent" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+              </div>
+            </div>
+
+            <!-- Accreditation -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="naac_grade">NAAC Grade <span class="text-red-500">*</span></label>
+                <select id="naac_grade" name="naac_grade" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 cursor-pointer">
+                  <option value="Not Accredited">Not Accredited</option>
+                  <option value="A++">A++</option>
+                  <option value="A+">A+</option>
+                  <option value="A">A</option>
+                  <option value="B++">B++</option>
+                  <option value="B+">B+</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="nirf_ranking">NIRF Ranking <span class="text-red-500">*</span></label>
+                <input type="number" id="nirf_ranking" name="nirf_ranking" required min="1" placeholder="e.g. 25" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+              </div>
+            </div>
+
+            <!-- Domain & Year -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="college_domain">College Domain <span class="text-red-500">*</span></label>
+                <input type="text" id="college_domain" name="college_domain" required placeholder="e.g. example.edu.in" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="established_year">Established Year <span class="text-red-500">*</span></label>
+                <input type="number" id="established_year" name="established_year" required min="1800" max="2026" placeholder="e.g. 1990" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ STEP 2: Address ═══ -->
+        <div class="hidden p-6 sm:p-10" id="panel2">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+            </div>
+            <div>
+              <h2 class="font-heading font-bold text-xl text-slate-900">Campus Address</h2>
+              <p class="text-slate-400 text-sm">Location & geo-coordinates</p>
+            </div>
+          </div>
+
+          <div id="addressContainer">
+            <!-- Address Block 1 -->
+            <div class="address-block space-y-5 p-5 rounded-2xl border border-slate-100 bg-slate-50/50 mb-5" data-index="0">
+              <div class="flex items-center justify-between">
+                <span class="font-heading font-semibold text-sm text-slate-700">Campus 1</span>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" name="isMainCampus_0" checked class="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                  <span class="text-xs font-medium text-slate-500">Main Campus</span>
+                </label>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Address Line</label>
+                <input type="text" name="address_line_0" placeholder="Street / Area / Locality" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">City</label>
+                  <input type="text" name="address_city_0" placeholder="City" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">State</label>
+                  <input type="text" name="address_state_0" placeholder="State" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">PIN Code</label>
+                  <input type="text" name="address_pin_0" placeholder="e.g. 500001" maxlength="6" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" onclick="addAddress()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-brand-400 hover:text-brand-600 hover:bg-brand-50/50 transition-all mb-8">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+            Add Another Campus
+          </button>
+
+          <!-- Location Coordinates -->
+          <div class="mt-4">
+            <h3 class="font-heading font-semibold text-sm text-slate-700 mb-4 flex items-center gap-2">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/></svg>
+              Geo-Location (Optional)
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Latitude</label>
+                <input type="number" step="any" id="latitude" name="latitude" placeholder="e.g. 17.3850" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Longitude</label>
+                <input type="number" step="any" id="longitude" name="longitude" placeholder="e.g. 78.4867" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ STEP 3: Contact (Merged) ═══ -->
+        <div class="hidden p-6 sm:p-10" id="panel3">
+          <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+            </div>
+            <div>
+              <h2 class="font-heading font-bold text-xl text-slate-900">Contact & Documents</h2>
+              <p class="text-slate-400 text-sm">Phone numbers, contact persons & institutional images</p>
+            </div>
+          </div>
+
+          <!-- College Phone Numbers -->
+          <h3 class="font-heading font-semibold text-sm text-slate-700 mb-4 flex items-center gap-2">
+            <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+            College Phone Numbers
+          </h3>
+          <div class="space-y-5 mb-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="phone_1">Phone 1 <span class="text-red-500">*</span></label>
+                <input type="tel" id="phone_1" name="phone_1" required placeholder="+91 98765 43210" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="phone_2">Phone 2</label>
+                <input type="tel" id="phone_2" name="phone_2" placeholder="+91 98765 43210" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="landline_1">Landline 1</label>
+                <input type="tel" id="landline_1" name="landline_1" placeholder="040-12345678" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="landline_2">Landline 2</label>
+                <input type="tel" id="landline_2" name="landline_2" placeholder="040-12345678" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="border-t border-slate-100 mb-8"></div>
+
+          <!-- Contact Persons -->
+          <h3 class="font-heading font-semibold text-sm text-slate-700 mb-4 flex items-center gap-2">
+            <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+            Contact Persons
+          </h3>
+
+          <div id="contactPersonContainer">
+            <div class="contact-person-block space-y-5 p-5 rounded-2xl border border-slate-100 bg-slate-50/50 mb-5" data-index="0">
+              <div class="flex items-center justify-between">
+                <span class="font-heading font-semibold text-sm text-slate-700">Contact Person 1</span>
+              </div>
+              <!-- Prefix, Name, Gender -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Prefix <span class="text-red-500">*</span></label>
+                  <select name="cp_prefix_0" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 cursor-pointer">
+                    <option value="">Select</option>
+                    <option value="mr">Mr</option>
+                    <option value="mrs">Mrs</option>
+                    <option value="ms">Ms</option>
+                    <option value="dr">Dr</option>
+                    <option value="prof">Prof</option>
+                    <option value="others">Others</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">First Name <span class="text-red-500">*</span></label>
+                  <input type="text" name="cp_first_name_0" required placeholder="First Name" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Last Name <span class="text-red-500">*</span></label>
+                  <input type="text" name="cp_last_name_0" required placeholder="Last Name" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Gender <span class="text-red-500">*</span></label>
+                  <select name="cp_gender_0" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 cursor-pointer">
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="others">Others</option>
+                  </select>
+                </div>
+              </div>
+              <!-- Email -->
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+                <input type="email" name="cp_email_0" required placeholder="contact@college.edu.in" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+              </div>
+              <!-- Phones -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Phone 1 <span class="text-red-500">*</span></label>
+                  <input type="tel" name="cp_phone1_0" required placeholder="+91 98765 43210" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Phone 2</label>
+                  <input type="tel" name="cp_phone2_0" placeholder="+91 98765 43210" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Landline 1</label>
+                  <input type="tel" name="cp_landline1_0" placeholder="040-12345678" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Landline 2</label>
+                  <input type="tel" name="cp_landline2_0" placeholder="040-12345678" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" onclick="addContactPerson()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border-2 border-dashed border-slate-300 text-sm font-semibold text-slate-500 hover:border-brand-400 hover:text-brand-600 hover:bg-brand-50/50 transition-all mb-8">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+            Add Another Contact Person
+          </button>
+
+          <!-- Divider -->
+          <div class="border-t border-slate-100 mb-8"></div>
+
+          <!-- College Documents / Images -->
+          <h3 class="font-heading font-semibold text-sm text-slate-700 mb-4 flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/></svg>
+            College Images & Documents
+          </h3>
+          <div class="space-y-6 p-5 rounded-2xl border border-slate-100 bg-slate-50/50 mb-5">
+            <!-- Mandatory College Image -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="college_main_image">Main College Image <span class="text-red-500">*</span></label>
+              <div class="flex items-start gap-4 flex-col sm:flex-row sm:items-center">
+                <label class="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-600 hover:border-brand-400 hover:text-brand-600 transition-all">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+                  Select Primary Image
+                  <input type="file" id="college_main_image" name="college_main_image" accept=".jpg,.jpeg,.png,.pdf" required class="hidden" onchange="previewSingleFile(this, 'mainImgPreview')" />
+                </label>
+                <p class="text-xs text-slate-500">Provide the main representation. Supported formats: .jpg, .png, .pdf. (Mandatory)</p>
+              </div>
+              <div id="mainImgPreview" class="mt-4 empty:hidden flex items-center gap-3"></div>
+            </div>
+
+            <hr class="border-slate-200" />
+
+            <!-- Optional Additional Document(s) -->
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1.5" for="college_optional_images">Additional Documents (Optional)</label>
+              <div class="flex items-start gap-4 flex-col sm:flex-row sm:items-center">
+                <label class="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-slate-600 hover:border-brand-400 hover:text-brand-600 transition-all">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                  Select Optional Files
+                  <input type="file" id="college_optional_images" name="college_optional_images" accept=".jpg,.jpeg,.png,.pdf" multiple class="hidden" onchange="previewCollegeFiles(this)" />
+                </label>
+                <p class="text-xs text-slate-500">Supported formats: .jpg, .png, .pdf. You can select multiple files here.</p>
+              </div>
+              <div id="collegeFilesPreview" class="mt-4 flex flex-wrap gap-3 empty:hidden"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="px-6 sm:px-10 py-6 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between">
+          <button type="button" id="prevBtn" onclick="changeStep(-1)" class="hidden items-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-heading font-semibold text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all active:scale-95 shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+            Previous
+          </button>
+          <div class="flex-1"></div>
+          <button type="button" id="nextBtn" onclick="changeStep(1)" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white text-sm font-heading font-semibold hover:from-brand-700 hover:to-brand-600 transition-all active:scale-95 shadow-lg shadow-brand-200">
+            Next
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+          </button>
+          <button type="submit" id="submitBtn" class="hidden items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 text-white text-sm font-heading font-semibold hover:from-emerald-700 hover:to-emerald-600 transition-all active:scale-95 shadow-lg shadow-emerald-200">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Submit Registration
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Success Modal (hidden) -->
+    <div id="successModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div class="bg-white rounded-3xl p-10 max-w-md mx-4 text-center shadow-2xl animate-[fadeSlide_.4s_ease]">
+        <div class="w-20 h-20 mx-auto mb-6 bg-emerald-50 rounded-full flex items-center justify-center">
+          <svg class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="font-heading font-bold text-2xl text-slate-900 mb-2">Registration Submitted!</h3>
+        <p class="text-slate-500 mb-6">Your college registration has been submitted successfully. Our team will review your application and get back to you soon.</p>
+        <p class="text-xs text-slate-400 mb-6">Status: <span class="font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Pending</span></p>
+        <button onclick="closeModal()" class="px-6 py-2.5 rounded-xl bg-brand-600 text-white font-heading font-semibold hover:bg-brand-700 transition-all active:scale-95">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 3;
+    let addressCount = 1;
+    let contactPersonCount = 1;
+
+    function updateStepUI() {
+      for (let i = 1; i <= totalSteps; i++) {
+        const dot = document.getElementById('dot' + i);
+        const label = document.getElementById('label' + i);
+        const panel = document.getElementById('panel' + i);
+        
+        const dotBase = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300';
+        const dotDone = dotBase + ' bg-emerald-500 text-white';
+        const dotActive = dotBase + ' bg-gradient-to-br from-brand-600 to-brand-500 text-white shadow-[0_4px_14px_rgba(37,99,235,0.35)]';
+        const dotInactive = dotBase + ' bg-slate-200 text-slate-400';
+        
+        if (i < currentStep) { 
+          dot.className = dotDone; 
+          dot.innerHTML = '✓'; 
+        } else if (i === currentStep) { 
+          dot.className = dotActive; 
+          dot.innerHTML = i; 
+        } else { 
+          dot.className = dotInactive; 
+          dot.innerHTML = i; 
+        }
+
+        if (label) {
+          label.classList.toggle('text-brand-600', i === currentStep);
+          label.classList.toggle('text-emerald-600', i < currentStep);
+          label.classList.toggle('text-slate-400', i > currentStep);
+        }
+
+        if (i === currentStep) {
+          panel.className = 'block animate-fadeSlide p-6 sm:p-10';
+        } else {
+          panel.className = 'hidden p-6 sm:p-10';
+        }
+
+        if (i < totalSteps) {
+          const line = document.getElementById('line' + i);
+          const lineBase = 'h-[3px] flex-1 rounded transition-colors duration-300';
+          line.className = i < currentStep 
+            ? lineBase + ' bg-gradient-to-r from-brand-600 to-brand-500' 
+            : lineBase + ' bg-slate-200';
+        }
+      }
+      document.getElementById('prevBtn').classList.toggle('hidden', currentStep === 1);
+      document.getElementById('prevBtn').classList.toggle('inline-flex', currentStep !== 1);
+      document.getElementById('nextBtn').classList.toggle('hidden', currentStep === totalSteps);
+      document.getElementById('nextBtn').classList.toggle('inline-flex', currentStep !== totalSteps);
+      document.getElementById('submitBtn').classList.toggle('hidden', currentStep !== totalSteps);
+      document.getElementById('submitBtn').classList.toggle('inline-flex', currentStep === totalSteps);
+    }
+
+    function changeStep(dir) {
+      if (currentStep === 1 && dir === 1) {
+        const nameField = document.getElementById('name');
+        if (!nameField.value.trim()) {
+          nameField.classList.add('border-red-400','ring-2','ring-red-100');
+          nameField.focus();
+          nameField.addEventListener('input', () => { nameField.classList.remove('border-red-400','ring-2','ring-red-100'); }, { once: true });
+          return;
+        }
+      }
+      const next = currentStep + dir;
+      if (next < 1 || next > totalSteps) return;
+      currentStep = next;
+      updateStepUI();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToStep(step) {
+      if (step >= 1 && step <= totalSteps) {
+        currentStep = step;
+        updateStepUI();
+      }
+    }
+
+    function addAddress() {
+      const idx = addressCount++;
+      const container = document.getElementById('addressContainer');
+      const block = document.createElement('div');
+      block.className = 'address-block space-y-5 p-5 rounded-2xl border border-slate-100 bg-slate-50/50 mb-5';
+      block.dataset.index = idx;
+      block.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="font-heading font-semibold text-sm text-slate-700">Campus ${idx + 1}</span>
+          <div class="flex items-center gap-3">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="isMainCampus_${idx}" class="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+              <span class="text-xs font-medium text-slate-500">Main Campus</span>
+            </label>
+            <button type="button" onclick="this.closest('.address-block').remove()" class="text-red-400 hover:text-red-600 transition-colors p-1 rounded-lg hover:bg-red-50">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Address Line</label>
+          <input type="text" name="address_line_${idx}" placeholder="Street / Area / Locality" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">City</label><input type="text" name="address_city_${idx}" placeholder="City" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">State</label><input type="text" name="address_state_${idx}" placeholder="State" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">PIN Code</label><input type="text" name="address_pin_${idx}" placeholder="e.g. 500001" maxlength="6" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+        </div>`;
+      container.appendChild(block);
+    }
+
+    function addContactPerson() {
+      const idx = contactPersonCount++;
+      const container = document.getElementById('contactPersonContainer');
+      const block = document.createElement('div');
+      block.className = 'contact-person-block space-y-5 p-5 rounded-2xl border border-slate-100 bg-slate-50/50 mb-5';
+      block.dataset.index = idx;
+      block.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="font-heading font-semibold text-sm text-slate-700">Contact Person ${idx + 1}</span>
+          <button type="button" onclick="this.closest('.contact-person-block').remove()" class="text-red-400 hover:text-red-600 transition-colors p-1 rounded-lg hover:bg-red-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Prefix <span class="text-red-500">*</span></label><select name="cp_prefix_${idx}" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 cursor-pointer"><option value="">Select</option><option value="mr">Mr</option><option value="mrs">Mrs</option><option value="ms">Ms</option><option value="dr">Dr</option><option value="prof">Prof</option><option value="others">Others</option></select></div>
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">First Name <span class="text-red-500">*</span></label><input type="text" name="cp_first_name_${idx}" required placeholder="First Name" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Last Name <span class="text-red-500">*</span></label><input type="text" name="cp_last_name_${idx}" required placeholder="Last Name" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Gender <span class="text-red-500">*</span></label><select name="cp_gender_${idx}" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18 cursor-pointer"><option value="">Select</option><option value="male">Male</option><option value="female">Female</option><option value="others">Others</option></select></div>
+        </div>
+        <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Email <span class="text-red-500">*</span></label><input type="email" name="cp_email_${idx}" required placeholder="contact@college.edu.in" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Phone 1 <span class="text-red-500">*</span></label><input type="tel" name="cp_phone1_${idx}" required placeholder="+91 98765 43210" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Phone 2</label><input type="tel" name="cp_phone2_${idx}" placeholder="+91 98765 43210" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Landline 1</label><input type="tel" name="cp_landline1_${idx}" placeholder="040-12345678" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+          <div><label class="block text-sm font-semibold text-slate-700 mb-1.5">Landline 2</label><input type="tel" name="cp_landline2_${idx}" placeholder="040-12345678" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder-slate-400 text-sm transition-all hover:border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-[3px] focus:ring-brand-500/18" /></div>
+        </div>`;
+      container.appendChild(block);
+    }
+
+    function previewCollegeFiles(input) {
+      const preview = document.getElementById('collegeFilesPreview');
+      preview.innerHTML = '';
+      if (input.files) {
+        Array.from(input.files).forEach(file => {
+          const item = document.createElement('div');
+          item.className = 'w-16 h-16 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 overflow-hidden relative shrink-0';
+          if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              item.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover" title="${file.name}" />`;
+            };
+            reader.readAsDataURL(file);
+          } else if (file.type === 'application/pdf') {
+            item.innerHTML = `<svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M8.25 10.5a.75.75 0 01-.75.75h-.75v-1.5h.75a.75.75 0 01.75.75zM8.25 13.5a.75.75 0 01-.75.75h-.75v-1.5h.75a.75.75 0 01.75.75z"/><path fill-rule="evenodd" d="M15 2.25H6a2.25 2.25 0 00-2.25 2.25v15A2.25 2.25 0 006 21h12a2.25 2.25 0 002.25-2.25V7.5L15 2.25zM11.25 10.5A2.25 2.25 0 009 8.25H6.75a.75.75 0 00-.75.75v6a.75.75 0 00.75.75h1.5a2.25 2.25 0 002.25-2.25v-3zM18 10.5a.75.75 0 01-.75.75h-1.5v3.75a.75.75 0 01-1.5 0v-4.5a.75.75 0 01.75-.75h2.25a.75.75 0 01.75.75z" clip-rule="evenodd"/></svg>`;
+            item.title = file.name;
+          }
+          preview.appendChild(item);
+        });
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('successModal').classList.add('hidden');
+      document.getElementById('successModal').classList.remove('flex');
+      document.getElementById('registrationForm').reset();
+      currentStep = 1;
+      updateStepUI();
+    }
+
+    // Form submit
+    document.getElementById('registrationForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      // Collect data as JSON matching schema
+      const formData = {
+        name: document.getElementById('name').value,
+        category: document.getElementById('category').value || undefined,
+        college_code: document.getElementById('college_code').value || undefined,
+        code: document.getElementById('code').value || undefined,
+        affiliatedTo: document.getElementById('affiliatedTo').value || 'Independent',
+        accreditation: {
+          naac_grade: document.getElementById('naac_grade').value,
+          nirf_ranking: document.getElementById('nirf_ranking').value ? Number(document.getElementById('nirf_ranking').value) : undefined
+        },
+        college_domain: document.getElementById('college_domain').value || undefined,
+        established_year: document.getElementById('established_year').value ? Number(document.getElementById('established_year').value) : undefined,
+        phone_1: document.getElementById('phone_1').value || undefined,
+        phone_2: document.getElementById('phone_2').value || undefined,
+        landline_1: document.getElementById('landline_1').value || undefined,
+        landline_2: document.getElementById('landline_2').value || undefined,
+        status: 'pending',
+        address: [],
+        contact_persons: [],
+        location: undefined
+      };
+
+      // Collect addresses
+      document.querySelectorAll('.address-block').forEach(block => {
+        const i = block.dataset.index;
+        formData.address.push({
+          line: block.querySelector(`[name="address_line_${i}"]`)?.value || '',
+          city: block.querySelector(`[name="address_city_${i}"]`)?.value || '',
+          state: block.querySelector(`[name="address_state_${i}"]`)?.value || '',
+          pin_code: block.querySelector(`[name="address_pin_${i}"]`)?.value || '',
+          isMainCampus: block.querySelector(`[name="isMainCampus_${i}"]`)?.checked || false,
+        });
+      });
+
+      // Collect location
+      const lat = parseFloat(document.getElementById('latitude').value);
+      const lng = parseFloat(document.getElementById('longitude').value);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        formData.location = { type: 'Point', coordinates: [lng, lat] };
+      }
+
+      // Collect contact persons
+      document.querySelectorAll('.contact-person-block').forEach(block => {
+        const i = block.dataset.index;
+        formData.contact_persons.push({
+          prefix: block.querySelector(`[name="cp_prefix_${i}"]`)?.value || undefined,
+          first_name: block.querySelector(`[name="cp_first_name_${i}"]`)?.value || '',
+          last_name: block.querySelector(`[name="cp_last_name_${i}"]`)?.value || '',
+          email: block.querySelector(`[name="cp_email_${i}"]`)?.value || '',
+          phone_1: block.querySelector(`[name="cp_phone1_${i}"]`)?.value || undefined,
+          phone_2: block.querySelector(`[name="cp_phone2_${i}"]`)?.value || undefined,
+          landline_1: block.querySelector(`[name="cp_landline1_${i}"]`)?.value || undefined,
+          landline_2: block.querySelector(`[name="cp_landline2_${i}"]`)?.value || undefined,
+          gender: block.querySelector(`[name="cp_gender_${i}"]`)?.value || undefined,
+        });
+      });
+
+      console.log('Registration Data:', JSON.stringify(formData, null, 2));
+
+      // Show success modal
+      document.getElementById('successModal').classList.remove('hidden');
+      document.getElementById('successModal').classList.add('flex');
+    });
+
+    // Init
+    updateStepUI();
+  </script>
+
+</body>
+</html>
