@@ -3,18 +3,20 @@ export default function BackgroundEffects() {
   return (
     <>
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <img src="services_chatbot.png" alt="" className="absolute top-[4%] left-[20%] w-20 h-20 opacity-[0.12] animate-float-drift-1" />
-        <img src="services_faculty.png" alt="" className="absolute top-[75%] left-[40%] w-18 h-18 opacity-[0.10] animate-float-drift-4" />
-        <img src="services_admin.png" alt="" className="absolute top-[55%] left-[65%] w-16 h-16 opacity-[0.11] animate-float-drift-6" />
-        <img src="services_exam.png" alt="" className="absolute top-[12%] left-[55%] w-14 h-14 opacity-[0.13] animate-float-drift-2" />
-        <img src="services_department.png" alt="" className="absolute top-[30%] left-[75%] w-14 h-14 opacity-[0.10] animate-float-drift-5" />
-        <img src="services_notifications.png" alt="" className="absolute top-[22%] left-[35%] w-12 h-12 opacity-[0.14] animate-float-drift-3" />
-        <img src="services_discussion.png" alt="" className="absolute top-[50%] left-[25%] w-14 h-14 opacity-[0.11] animate-float-drift-1" />
-        <img src="services_fee.png" alt="" className="absolute top-[40%] left-[50%] w-12 h-12 opacity-[0.12] animate-float-drift-4" />
-        <img src="services_secure.png" alt="" className="absolute top-[8%] left-[82%] w-10 h-10 opacity-[0.15] animate-float-drift-3" />
-        <img src="services_doc.png" alt="" className="absolute top-[60%] left-[12%] w-10 h-10 opacity-[0.13] animate-float-drift-2" />
-        <img src="services_navigate.png" alt="" className="absolute top-[88%] left-[58%] w-9 h-9 opacity-[0.14] animate-float-drift-5" />
-        <img src="services_efficiency.png" alt="" className="absolute top-[85%] left-[18%] w-8 h-8 opacity-[0.16] animate-float-drift-6" />
+        <img src="services_rules.png" alt="" className="absolute top-[4%] left-[20%] w-20 h-20 opacity-[0.12] animate-float-drift-1" />
+        <img src="services_student.png" alt="" className="absolute top-[75%] left-[40%] w-[4.5rem] h-[4.5rem] opacity-[0.10] animate-float-drift-4" />
+        <img src="contact_partnership.png" alt="" className="absolute top-[55%] left-[65%] w-16 h-16 opacity-[0.11] animate-float-drift-6" />
+
+        <img src="about_innovation.png" alt="" className="absolute top-[12%] left-[55%] w-14 h-14 opacity-[0.13] animate-float-drift-2" />
+        <img src="about_instant.jpg" alt="" className="absolute top-[30%] left-[75%] w-14 h-14 opacity-[0.10] animate-float-drift-5" />
+        <img src="about_security.png" alt="" className="absolute top-[22%] left-[35%] w-12 h-12 opacity-[0.14] animate-float-drift-3" />
+        <img src="contact_office.png" alt="" className="absolute top-[50%] left-[25%] w-14 h-14 opacity-[0.11] animate-float-drift-1" />
+        <img src="contact_partnership.png" alt="" className="absolute top-[40%] left-[50%] w-12 h-12 opacity-[0.12] animate-float-drift-4" />
+
+        <img src="contact_sales.png" alt="" className="absolute top-[8%] left-[82%] w-10 h-10 opacity-[0.15] animate-float-drift-3" />
+        <img src="home_doc.png" alt="" className="absolute top-[60%] left-[12%] w-10 h-10 opacity-[0.13] animate-float-drift-2" />
+        <img src="services_faculty.jpg" alt="" className="absolute top-[88%] left-[58%] w-9 h-9 opacity-[0.14] animate-float-drift-5" />
+        <img src="services_examschedule.png" alt="" className="absolute top-[85%] left-[18%] w-8 h-8 opacity-[0.16] animate-float-drift-6" />
 
         <svg className="absolute inset-0 w-full h-full opacity-[0.18]" xmlns="http://www.w3.org/2000/svg">
           <polygon className="hex-line-thick" points="120,80 200,40 280,80 280,160 200,200 120,160"/>

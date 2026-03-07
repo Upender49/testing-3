@@ -2,6 +2,9 @@
 
 /* 1. TAILWIND V4 THEME CONFIGURATION */
 @theme {
+  --breakpoint-nav: 900px;
+}
+@theme {
   --font-heading: 'Sora', sans-serif;
   --font-body: 'DM Sans', sans-serif;
 

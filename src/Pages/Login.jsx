@@ -1,8 +1,10 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import Lottie from "lottie-react";
 import "../index.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Toast } from "../components/Toast";
+import animationLogin from "../assets/Login.json";
 
 export function Login() {
   const location = useLocation();
@@ -118,11 +120,9 @@ export function Login() {
         
         <div className="relative hidden lg:flex flex-1 min-w-0 items-center justify-center">
           <div className="absolute w-[250%] h-62.5 bg-linear-to-br from-transparent via-brand-600/40 to-transparent blur-2xl opacity-40 animate-soft-light pointer-events-none"></div>
-          <iframe
-            className="w-full max-w-3xl py-3 h-full min-h-180"
-            src="https://lottie.host/embed/5f405a78-0ac9-4b52-9546-2e537374a67d/HJXf8wBzG5.lottie"
-            title="Login Animation"
-          ></iframe>
+          <div className="w-full flex items-center max-w-3xl py-3 h-full min-h-[720px]">
+            <Lottie animationData={animationLogin} loop={true} />
+          </div>
         </div>
 
         <div className="relative flex flex-col content-center justify-center w-full max-w-md shrink-0">

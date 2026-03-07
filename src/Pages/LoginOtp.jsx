@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import Lottie from "lottie-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Toast } from "../components/Toast";
 import "../index.css";
+import animationOTP from "../assets/otp.json";
 
 export function LoginOtp() {
   const defaultFilter = {
@@ -92,11 +94,9 @@ export function LoginOtp() {
         
         <div className="relative hidden lg:flex flex-1 min-w-0 items-center justify-center">
           <div className="absolute w-[250%] h-62.5 bg-linear-to-r from-transparent via-brand-600/40 to-transparent blur-2xl opacity-40 animate-soft-light pointer-events-none"></div>
-          <iframe
-            className="w-full max-w-3xl py-3 h-full min-h-180"
-            src="https://lottie.host/embed/532038ea-2eaf-4091-b2e8-c6f305d12928/tGgH3PzNnY.lottie"
-            title="OTP Animation"
-          ></iframe>
+          <div className="w-full max-w-2xl p-4 h-full min-h-[720px]">
+            <Lottie animationData={animationOTP} loop={true} />
+          </div>
         </div>
 
         <div className="relative flex flex-col content-center justify-center w-full max-w-md shrink-0">

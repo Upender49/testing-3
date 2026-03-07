@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export function Header() {
-  const navLinks = ["Home", "About Us", "Services", "Contact"];
+  const navLinks = ['Home', 'About Us', 'Services', 'Contact'];
 
   const navItemRefs = useRef([]);
   const pillRef = useRef(null);
@@ -12,17 +12,11 @@ export function Header() {
 
   const movePill = (index) => {
     const el = navItemRefs.current[index];
-    if (
-      !el ||
-      !navBarRef.current ||
-      !pillRef.current ||
-      navBarRef.current.offsetWidth === 0
-    )
-      return;
-
+    if (!el || !navBarRef.current || !pillRef.current || navBarRef.current.offsetWidth === 0) return;
+    
     const navRect = navBarRef.current.getBoundingClientRect();
     const elRect = el.getBoundingClientRect();
-
+    
     pillRef.current.style.left = `${elRect.left - navRect.left}px`;
     pillRef.current.style.width = `${elRect.width}px`;
   };
@@ -49,6 +43,7 @@ export function Header() {
   return (
     <header className="sticky top-2 mx-4 lg:mx-17.5 z-50 rounded-xl bg-white/90 backdrop-blur-md border border-slate-200/60 shadow-sm transition-all duration-300">
       <div className="w-full px-4 sm:px-6 md:px-8 lg:px-14 h-16 flex items-center justify-between">
+        
         <div className="flex items-center gap-2 shrink-0 cursor-pointer">
           <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center text-white">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -68,20 +63,15 @@ export function Header() {
             ref={pillRef}
             className="absolute top-1 h-[calc(100%-8px)] bg-white rounded-full border border-slate-200 shadow-sm pointer-events-none z-0 transition-all duration-300 ease-in-out"
           ></div>
-
+          
           {navLinks.map((item, index) => (
             <a
               key={item}
               ref={(el) => (navItemRefs.current[index] = el)}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(index);
-              }}
+              onClick={(e) => { e.preventDefault(); handleNavClick(index); }}
               href="#"
               className={`relative z-10 px-2 lg:px-7 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200 whitespace-nowrap ${
-                index === activeIndex
-                  ? "text-blue-600"
-                  : "text-slate-500 hover:text-slate-800"
+                index === activeIndex ? "text-blue-600" : "text-slate-500 hover:text-slate-800"
               }`}
             >
               {item}
@@ -115,36 +105,27 @@ export function Header() {
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
           >
-            <span
-              className={`block w-5 h-0.5 bg-slate-700 rounded-full transition-all duration-300 origin-center ${isMobileMenuOpen ? "translate-y-1.75 rotate-45" : ""}`}
-            ></span>
-            <span
-              className={`block w-5 h-0.5 bg-slate-700 rounded-full transition-all duration-300 mt-1.5 ${isMobileMenuOpen ? "opacity-0" : ""}`}
-            ></span>
-            <span
-              className={`block w-5 h-0.5 bg-slate-700 rounded-full transition-all duration-300 origin-center ${isMobileMenuOpen ? "-translate-y-1.75 -rotate-45 mt-1.5" : "mt-1.5"}`}
-            ></span>
+            <span className={`block w-5 h-0.5 bg-slate-700 rounded-full transition-all duration-300 origin-center ${isMobileMenuOpen ? 'translate-y-1.75 rotate-45' : ''}`}></span>
+            <span className={`block w-5 h-0.5 bg-slate-700 rounded-full transition-all duration-300 mt-1.5 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
+            <span className={`block w-5 h-0.5 bg-slate-700 rounded-full transition-all duration-300 origin-center ${isMobileMenuOpen ? '-translate-y-1.75 -rotate-45 mt-1.5' : 'mt-1.5'}`}></span>
           </button>
         </div>
       </div>
 
-      <div
+      <div 
         className={`nav:hidden border-t border-slate-200 overflow-hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="px-4 sm:px-6 py-4 space-y-2 bg-white rounded-b-lg shadow-xl">
           {navLinks.map((item, index) => (
             <a
               key={item}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(index);
-              }}
+              onClick={(e) => { e.preventDefault(); handleNavClick(index); }}
               href="#"
               className={`block px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors duration-200 ${
-                index === activeIndex
-                  ? "text-blue-600 bg-blue-50"
+                index === activeIndex 
+                  ? "text-blue-600 bg-blue-50" 
                   : "text-slate-600 hover:text-blue-600 hover:bg-blue-50"
               }`}
             >
