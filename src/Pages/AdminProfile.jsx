@@ -75,7 +75,7 @@ export function AdminProfile() {
                 {/* TOP HEADER SECTION */}
                 <div className="relative bg-white">
                     {/* Banner */}
-                    <div className="h-52 bg-[#313647] relative overflow-hidden">
+                    <div className="h-52 bg-[#100636] relative overflow-hidden">
                         {/* Background Decoration */}
                         <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full -mr-40 -mt-40 blur-3xl"></div>
                         <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full -ml-32 -mb-32 blur-2xl"></div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
     Menu, MessageSquare, Bell, LayoutDashboard, UserCircle, ChevronDown, User, CloudUpload,
     GraduationCap, Pen, BookOpenCheck, FileSpreadsheet, FileText, CalendarDays, Clock, Trophy,
@@ -17,6 +18,7 @@ export function StudentSidebar() {
         requests: true
     }); // Tracks which accordions are open
     const [activeMenu, setActiveMenu] = useState("dashboard");           // Tracks the highlighted link
+    const [tooltip, setTooltip] = useState({ visible: false, text: "", top: 0, left: 0 }); // Shared portal tooltip state
 
     // Responsive Behavior logic
     useEffect(() => {
@@ -116,6 +118,37 @@ export function StudentSidebar() {
         }
     };
 
+    // Tooltip Handlers
+    const handleMouseEnter = (e, text, position = "right") => {
+        // Only show sidebar tooltips when collapsed, but always show header tooltips
+        const isHeaderItem = e.currentTarget.closest('header');
+        if (!isSidebarCollapsed && !isHeaderItem) return;
+
+        const rect = e.currentTarget.getBoundingClientRect();
+        
+        if (position === "bottom") {
+            setTooltip({
+                visible: true,
+                text,
+                top: rect.bottom + 8,
+                left: rect.left + rect.width / 2,
+                position: "bottom"
+            });
+        } else {
+            setTooltip({
+                visible: true,
+                text,
+                top: rect.top + rect.height / 2,
+                left: rect.right + 6,
+                position: "right"
+            });
+        }
+    };
+
+    const handleMouseLeave = () => {
+        setTooltip(prev => ({ ...prev, visible: false }));
+    };
+
     // Generates the repeating Tailwind classes for the submenu links + handles active state
     const getSubMenuLinkClass = (menuId) => {
         const baseClass = "menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1.5 hover:brightness-110 text-white group";
@@ -167,39 +200,36 @@ export function StudentSidebar() {
                 <div className="flex items-center gap-2 sm:gap-4 font-body">
                     {/* Messages */}
                     <div className="group relative">
-                        <button className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors hidden sm:block">
+                        <button 
+                            onMouseEnter={(e) => handleMouseEnter(e, "Messages", "bottom")}
+                            onMouseLeave={handleMouseLeave}
+                            className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors hidden sm:block"
+                        >
                             <MessageSquare className="w-5 h-5 stroke-2" />
                             <span className="absolute top-1.5 right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-red-500 border-2 border-white rounded-full">0</span>
                         </button>
-                        {/* Tooltip */}
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-slate-900 text-white text-[10px] font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 shadow-xl border border-white/10">
-                            Messages
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-b-slate-900"></div>
-                        </div>
                     </div>
 
                     {/* Notifications */}
                     <div className="group relative">
-                        <button className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
+                        <button 
+                            onMouseEnter={(e) => handleMouseEnter(e, "Notifications", "bottom")}
+                            onMouseLeave={handleMouseLeave}
+                            className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors"
+                        >
                             <Bell className="w-5 h-5 stroke-2" />
                             <span className="absolute top-1.5 right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-red-500 border-2 border-white rounded-full">1</span>
                         </button>
-                        {/* Tooltip */}
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-2 bg-slate-900 text-white text-[10px] font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 shadow-xl border border-white/10">
-                            Notifications
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-b-slate-900"></div>
-                        </div>
                     </div>
 
                     {/* User Profile Thumbnail */}
                     <div className="group relative">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-blue-100 overflow-hidden cursor-pointer hover:border-blue-300 transition-colors shrink-0 ml-1 sm:ml-2">
+                        <div 
+                            onMouseEnter={(e) => handleMouseEnter(e, "User Settings", "bottom")}
+                            onMouseLeave={handleMouseLeave}
+                            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-blue-100 overflow-hidden cursor-pointer hover:border-blue-300 transition-colors shrink-0 ml-1 sm:ml-2"
+                        >
                             <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userdata.first_name}&backgroundColor=b6e3f4`} alt="Profile" className="w-full h-full object-cover" />
-                        </div>
-                        {/* Tooltip */}
-                        <div className="absolute top-full right-0 mt-2 px-3 py-2 bg-slate-900 text-white text-[10px] font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50 shadow-xl border border-white/10">
-                            User Settings
-                            <div className="absolute bottom-full right-4 border-[6px] border-transparent border-b-slate-900"></div>
                         </div>
                     </div>
                 </div>
@@ -219,7 +249,11 @@ export function StudentSidebar() {
 
                     {/* Profile Section */}
                     <div className="px-6 group-[.sidebar-collapsed]/sidebar:px-2 py-2 group-[.sidebar-collapsed]/sidebar:py-4 flex flex-col items-center border-b border-white/10 transition-all duration-300 shrink-0 relative">
-                        <div className="relative cursor-pointer group/profile mb-4">
+                        <div 
+                            className="relative cursor-pointer group/profile mb-4"
+                            onMouseEnter={(e) => handleMouseEnter(e, `${userdata.first_name} ${userdata.last_name}`)}
+                            onMouseLeave={handleMouseLeave}
+                        >
                             {/* Profile Image / Avatar */}
                             <div className="profile-img w-20 h-20 group-[.sidebar-collapsed]/sidebar:!w-12 group-[.sidebar-collapsed]/sidebar:!h-12 group-[.sidebar-collapsed]/sidebar:mb-0 rounded-full bg-slate-700/50 p-1 transition-all duration-300 relative flex items-center justify-center overflow-hidden border border-white/20 shadow-lg" onClick={() => handleMenuSelection("my-profile")}>
                                 <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userdata.first_name}&backgroundColor=b6e3f4`} alt="Student Profile" className="w-full h-full rounded-full object-cover z-10 relative" />
@@ -227,12 +261,6 @@ export function StudentSidebar() {
                             {/* Tenure Badge */}
                             <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 bg-blue-700 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full shadow-lg border border-white/20 z-20 whitespace-nowrap group-[.sidebar-collapsed]/sidebar:hidden transition-all duration-300 transform group-hover/profile:scale-105">
                                 {userdata.batch} — {userdata.batch + 4}
-                            </div>
-
-                            {/* Tooltip for Profile (Visible when collapsed) */}
-                            <div className="fixed left-20 ml-[6px] px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-2xl pointer-events-none hidden group-[.sidebar-collapsed]/sidebar:block border border-white/10">
-                                {userdata.first_name} {userdata.last_name}
-                                <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-slate-900"></div>
                             </div>
                         </div>
 
@@ -247,23 +275,26 @@ export function StudentSidebar() {
                     <nav className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-[4px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-[4px] hover:[&::-webkit-scrollbar-thumb]:bg-white/40 py-4 flex flex-col gap-1.5 relative overflow-x-hidden">
 
                         {/* Dashboard */}
-                        <a href="#" className="menu-link flex items-center gap-3 py-3 group-[.sidebar-collapsed]/sidebar:py-2 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] hover:brightness-110 text-white hover:text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center" onclick="setActive(this)">
+                        <a 
+                            href="#" 
+                            onMouseEnter={(e) => handleMouseEnter(e, "My Dashboard")}
+                            onMouseLeave={handleMouseLeave}
+                            className="menu-link flex items-center gap-3 py-3 group-[.sidebar-collapsed]/sidebar:py-2 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] hover:brightness-110 text-white hover:text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center" onclick="setActive(this)"
+                        >
                             <div className="flex-col flex items-center justify-center">
                                 <LayoutDashboard className="w-5 h-5 shrink-0 text-blue-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110 group-hover:text-blue-100"/>
                                 <span className="hidden group-[.sidebar-collapsed]/sidebar:block text-[10px] text-center mt-1 px-1 opacity-80 leading-tight">Dash.</span>
                             </div>
                             <span className="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-medium text-sm whitespace-nowrap">My Dashboard</span>
-                            
-                            {/* Tooltip (Mini Sidebar Only) */}
-                            <div className="fixed left-20 ml-[6px] px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-2xl pointer-events-none hidden group-[.sidebar-collapsed]/sidebar:block border border-white/10">
-                                My Dashboard
-                                <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-slate-900"></div>
-                            </div>
                         </a>
 
-                        {/* Profile Dropdown */}
                         <div className="relative border-t border-white/20">
-                            <button onClick={() => handleDropdownClick("profile")} className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center">
+                            <button 
+                                onClick={() => handleDropdownClick("profile")} 
+                                onMouseEnter={(e) => handleMouseEnter(e, "Profile")}
+                                onMouseLeave={handleMouseLeave}
+                                className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center"
+                            >
                                 <div className="flex items-center gap-3 group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0">
                                     <div className="flex-col flex items-center justify-center">
                                         <UserCircle className="w-5 h-5 shrink-0 text-indigo-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110" />
@@ -272,12 +303,6 @@ export function StudentSidebar() {
                                     <span className="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Profile</span>
                                 </div>
                                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon mr-4 ${openDropdowns.profile ? "rotate-180" : "rotate-0"}`} />
-
-                                {/* Tooltip */}
-                                <div className="fixed left-20 ml-[6px] px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-2xl pointer-events-none hidden group-[.sidebar-collapsed]/sidebar:block border border-white/10">
-                                    Profile
-                                    <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-slate-900"></div>
-                                </div>
                             </button>
                             <div className={`dropdown-menu flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:hidden! pl-6 ${openDropdowns.profile ? "flex mb-2" : "hidden"}`}>
                                 <a href="#" onClick={(e) => { e.preventDefault(); handleMenuSelection("my-profile"); }} className={getSubMenuLinkClass("my-profile")}>
@@ -291,9 +316,13 @@ export function StudentSidebar() {
                             </div>
                         </div>
 
-                        {/* Academics Dropdown */}
                         <div className="relative border-t border-white/20">
-                            <button onClick={() => handleDropdownClick("academics")} className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center">
+                            <button 
+                                onClick={() => handleDropdownClick("academics")} 
+                                onMouseEnter={(e) => handleMouseEnter(e, "Academics")}
+                                onMouseLeave={handleMouseLeave}
+                                className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center"
+                            >
                                 <div className="flex items-center gap-3 group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0">
                                     <div className="flex-col flex items-center justify-center">
                                         <GraduationCap className="w-5 h-5 shrink-0 text-emerald-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110" />
@@ -302,12 +331,6 @@ export function StudentSidebar() {
                                     <span className="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Academics</span>
                                 </div>
                                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon mr-4 ${openDropdowns.academics ? "rotate-180" : "rotate-0"}`} />
-
-                                {/* Tooltip */}
-                                <div className="fixed left-20 ml-[6px] px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-2xl pointer-events-none hidden group-[.sidebar-collapsed]/sidebar:block border border-white/10 translate-x-2 group-hover:translate-x-0">
-                                    Academics
-                                    <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-slate-900"></div>
-                                </div>
                             </button>
                             <div className={`dropdown-menu flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:hidden! pl-6 ${openDropdowns.academics ? "flex mb-2" : "hidden"}`}>
                                 <a href="#" onClick={(e) => { e.preventDefault(); handleMenuSelection("attendance"); }} className={getSubMenuLinkClass("attendance")}>
@@ -341,9 +364,13 @@ export function StudentSidebar() {
                             </div>
                         </div>
 
-                        {/* Announcements Dropdown */}
                         <div className="relative border-t border-white/20">
-                            <button onClick={() => handleDropdownClick("announcements")} className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center">
+                            <button 
+                                onClick={() => handleDropdownClick("announcements")} 
+                                onMouseEnter={(e) => handleMouseEnter(e, "Announcements")}
+                                onMouseLeave={handleMouseLeave}
+                                className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center"
+                            >
                                 <div className="flex items-center gap-3 group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0">
                                     <div className="flex-col flex items-center justify-center">
                                         <Megaphone className="w-5 h-5 shrink-0 text-amber-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110" />
@@ -352,12 +379,6 @@ export function StudentSidebar() {
                                     <span className="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Announcements</span>
                                 </div>
                                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon mr-4 ${openDropdowns.announcements ? "rotate-180" : "rotate-0"}`} />
-
-                                {/* Tooltip */}
-                                <div className="fixed left-20 ml-[6px] px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-2xl pointer-events-none hidden group-[.sidebar-collapsed]/sidebar:block border border-white/10 translate-x-2 group-hover:translate-x-0">
-                                    Announcements
-                                    <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-slate-900"></div>
-                                </div>
                             </button>
                             <div className={`dropdown-menu flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:hidden! pl-6 ${openDropdowns.announcements ? "flex mb-2" : "hidden"}`}>
                                 <a href="#" onClick={(e) => { e.preventDefault(); handleMenuSelection("circulars"); }} className={getSubMenuLinkClass("circulars")}>
@@ -371,9 +392,13 @@ export function StudentSidebar() {
                             </div>
                         </div>
 
-                        {/* Services Dropdown */}
                         <div className="relative border-t border-white/20">
-                            <button onClick={() => handleDropdownClick("services")} className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center">
+                            <button 
+                                onClick={() => handleDropdownClick("services")} 
+                                onMouseEnter={(e) => handleMouseEnter(e, "Services")}
+                                onMouseLeave={handleMouseLeave}
+                                className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center"
+                            >
                                 <div className="flex items-center gap-3 group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0">
                                     <div className="flex-col flex items-center justify-center">
                                         <LifeBuoy className="w-5 h-5 shrink-0 text-yellow-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110" />
@@ -382,12 +407,6 @@ export function StudentSidebar() {
                                     <span className="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Services</span>
                                 </div>
                                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon mr-4 ${openDropdowns.services ? "rotate-180" : "rotate-0"}`} />
-
-                                {/* Tooltip */}
-                                <div className="fixed left-20 ml-[6px] px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-2xl pointer-events-none hidden group-[.sidebar-collapsed]/sidebar:block border border-white/10 translate-x-2 group-hover:translate-x-0">
-                                    Services
-                                    <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-slate-900"></div>
-                                </div>
                             </button>
                             <div className={`dropdown-menu flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:hidden! pl-6 ${openDropdowns.services ? "flex mb-2" : "hidden"}`}>
                                 <a href="#" onClick={(e) => { e.preventDefault(); handleMenuSelection("transport"); }} className={getSubMenuLinkClass("transport")}>
@@ -401,9 +420,13 @@ export function StudentSidebar() {
                             </div>
                         </div>
 
-                        {/* Requests Dropdown */}
                         <div className="relative border-t border-white/20">
-                            <button onClick={() => handleDropdownClick("requests")} className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center">
+                            <button 
+                                onClick={() => handleDropdownClick("requests")} 
+                                onMouseEnter={(e) => handleMouseEnter(e, "Requests")}
+                                onMouseLeave={handleMouseLeave}
+                                className="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center"
+                            >
                                 <div className="flex items-center gap-3 group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0">
                                     <div className="flex-col flex items-center justify-center">
                                         <FilePlus className="w-5 h-5 shrink-0 text-pink-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110" />
@@ -412,12 +435,6 @@ export function StudentSidebar() {
                                     <span className="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Requests</span>
                                 </div>
                                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon mr-4 ${openDropdowns.requests ? "rotate-180" : "rotate-0"}`} />
-
-                                {/* Tooltip */}
-                                <div className="fixed left-20 ml-[6px] px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-2xl pointer-events-none hidden group-[.sidebar-collapsed]/sidebar:block border border-white/10 translate-x-2 group-hover:translate-x-0">
-                                    Requests
-                                    <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-slate-900"></div>
-                                </div>
                             </button>
                             <div className={`dropdown-menu flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:hidden! pl-6 ${openDropdowns.requests ? "flex mb-2" : "hidden"}`}>
                                 <a href="#" onClick={(e) => { e.preventDefault(); handleMenuSelection("out-pass"); }} className={getSubMenuLinkClass("out-pass")}>
@@ -439,33 +456,30 @@ export function StudentSidebar() {
                     {/* Footer Actions */}
                     <div className="p-2 group-[.sidebar-collapsed]/sidebar:pb-8 border-t border-white/20 bg-[#051F3E] shrink-0 relative z-50">
                         {/* Change Password */}
-                        <a href="#" onClick={(e) => { e.preventDefault(); handleMenuSelection("password"); }} className={`flex items-center gap-3 px-3 py-2.5 mx-2 group-[.sidebar-collapsed]/sidebar:mx-0 rounded-xl transition-all duration-300 ease-out hover:bg-green-500 hover:shadow-lg text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center ${activeMenu === "password" ? "!bg-white/20 backdrop-blur-md !text-white shadow-inner border border-white/10" : ""}`}>
+                        <a 
+                            href="#" 
+                            onClick={(e) => { e.preventDefault(); handleMenuSelection("password"); }} 
+                            onMouseEnter={(e) => handleMouseEnter(e, "Change Password")}
+                            onMouseLeave={handleMouseLeave}
+                            className={`flex items-center gap-3 px-3 py-2.5 mx-2 group-[.sidebar-collapsed]/sidebar:mx-0 rounded-xl transition-all duration-300 ease-out hover:bg-green-500 hover:shadow-lg text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center ${activeMenu === "password" ? "!bg-white/20 backdrop-blur-md !text-white shadow-inner border border-white/10" : ""}`}>
                             <div className="flex-col flex items-center justify-center">
                                 <KeyRound className="w-5 h-5 shrink-0 text-teal-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12 group-hover:text-white" />
                                 <span className="hidden group-[.sidebar-collapsed]/sidebar:block text-[10px] text-center mt-1 px-1 opacity-80">Pass.</span>
                             </div>
                             <span className="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-medium text-sm whitespace-nowrap">Change Password</span>
-
-                            {/* Tooltip */}
-                            <div className="fixed left-20 ml-[6px] px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-2xl pointer-events-none hidden group-[.sidebar-collapsed]/sidebar:block border border-white/10 translate-x-2 group-hover:translate-x-0">
-                                Change Password
-                                <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-slate-900"></div>
-                            </div>
                         </a>
 
                         {/* Sign Out */}
-                        <a href="#" className="flex mt-1 items-center gap-3 px-3 py-2.5 mx-2 group-[.sidebar-collapsed]/sidebar:mx-0 rounded-xl transition-all duration-300 ease-out hover:bg-red-500/80 text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center">
+                        <a 
+                            href="#" 
+                            onMouseEnter={(e) => handleMouseEnter(e, "Sign Out")}
+                            onMouseLeave={handleMouseLeave}
+                            className="flex mt-1 items-center gap-3 px-3 py-2.5 mx-2 group-[.sidebar-collapsed]/sidebar:mx-0 rounded-xl transition-all duration-300 ease-out hover:bg-red-500/80 text-white group relative group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-0 group-[.sidebar-collapsed]/sidebar:justify-center">
                             <div className="flex-col flex items-center justify-center">
                                 <LogOut className="w-5 h-5 shrink-0 text-red-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:-translate-x-1 group-hover:text-white relative z-10" />
                                 <span className="hidden group-[.sidebar-collapsed]/sidebar:block text-[8px] text-center mt-1 px-1 opacity-80">Sign out</span>
                             </div>
                             <span className="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-medium text-sm whitespace-nowrap relative z-10">Sign Out</span>
-
-                            {/* Tooltip */}
-                            <div className="fixed left-20 ml-[6px] px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[110] shadow-2xl pointer-events-none hidden group-[.sidebar-collapsed]/sidebar:block border border-white/10 translate-x-2 group-hover:translate-x-0">
-                                Sign Out
-                                <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-slate-900"></div>
-                            </div>
                         </a>
                     </div>
                 </aside>
@@ -479,6 +493,23 @@ export function StudentSidebar() {
                     </div>
                 </main>
             </div>
+
+            {/* --- PORTAL TOOLTIP --- */}
+            {tooltip.visible && createPortal(
+                <div 
+                    style={{ 
+                        top: tooltip.top, 
+                        left: tooltip.position === "bottom" ? tooltip.left : undefined,
+                        marginLeft: tooltip.position === "bottom" ? 0 : "6px"
+                    }}
+                    className={`fixed px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg transition-all duration-200 whitespace-nowrap z-[1000] shadow-2xl pointer-events-none border border-white/10 flex items-center ${tooltip.position === "bottom" ? "-translate-x-1/2" : "left-20 -translate-y-1/2"}`}
+                >
+                    {tooltip.text}
+                    {/* Tooltip Arrow */}
+                    <div className={`absolute border-[6px] border-transparent ${tooltip.position === "bottom" ? "bottom-full left-1/2 -translate-x-1/2 border-b-slate-900" : "right-full top-1/2 -translate-y-1/2 border-r-slate-900"}`}></div>
+                </div>,
+                document.body
+            )}
         </div>
     );
 }
