@@ -172,11 +172,11 @@ export function Assignments() {
 
                         // Determine colors based on status
                         if (assignment.status === "expired") {
-                            bgColor = "bg-red-50"; textColor = "text-red-700"; borderColor = "border-red-200"; iconColor = "text-red-600";
+                            bgColor = "bg-[#FEE2E2]"; textColor = "text-red-700"; borderColor = "border-red-200"; iconColor = "text-red-600";
                         } else if (assignment.status === "pending") {
-                            bgColor = "bg-orange-50"; textColor = "text-orange-700"; borderColor = "border-orange-200"; iconColor = "text-orange-600";
+                            bgColor = "bg-[#FFEDD5]"; textColor = "text-orange-900"; borderColor = "border-orange-200"; iconColor = "text-orange-600";
                         } else if (assignment.status === "completed") {
-                            bgColor = "bg-green-50"; textColor = "text-green-700"; borderColor = "border-green-200"; iconColor = "text-green-600";
+                            bgColor = "bg-[#DCFCE7]"; textColor = "text-green-700"; borderColor = "border-green-200"; iconColor = "text-green-600";
                         }
 
                         return (

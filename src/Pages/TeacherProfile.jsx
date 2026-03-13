@@ -195,7 +195,7 @@ export function TeacherProfile() {
                 {/* TOP HEADER SECTION */}
                 <div className="relative bg-white">
                     {/* Banner */}
-                    <div className="h-44 bg-[#296374] relative overflow-hidden">
+                    <div className="h-52 bg-[#296374] relative overflow-hidden">
                         {/* Background Decoration */}
                         <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full -mr-40 -mt-40 blur-3xl"></div>
                         <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full -ml-32 -mb-32 blur-2xl"></div>
@@ -211,10 +211,10 @@ export function TeacherProfile() {
 
                         {/* 1. The Avatar (Top Left) */}
                         <div className="flex flex-col items-center md:items-start group/avatar">
-                            <div className="w-40 h-40 rounded-full bg-white p-1 shadow-2xl transition-transform duration-500 group-hover/avatar:scale-105 ring-[6px] ring-white overflow-hidden relative">
+                            <div className="w-40 h-40 rounded-full bg-white p-1 shadow-2xl transition-transform duration-500 group-hover/avatar:scale-105 ring-[6px] ring-white relative">
                                 <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${teacherdata.first_name}&backgroundColor=b6e3f4`} alt="Photo" className="w-full h-full rounded-full object-cover" />
                                 {/* Status Indicator */}
-                                <div className="absolute bottom-4 right-4 w-8 h-8 bg-emerald-500 rounded-full border-4 border-white flex items-center justify-center shadow-lg">
+                                <div className="absolute bottom-0 right-3 w-8 h-8 bg-emerald-500 rounded-full border-4 border-white flex items-center justify-center shadow-lg">
                                     <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                                 </div>
                             </div>
@@ -222,7 +222,7 @@ export function TeacherProfile() {
 
                         {/* 2. The Action Buttons (Top Right) */}
                         <div className="flex flex-col justify-end pt-16 md:pt-20">
-                            <div className="flex flex-wrap items-center gap-4">
+                            <div className="flex flex-wrap items-center gap-4 absolute right-0 mr-7">
                                 <button className="bg-[#F39C12] hover:bg-[#E67E22] text-white font-bold px-6 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-amber-500/10 hover:shadow-amber-500/20 flex items-center gap-2 group/btn active:scale-95 text-sm">
                                     <Edit3 className="w-4 h-4 transition-transform group-hover/btn:-rotate-12" />
                                     Edit Profile
