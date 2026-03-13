@@ -8,6 +8,13 @@ import { AboutUs } from "./Pages/Aboutus";
 import { ContactUs } from "./Pages/ContactUs";
 import {Services}from "./Pages/Services";
 import { Home } from "./Pages/Home";
+import { StudentProfile } from "./Pages/StudentProfie";
+import { TeacherProfile } from "./Pages/TeacherProfile";
+import { AdminProfile } from "./Pages/AdminProfile";
+import { Assignments } from "./Pages/Assignments";
+import { StudentSidebar } from "./Pages/StudentSidebar";
+import { TeacherSidebar } from "./Pages/TeacherSideBar";
+import { AdminSidebar } from "./Pages/AdminSideBar";
 function App() {
   const router = createBrowserRouter([
     {
@@ -39,6 +46,30 @@ function App() {
     },{
       path : '/home',
       element : <Home/>
+    },{
+      path : '/studentprofile',
+      element : <StudentProfile/>
+    },{
+      path : '/teacherprofile',
+      element : <TeacherProfile/>
+    },{
+      path : '/adminprofile',
+      element : <AdminProfile/>
+    },
+    {
+      path : '/studentsidebar',
+      element : <StudentSidebar/>
+    },
+    {
+      path : '/teachersidebar',
+      element : <TeacherSidebar/>
+    },{
+      path : '/adminsidebar',
+      element : <AdminSidebar/>
+    },
+    {
+      path : '/assignments',
+      element : <Assignments/>
     }
   ])
   return(

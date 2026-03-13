@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Sidebar</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Sora:wght@100..800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS (Play CDN for development) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Sora', 'sans-serif'],
+                        body: ['DM Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 flex flex-col h-screen overflow-hidden font-body">
+
+    <!-- Top Header -->
+    <header class="bg-white shadow-sm h-16 flex items-center justify-between px-4 lg:px-6 shrink-0 z-40 border-b border-gray-200">
+        <!-- Left Side: Logos and Toggle -->
+        <div class="flex items-center gap-3 sm:gap-6">
+            <!-- Hamburger Toggle -->
+            <div id="hamburger-container" class="lg:hidden flex items-center flex-shrink-0 order-1 transition-all duration-300">
+                <button id="header-hamburger" onclick="toggleSidebar()" class="p-2 -ml-2 sm:ml-0 text-blue-600 bg-blue-50 border border-blue-200 hover:bg-blue-100 rounded-lg transition-colors focus:ring-2 focus:ring-blue-500/20">
+                    <i data-lucide="menu" class="w-5 h-5 stroke-[2.5]"></i>
+                </button>
+            </div>
+
+            <!-- EduCore Logo -->
+            <div id="educore-logo" class="flex items-center gap-2 flex-shrink-0 border-r border-gray-200 pr-4 sm:pr-6 hidden sm:flex transition-all duration-300 order-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10.394 2.827a1 1 0 00-.788 0l-7 3a1 1 0 000 1.846l7 3a1 1 0 00.788 0l7-3a1 1 0 000-1.846l-7-3zM3.172 10.757a1 1 0 011.105-.271l5.505 2.359 5.505-2.359a1 1 0 11.788 1.846l-6 2.571a1 1 0 01-.788 0l-6-2.571a1 1 0 01-.505-1.214z"/>
+                    </svg>
+                </div>
+                <span class="font-heading font-extrabold text-lg text-slate-800 tracking-tight">EDU<span class="text-blue-600">CORE</span></span>
+            </div>
+
+            <!-- College Logo and Name -->
+            <div id="college-info" class="flex items-center gap-3 pl-2 sm:pl-0 order-3">
+                <div class="w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden shrink-0">
+                    <img src="images/cvr_logo.png" alt="CVR" onerror="this.src='https://ui-avatars.com/api/?name=CVR&background=0D8ABC&color=fff'" class="w-full h-full object-contain p-1">
+                </div>
+                <span class="font-heading font-bold text-[#1130F8] tracking-wide text-sm sm:text-lg uppercase">CVR COLLEGE of engineering</span>
+            </div>
+        </div>
+
+        <!-- Right Side: Actions -->
+        <div class="flex items-center gap-2 sm:gap-4">
+            <!-- Messages -->
+            <button class="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors hidden sm:block">
+                <i data-lucide="message-square" class="w-5 h-5 stroke-[2]"></i>
+                <span class="absolute top-1.5 right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-red-500 border-2 border-white rounded-full">0</span>
+            </button>
+            
+            <!-- Notifications -->
+            <button class="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
+                <i data-lucide="bell" class="w-5 h-5 stroke-[2]"></i>
+                <span class="absolute top-1.5 right-1.5 flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-red-500 border-2 border-white rounded-full">1</span>
+            </button>
+            
+            <!-- User Profile -->
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-blue-100 overflow-hidden cursor-pointer hover:border-blue-300 transition-colors shrink-0 ml-1 sm:ml-2">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4" alt="Profile" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </header>
+
+    <!-- App Body Container -->
+    <div class="flex flex-1 overflow-hidden relative">
+
+        <!-- Mobile Overlay -->
+        <div id="mobile-overlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar Container -->
+    <aside id="sidebar" class="bg-[#051F3E] text-white w-[15rem] [&.sidebar-collapsed]:w-20 group/sidebar h-full flex flex-col transition-all duration-300 ease-in-out z-30 shadow-2xl flex-shrink-0 absolute lg:relative -translate-x-full lg:translate-x-0">
+        
+        <!-- Toggle Button (Visible on Hover/Always on Mobile) -->
+        <button id="toggle-btn" onclick="toggleSidebar()" class="absolute -right-3 top-6 bg-white text-blue-600 rounded-full p-1.5 shadow-md hover:bg-gray-100 transition-colors hidden lg:flex items-center justify-center z-40 border border-blue-100">
+            <i data-lucide="chevron-left" class="w-4 h-4 transition-transform duration-300 stroke-[2.5]" id="toggle-icon"></i>
+        </button>
+
+        <!-- Profile Section -->
+        <div class="px-6 py-8 flex flex-col items-center border-b border-white/10 transition-all duration-300 shrink-0 relative overflow-hidden">
+            <div class="relative cursor-pointer mb-4 group/profile">
+                <!-- Profile Image / Avatar -->
+                <div class="profile-img w-20 h-20 group-[.sidebar-collapsed]/sidebar:w-10 group-[.sidebar-collapsed]/sidebar:h-10 group-[.sidebar-collapsed]/sidebar:mb-0 rounded-full bg-slate-700/50 p-1 transition-all duration-300 relative flex items-center justify-center overflow-hidden border border-white/20">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4" alt="Student Profile" class="w-full h-full rounded-full object-cover z-10 relative">
+                </div>
+            </div>
+            
+            <div class="profile-text group-[.sidebar-collapsed]/sidebar:hidden text-center flex flex-col items-center">
+                <h2 class="font-heading font-bold text-[19px] tracking-tight text-white drop-shadow-sm leading-tight transition-colors duration-300 z-10">Amanda Olamide</h2>
+                <span class="text-emerald-400 text-[10px] font-bold tracking-[0.2em] uppercase mt-2 drop-shadow-md">CSE Dept</span>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-[4px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-[4px] hover:[&::-webkit-scrollbar-thumb]:bg-white/40 py-4  flex flex-col gap-1.5">
+            
+            <!-- Dashboard --> <!-- Theme: Blue -->
+            <a href="#" class="menu-link flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1.5 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                <i data-lucide="layout-dashboard" class="w-5 h-5 shrink-0 text-blue-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110 group-hover:text-blue-100"></i>
+                <span class="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-medium text-sm whitespace-nowrap">My Dashboard</span>
+            </a>
+            <!-- Profile Dropdown -->
+            <div class=" relative border-t border-white/20">
+                <button onclick="toggleDropdown(this)" class="w-full flex items-center justify-between px-3 py-3 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="user-circle" class="w-5 h-5 shrink-0 text-indigo-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110"></i>
+                        <span class="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Profile</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon rotate-180"></i>
+                </button>
+                <div class=" dropdown-menu flex flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:!hidden pl-6">
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="user" class="w-4 h-4 text-indigo-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">My Profile</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="cloud-upload" class="w-4 h-4 text-cyan-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Upload Documents</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Academics Dropdown -->
+            <div class="space-y-1 relative border-t border-white/20">
+                <button onclick="toggleDropdown(this)" class="w-full  flex items-center justify-between px-3 py-3 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="graduation-cap" class="w-5 h-5 shrink-0 text-emerald-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110"></i>
+                        <span class="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Academics</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon rotate-180"></i>
+                </button>
+                <div class="dropdown-menu flex flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:!hidden ">
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="pen" class="w-4 h-4 text-emerald-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Attendance Overview</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="book-open-check" class="w-4 h-4 text-orange-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Assignments</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-violet-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Exam Information</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="file-text" class="w-4 h-4 text-fuchsia-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Results</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="calendar-days" class="w-4 h-4 text-teal-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Academic Calendar</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="clock" class="w-4 h-4 text-cyan-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Timetable</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="trophy" class="w-4 h-4 text-amber-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Achievements</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Announcements Dropdown -->
+            <div class="space-y-1 relative border-t border-white/20">
+                <button onclick="toggleDropdown(this)" class="w-full flex items-center justify-between px-3 py-3 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="megaphone" class="w-5 h-5 shrink-0 text-amber-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110"></i>
+                        <span class="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Announcements</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon rotate-180"></i>
+                </button>
+                <div class="dropdown-menu flex flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:!hidden pl-">
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="bell-ring" class="w-4 h-4 text-amber-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Circulars & Notifications</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="party-popper" class="w-4 h-4 text-rose-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Events</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Services Dropdown -->
+            <div class="space-y-1 relative border-t border-white/20">
+                <button onclick="toggleDropdown(this)" class="w-full flex items-center justify-between px-3 py-3 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="life-buoy" class="w-5 h-5 shrink-0 text-yellow-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110"></i>
+                        <span class="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Services</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon rotate-180"></i>
+                </button>
+                <div class="dropdown-menu flex flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:!hidden pl-6">
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="bus" class="w-4 h-4 text-yellow-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Transport</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="wallet" class="w-4 h-4 text-emerald-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Fee Overview</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Requests Dropdown -->
+            <div class="space-y-1 relative border-t border-white/20">
+                <button onclick="toggleDropdown(this)" class="w-full flex items-center justify-between px-3 py-3 transition-all duration-300 ease-out hover:bg-white/[0.08] focus:bg-white/[0.08] text-white group">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="file-plus" class="w-5 h-5 shrink-0 text-pink-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110"></i>
+                        <span class="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-bold text-sm tracking-wide uppercase">Requests</span>
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-[.sidebar-collapsed]/sidebar:hidden chevron-icon rotate-180"></i>
+                </button>
+                <div class="dropdown-menu flex flex-col gap-1 overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:!hidden pl-6">
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="log-out" class="w-4 h-4 text-lime-300 rotate-90"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Out Pass</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="contact" class="w-4 h-4 text-lime-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">ID Card</span>
+                    </a>
+                    <a href="#" class="menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1 hover:brightness-110 text-white hover:text-white group" onclick="setActive(this)">
+                        <i data-lucide="file-text" class="w-4 h-4 text-blue-300"></i>
+                        <span class="nav-text font-medium text-sm whitespace-nowrap">Leave Application</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Footer Actions -->
+        <div class="p-2 border-t border-white/20 bg-[#051F3E] shrink-0">
+            <!-- Change Password -->
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ease-out hover:bg-green-500 hover:shadow-lg text-white group" onclick="setActive(this)">
+                <i data-lucide="key-round" class="w-5 h-5 shrink-0 text-teal-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12 group-hover:text-white"></i>
+                <span class="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-medium text-sm whitespace-nowrap">Change Password</span>
+            </a>
+
+            <!-- Sign Out -->
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ease-out hover:bg-red-500/80 text-white hover:text-white group relative overflow-hidden">
+                <i data-lucide="log-out" class="w-5 h-5 shrink-0 text-red-300 drop-shadow-md stroke-[2.5] transition-transform duration-300 group-hover:-translate-x-1 group-hover:text-white relative z-10"></i>
+                <span class="nav-text group-[.sidebar-collapsed]/sidebar:hidden font-medium text-sm whitespace-nowrap relative z-10">Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content Area (For Context) -->
+    <main class="flex-1 flex flex-col min-w-0 transition-all duration-300 relative bg-gray-50">
+        <div class="p-8 flex-1 overflow-y-auto w-full h-full flex flex-col items-center justify-center text-gray-400">
+            <!-- Your main page content will go here -->
+            <p class="font-bold text-xl">Main Dashboard Content</p>
+        </div>
+    </main>
+
+    <!-- Lucide Icons Setup -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        const sidebar = document.getElementById('sidebar');
+        const toggleIcon = document.getElementById('toggle-icon');
+        const overlay = document.getElementById('mobile-overlay');
+
+        // Toggle Expand/Collapse (Desktop)
+        function toggleSidebar() {
+            // Check if mobile via CSS
+            if (window.innerWidth < 1024) { 
+                toggleMobileSidebar();
+                return;
+            }
+
+            const hamburgerContainer = document.getElementById('hamburger-container');
+            const headerLogo = document.getElementById('educore-logo');
+
+            if (sidebar.classList.contains('w-[15rem]')) {
+                // Collapse
+                sidebar.classList.remove('w-[15rem]');
+                sidebar.classList.add('sidebar-collapsed');
+                toggleIcon.setAttribute('data-lucide', 'chevron-right');
+
+                // Header Changes for Collapsed State
+                if (hamburgerContainer) {
+                    hamburgerContainer.classList.remove('lg:hidden');
+                    hamburgerContainer.classList.add('border-r', 'border-gray-200', 'pr-4', 'sm:pr-6');
+                }
+                if (headerLogo) {
+                    headerLogo.classList.remove('border-r', 'border-gray-200', 'pr-4', 'sm:pr-6');
+                }
+            } else {
+                // Expand
+                sidebar.classList.remove('sidebar-collapsed');
+                sidebar.classList.add('w-[15rem]');
+                toggleIcon.setAttribute('data-lucide', 'chevron-left');
+
+                // Header Changes for Expanded State
+                if (hamburgerContainer) {
+                    hamburgerContainer.classList.add('lg:hidden');
+                    hamburgerContainer.classList.remove('border-r', 'border-gray-200', 'pr-4', 'sm:pr-6');
+                }
+                if (headerLogo) {
+                    headerLogo.classList.add('border-r', 'border-gray-200', 'pr-4', 'sm:pr-6');
+                }
+            }
+            lucide.createIcons(); // Re-render the icon
+        }
+
+        // Toggle Mobile Sidebar Visibility
+        function toggleMobileSidebar() {
+            if (sidebar.classList.contains('-translate-x-full')) {
+                // Open Sidebar
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden'); // Prevent body scroll
+            } else {
+                // Close Sidebar
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
+
+        // Active State Styling
+        // Active design specs: A white background with blue text or a distinct glassmorphism effect.
+        const activeClasses = ['!bg-white/20', 'backdrop-blur-md', '!text-white', 'shadow-inner', 'border', 'border-white/10'];
+        const defaultClasses = ['text-white', 'hover:bg-white/[0.08]', 'hover:text-white', 'hover:translate-x-1.5', 'hover:brightness-110'];
+
+        function setActiveElement(element) {
+             const links = document.querySelectorAll('.menu-link');
+             links.forEach(link => {
+                 // Remove active classes
+                 activeClasses.forEach(cls => link.classList.remove(cls));
+                 // Restore default classes
+                 defaultClasses.forEach(cls => link.classList.add(cls));
+                 
+                 // Make icons default color
+                 const icon = link.querySelector('i');
+                 if(icon) {
+                     icon.classList.remove('text-white');
+                 }
+             });
+
+             // Apply active to clicked
+             defaultClasses.forEach(cls => element.classList.remove(cls));
+             activeClasses.forEach(cls => element.classList.add(cls));
+             
+             const svg = element.querySelector('i');
+             if(svg) {
+                 svg.classList.add('text-white');
+             }
+        }
+
+        function setActive(element) {
+            // Only update via JS if it's an actual click within the app logic (prevent default # jumping for preview)
+            event.preventDefault(); 
+            setActiveElement(element);
+
+            // On mobile, automatically close the sidebar after selection
+            if (window.innerWidth < 1024) {
+                toggleMobileSidebar();
+            }
+        }
+
+        function toggleDropdown(button) {
+            // Prevent setActive from running if they just want to open the dropdown
+            event.preventDefault();
+            
+            const dropdownMenu = button.nextElementSibling;
+            const chevron = button.querySelector('.chevron-icon');
+            
+            if (dropdownMenu.classList.contains('hidden')) {
+                dropdownMenu.classList.remove('hidden');
+                dropdownMenu.classList.add('flex');
+                if (chevron) chevron.classList.add('rotate-180');
+            } else {
+                dropdownMenu.classList.add('hidden');
+                dropdownMenu.classList.remove('flex');
+                if (chevron) chevron.classList.remove('rotate-180');
+            }
+        }
+
+        // Initial setup for the first item
+        document.addEventListener('DOMContentLoaded', () => {
+             const dashboardItem = document.querySelector('.active-nav');
+             if(dashboardItem) {
+                 setActiveElement(dashboardItem);
+             }
+        });
+
+    </script>
+    </div>
+</body>
+</html>

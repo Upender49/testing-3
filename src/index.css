@@ -233,3 +233,6 @@
   /* This custom class will pause the animation when hovered */
   .pause-on-hover:hover { animation-play-state: paused; }
 }
+@theme {
+  --breakpoint-nav: 900px;
+}
