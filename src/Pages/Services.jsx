@@ -1,6 +1,6 @@
 import  { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
-import ServicesBackground from '../components/ServicesBackground';
+import BackgroundEffects from '../components/BackgroundEffects';
 
 export  function Services() {
   useEffect(() => {
@@ -29,7 +29,7 @@ export  function Services() {
     <div className="mesh-bg font-body text-slate-600 antialiased selection:bg-brand-100 selection:text-brand-900 relative min-h-screen">
       
       {/* 1. RENDER SEGREGATED BACKGROUND COMPONENT */}
-      <ServicesBackground />
+      <BackgroundEffects />
 
       {/* ═══════════════════════════════ HERO SECTION ═══════════════════════════════ */}
       <section className="relative pt-36 pb-28 dot-grid overflow-hidden">
@@ -66,7 +66,7 @@ export  function Services() {
               
               <div className="relative bg-slate-900 rounded-[2.5rem] p-3 shadow-2xl animate-float overflow-hidden border-[6px] border-slate-800">
                 <div className="relative aspect-16/10 overflow-hidden rounded-4xl bg-slate-100">
-                  <img src="../images/login2.jpg" className="w-full h-full object-cover hover:grayscale-0 transition-all duration-700" alt="Campus Life" />
+                  <img src="login2.jpg" className="w-full h-full object-cover hover:grayscale-0 transition-all duration-700" alt="Campus Life" />
                   <div className="absolute inset-0 bg-linear-to-t from-slate-900/60 via-transparent to-transparent"></div>
                   
                   <div className="absolute inset-x-4 top-4 flex justify-between items-center">
@@ -170,7 +170,7 @@ export  function Services() {
               <div className="p-8">
                 <div className="flex items-center justify-between mb-6">
                   <div className="w-20 h-20 rounded-2xl icon-wrap overflow-hidden p-2">
-                    <img src="../images/student.jpg" alt="Student Icon" className="w-full h-full" />
+                <img src="services_student.png" alt="Student Icon" className="w-full h-full " />
                   </div>
                   <span className="role-student text-[10px] font-heading font-bold px-3 py-1 rounded-full uppercase tracking-wider">For Students</span>
                 </div>
@@ -192,7 +192,7 @@ export  function Services() {
               <div className="p-8">
                 <div className="flex items-center justify-between mb-6">
                   <div className="w-16 h-16 rounded-2xl icon-wrap overflow-hidden p-2">
-                    <img src="../images/faculty.png" alt="Faculty Icon" className="w-full h-full object-contain" />
+                <img src="services_faculty.jpg" alt="Faculty Icon" className="w-full h-full object-contain" />
                   </div>
                   <span className="role-faculty text-[10px] font-heading font-bold px-3 py-1 rounded-full uppercase tracking-wider">For Faculty</span>
                 </div>
@@ -214,7 +214,7 @@ export  function Services() {
               <div className="p-8">
                 <div className="flex items-center justify-between mb-6">
                   <div className="w-16 h-16 rounded-2xl icon-wrap overflow-hidden p-2">
-                    <img src="../images/admin.png" alt="Admin Icon" className="w-full h-full object-contain" />
+                <img src="services_admin.png" alt="Admin Icon" className="w-full h-full object-contain" />
                   </div>
                   <span className="role-admin text-[10px] font-heading font-bold px-3 py-1 rounded-full uppercase tracking-wider">For Administrators</span>
                 </div>
@@ -250,7 +250,7 @@ export  function Services() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-emerald-50 to-transparent rounded-bl-full pointer-events-none"></div>
               <div className="flex flex-col md:flex-row gap-6 items-center relative z-10">
                 <div className="w-32 h-32 rounded-3xl bg-slate-50/80 border border-slate-100 shadow-sm shadow-brand-100/20 overflow-hidden shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <img src="../images/attendance_svc_1772303556216.png" alt="Attendance System" className="w-[85%] h-[85%] object-contain" />
+              <img src="services_attendance.jpeg" alt="Attendance System" className="w-full h-full" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">Smart Attendance System</h3>
@@ -269,7 +269,7 @@ export  function Services() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-violet-50 to-transparent rounded-bl-full pointer-events-none"></div>
               <div className="flex flex-col md:flex-row gap-6 items-center relative z-10">
                 <div className="w-32 h-32 rounded-3xl bg-slate-50/80 border border-slate-100 shadow-sm shadow-brand-100/20 overflow-hidden shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <img src="../images/exams_svc_1772303644185.png" alt="Examination & Results" className="w-[85%] h-[85%] object-contain" />
+              <img src="services_exams.jpg" alt="Examination & Results" className="w-full h-full" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">Examination & Results</h3>
@@ -288,7 +288,7 @@ export  function Services() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-amber-50 to-transparent rounded-bl-full pointer-events-none"></div>
               <div className="flex flex-col md:flex-row gap-6 items-center relative z-10">
                 <div className="w-32 h-32 rounded-3xl bg-slate-50/80 border border-slate-100 shadow-sm shadow-brand-100/20 overflow-hidden shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <img src="../images/notifications_svc_1772303674207.png" alt="Circulars & Notifications" className="w-[85%] h-[85%] object-contain" />
+              <img src="services_circulars.webp" alt="Circulars & Notifications" className="w-full h-full" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">Circulars & Notifications</h3>
@@ -307,7 +307,7 @@ export  function Services() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-brand-50 to-transparent rounded-bl-full pointer-events-none"></div>
               <div className="flex flex-col md:flex-row gap-6 items-center relative z-10">
                 <div className="w-32 h-32 rounded-3xl bg-slate-50/80 border border-slate-100 shadow-sm shadow-brand-100/20 overflow-hidden shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <img src="../images/chat_svc_1772303896375.png" alt="Real-Time Communication" className="w-[85%] h-[85%] object-contain" />
+              <img src="services_realtime.webp" alt="Real-Time Communication" className="w-full h-full" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">Real-Time Communication</h3>
@@ -326,7 +326,7 @@ export  function Services() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-rose-50 to-transparent rounded-bl-full pointer-events-none"></div>
               <div className="flex flex-col md:flex-row gap-6 items-center relative z-10">
                 <div className="w-32 h-32 rounded-3xl bg-slate-50/80 border border-slate-100 shadow-sm shadow-brand-100/20 overflow-hidden shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <img src="../images/forum_svc_1772303916545.png" alt="Student Discussion Forum" className="w-[85%] h-[85%] object-contain" />
+              <img src="services_discussion.jpg" alt="Student Discussion Forum" className="w-full h-full" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">Student Discussion Forum</h3>
@@ -345,7 +345,7 @@ export  function Services() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-teal-50 to-transparent rounded-bl-full pointer-events-none"></div>
               <div className="flex flex-col md:flex-row gap-6 items-center relative z-10">
                 <div className="w-32 h-32 rounded-3xl bg-slate-50/80 border border-slate-100 shadow-sm shadow-brand-100/20 overflow-hidden shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
-                  <img src="../images/documents_svc_1772303965745.png" alt="Document Management" className="w-[85%] h-[85%] object-contain" />
+              <img src="services_file.webp" alt="Document Management" className="w-full h-full" />
                 </div>
                 <div className="flex-1">
                   <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">Document Management</h3>
@@ -382,7 +382,7 @@ export  function Services() {
               <div className="space-y-4 mb-10">
                 <div className="flex gap-4 items-start">
                   <div className="w-11 h-11 rounded-xl icon-wrap flex items-center justify-center shrink-0 mt-0.5 overflow-hidden p-1.5">
-                    <img src="../images/department.png" alt="Dept Icon" className="w-full h-full object-contain" />
+                <img src="services_department.png" alt="Dept Icon" className="w-full h-full object-contain" />
                   </div>
                   <div>
                     <p className="font-heading font-semibold text-slate-900 text-sm">Faculty & Department Info</p>
@@ -391,7 +391,7 @@ export  function Services() {
                 </div>
                 <div className="flex gap-4 items-start">
                   <div className="w-11 h-11 rounded-xl icon-wrap flex items-center justify-center shrink-0 mt-0.5 overflow-hidden p-1.5">
-                    <img src="../images/exam.png" alt="Exam Icon" className="w-full h-full object-contain" />
+                <img src="services_examschedule.png" alt="Exam Icon" className="w-full h-full object-contain" />
                   </div>
                   <div>
                     <p className="font-heading font-semibold text-slate-900 text-sm">Exam Schedules & Timetables</p>
@@ -400,7 +400,7 @@ export  function Services() {
                 </div>
                 <div className="flex gap-4 items-start">
                   <div className="w-11 h-11 rounded-xl icon-wrap flex items-center justify-center shrink-0 mt-0.5 overflow-hidden p-1.5">
-                    <img src="../images/navigate.png" alt="Nav Icon" className="w-full h-full object-contain" />
+                <img src="services_navigate.png" alt="Nav Icon" className="w-full h-full object-contain" />
                   </div>
                   <div>
                     <p className="font-heading font-semibold text-slate-900 text-sm">Room & Campus Navigation</p>
@@ -409,7 +409,7 @@ export  function Services() {
                 </div>
                 <div className="flex gap-4 items-start">
                   <div className="w-11 h-11 rounded-xl icon-wrap flex items-center justify-center shrink-0 mt-0.5 overflow-hidden p-1.5">
-                    <img src="../images/circular.png" alt="Circular Icon" className="w-full h-full object-contain" />
+                <img src="services_rules.png" alt="Circular Icon" className="w-full h-full object-contain" />
                   </div>
                   <div>
                     <p className="font-heading font-semibold text-slate-900 text-sm">College Rules & Circulars</p>
@@ -429,7 +429,7 @@ export  function Services() {
                 {/* Chat header */}
                 <div className="bg-linear-to-r from-brand-600 to-brand-500 px-6 py-4 flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center overflow-hidden">
-                    <img src="../images/chatbot.png" alt="AI Icon" className="w-6 h-6 object-contain" />
+                <img src="services_chatbot.png" alt="AI Icon" className="w-6 h-6 object-contain" />
                   </div>
                   <div className="flex-1">
                     <p className="font-heading font-bold text-white text-sm">CampusIQ Assistant</p>

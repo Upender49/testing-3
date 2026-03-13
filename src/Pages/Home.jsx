@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import ScrollReveal from 'scrollreveal';
-import HomeBackground from '../components/HomeBackground';
+import BackgroundEffects  from '../components/BackgroundEffects';
 
 // Array for the dynamic feature carousel
 const features = [
   {
-    mainImg: '../images/erp_dashboard.png',
-    f1Img: '../images/chat_svc_1772303896375.png', f1L1: 'Live Module', f1L2: 'Secure Messaging',
-    f2Img: '../images/attendance_svc_1772303556216.png', f2L1: "Today's Avg", f2L2: '94.2%'
+    mainImg: 'home_chat.jpg',
+    f1Img: "services_realtime.webp", f1L1: 'Live Module', f1L2: 'Secure Messaging',
+    f2Img: "services_attendance.jpeg", f2L1: "Today's Avg", f2L2: '94.2%'
   },
   {
-    mainImg: '../images/exams_svc_1772303644185.png',
-    f1Img: '../images/exam.png', f1L1: 'Automated', f1L2: 'Exam Processing',
-    f2Img: '../images/doc.png', f2L1: 'Reports Gen.', f2L2: '1,204 DBs'
+    mainImg: 'home_exam.jpg',
+    f1Img: 'services_exams.jpg', f1L1: 'Automated', f1L2: 'Exam Processing',
+    f2Img: 'home_doc.png', f2L1: 'Reports Gen.', f2L2: '1,204 DBs'
   },
   {
-    mainImg: '../images/forum_svc_1772303916545.png',
-    f1Img: '../images/discussion.png', f1L1: 'Active', f1L2: 'Community Forum',
-    f2Img: '../images/student.jpg', f2L1: 'Users Online', f2L2: '342 Active'
+    mainImg: 'home_discussion.jpg',
+    f1Img: 'services_discussion.jpg', f1L1: 'Active', f1L2: 'Community Forum',
+    f2Img: 'home_student.jpg', f2L1: 'Users Online', f2L2: '342 Active'
   }
 ];
 
@@ -75,7 +75,7 @@ export function Home() {
       {/* ═══════════════════════════════ HERO SECTION ═══════════════════════════════ */}
       <main className="grow flex items-center relative overflow-hidden mt-8 md:mt-12 lg:mt-24 mb-16">
         
-        <HomeBackground />
+        <BackgroundEffects />
 
         <div className="p-10 relative w-full max-w-7xl mx-auto px-6 lg:px-10 z-10 grid lg:grid-cols-2 gap-16 items-center">
           

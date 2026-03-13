@@ -53,7 +53,7 @@ export function Colleges() {
                     }
                   });
                 }}
-                className="card bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group border border-slate-100"
+                className="card bg-white rounded-md overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer group border border-slate-100"
               >
                 {/* Card Top: Cover Image */}
                 <div className="relative h-28 bg-linear-to-br from-amber-100 to-orange-100 overflow-hidden flex items-center justify-center">
