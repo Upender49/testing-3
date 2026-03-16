@@ -163,6 +163,7 @@ export function StudentDashboard() {
                 {/* Sidebar */}
                 <StudentSidebar
                     isSidebarCollapsed={isSidebarCollapsed}
+                    setIsSidebarCollapsed={setIsSidebarCollapsed}
                     isSidebarOpen={isSidebarOpen}
                     setIsSidebarOpen={setIsSidebarOpen}
                     openDropdowns={openDropdowns}

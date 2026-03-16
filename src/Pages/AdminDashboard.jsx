@@ -108,6 +108,7 @@ export  function AdminDashboard() {
                 <AdminSidebar 
                     isSidebarOpen={isSidebarOpen}
                     isSidebarCollapsed={isSidebarCollapsed}
+                    setIsSidebarCollapsed={setIsSidebarCollapsed}
                     activeMenu={activeMenu}
                     adminData={adminData}
                     handleMenuSelection={handleMenuSelection}

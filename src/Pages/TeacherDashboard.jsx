@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { TeacherHeader } from "./TeacherHeader";
-import { TeacherSidebar } from "./TeacherSidebar";
+import { TeacherSidebar } from "./TeacherSideBar";
 
 export function TeacherDashboard() {
     // --- STATE MANAGEMENT ---
@@ -115,6 +115,7 @@ export function TeacherDashboard() {
                 <TeacherSidebar
                     isSidebarOpen={isSidebarOpen}
                     isSidebarCollapsed={isSidebarCollapsed}
+                    setIsSidebarCollapsed={setIsSidebarCollapsed}
                     activeMenu={activeMenu}
                     teacherData={teacherData}
                     handleMenuSelection={handleMenuSelection}
