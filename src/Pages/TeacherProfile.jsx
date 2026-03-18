@@ -3,12 +3,15 @@ import { Camera, Edit3, MessageSquareText, RotateCw, LogOut, ChevronDown } from 
 
 export function TeacherProfile() {
     
-    const [showPersonal, setShowPersonal] = useState(true);
-    const [showProfessional, setShowProfessional] = useState(true);
-    const [showContact, setShowContact] = useState(true);
-    const [showAddress, setShowAddress] = useState(true);
+    const defaultAccordionState = {
+        personal: true,
+        professional: true,
+        contact: true,
+        address: true
+    };
+    const [accordionState, setAccordionState] = useState(defaultAccordionState);
 
-    const [teacherdata, setTeacherData] = useState({
+    const defaultTeacherData = {
         "_id": "65f0a002c3d4e5f600000201",
         "first_name": "Dr. Amit",
         "last_name": "Sharma",
@@ -182,11 +185,29 @@ export function TeacherProfile() {
         "address_line_2": "Campus Road",
         "createdAt": "2023-01-01T09:00:00.000Z",
         "updatedAt": "2023-10-01T10:00:00.000Z"
-    });
+    };
+
+    const [teacherdata] = useState(defaultTeacherData);
 
     const formatDate = (isoString) => {
         return new Date(isoString).toISOString().split('T')[0];
     };
+
+    function togglePersonalSection() {
+        setAccordionState(prev => ({ ...prev, personal: !prev.personal }));
+    }
+
+    function toggleProfessionalSection() {
+        setAccordionState(prev => ({ ...prev, professional: !prev.professional }));
+    }
+
+    function toggleContactSection() {
+        setAccordionState(prev => ({ ...prev, contact: !prev.contact }));
+    }
+
+    function toggleAddressSection() {
+        setAccordionState(prev => ({ ...prev, address: !prev.address }));
+    }
 
     return (
         <div className="bg-[#f4f6fa] flex items-center justify-center min-h-screen p-4 sm:p-8 font-body">
@@ -235,7 +256,7 @@ export function TeacherProfile() {
                                     <button className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-white rounded-lg transition-all duration-300 group shadow-sm" title="Refresh">
                                         <RotateCw className="w-5 h-5 group-hover:rotate-180 duration-500" />
                                     </button>
-                                    <div className="w-[1px] h-6 bg-slate-200 mx-1"></div>
+                                    <div className="w-px h-6 bg-slate-200 mx-1"></div>
                                     <button className="w-10 h-10 flex items-center justify-center text-rose-500 hover:text-rose-600 hover:bg-white rounded-lg transition-all duration-300 group shadow-sm" title="Sign Out">
                                         <LogOut className="w-5 h-5 group-hover:translate-x-1" />
                                     </button>
@@ -260,13 +281,13 @@ export function TeacherProfile() {
 
                     {/* Personal Information Section */}
                     <section className="bg-slate-100/70 rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
-                        <button onClick={() => setShowPersonal(!showPersonal)} className="w-full flex items-center justify-between p-5 hover:bg-gray-50/80 transition-colors group">
+                        <button onClick={togglePersonalSection} className="w-full flex items-center justify-between p-5 hover:bg-gray-50/80 transition-colors group">
                             <div className="flex items-center gap-3">
                                 <h2 className="text-lg font-heading font-bold text-gray-800">Personal Information</h2>
                             </div>
-                            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${showPersonal ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${accordionState.personal ? 'rotate-180' : ''}`} />
                         </button>
-                        {showPersonal && (
+                        {accordionState.personal && (
                             <div className="transition-all duration-300">
                                 <div className="p-6 pt-0">
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -294,13 +315,13 @@ export function TeacherProfile() {
 
                     {/* Professional Details Section */}
                     <section className="bg-slate-100/70 rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
-                        <button onClick={() => setShowProfessional(!showProfessional)} className="w-full flex items-center justify-between p-5 hover:bg-gray-50/80 transition-colors group">
+                        <button onClick={toggleProfessionalSection} className="w-full flex items-center justify-between p-5 hover:bg-gray-50/80 transition-colors group">
                             <div className="flex items-center gap-3">
                                 <h2 className="text-lg font-heading font-bold text-gray-800">Professional Details</h2>
                             </div>
-                            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${showProfessional ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${accordionState.professional ? 'rotate-180' : ''}`} />
                         </button>
-                        {showProfessional && (
+                        {accordionState.professional && (
                             <div className="transition-all duration-300">
                                 <div className="p-6 pt-0">
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -316,7 +337,6 @@ export function TeacherProfile() {
                                             <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1 opacity-60">Designation</p>
                                             <p className="text-gray-900 font-semibold text-sm uppercase leading-none">{teacherdata.position}</p>
                                         </div>
-                                        {/* Note: The following items are not in the provided schema, so defaults are kept for design consistency */}
                                         <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200/60 hover:shadow-md transition-shadow duration-300">
                                             <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest mb-1 opacity-60">Qualification</p>
                                             <p className="text-gray-900 font-semibold text-sm uppercase leading-none">N/A (Update in DB)</p>
@@ -337,13 +357,13 @@ export function TeacherProfile() {
 
                     {/* Contact Information Section */}
                     <section className="bg-slate-100/70 rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
-                        <button onClick={() => setShowContact(!showContact)} className="w-full flex items-center justify-between p-5 hover:bg-gray-50/80 transition-colors group">
+                        <button onClick={toggleContactSection} className="w-full flex items-center justify-between p-5 hover:bg-gray-50/80 transition-colors group">
                             <div className="flex items-center gap-3">
                                 <h2 className="text-lg font-heading font-bold text-gray-800">Contact Details</h2>
                             </div>
-                            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${showContact ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${accordionState.contact ? 'rotate-180' : ''}`} />
                         </button>
-                        {showContact && (
+                        {accordionState.contact && (
                             <div className="transition-all duration-300">
                                 <div className="p-6 pt-0">
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -367,13 +387,13 @@ export function TeacherProfile() {
 
                     {/* Address & Office Section */}
                     <section className="bg-slate-100/70 rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300">
-                        <button onClick={() => setShowAddress(!showAddress)} className="w-full flex items-center justify-between p-5 hover:bg-gray-50/80 transition-colors group">
+                        <button onClick={toggleAddressSection} className="w-full flex items-center justify-between p-5 hover:bg-gray-50/80 transition-colors group">
                             <div className="flex items-center gap-3">
                                 <h2 className="text-lg font-heading font-bold text-gray-800">Address & Office Location</h2>
                             </div>
-                            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${showAddress ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-300 ${accordionState.address ? 'rotate-180' : ''}`} />
                         </button>
-                        {showAddress && (
+                        {accordionState.address && (
                             <div className="transition-all duration-300">
                                 <div className="p-6 pt-0">
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

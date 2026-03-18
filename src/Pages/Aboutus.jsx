@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
 import BackgroundEffects from '../components/BackgroundEffects';
  
-export  function AboutUs() {
+export function AboutUs() {
   useEffect(() => {
-    // Initialize ScrollReveal safely inside the hook 
     const sr = ScrollReveal({
       origin: 'bottom',
       distance: '30px',
@@ -19,15 +18,13 @@ export  function AboutUs() {
     sr.reveal('.reveal-delay-2', { delay: 450 });
     sr.reveal('.reveal-delay-3', { delay: 600 });
     
-    // Cleanup on component unmount
     return () => sr.destroy();
   }, []);
 
   return (
     <div className="mesh-bg font-body text-slate-600 antialiased selection:bg-brand-100 selection:text-brand-900 relative min-h-screen">
       
-      <BackgroundEffects
-       />
+      <BackgroundEffects />
 
       <section className="relative pt-32 pb-20 dot-grid overflow-hidden border-b border-slate-100">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-brand-100/30 rounded-full blur-3xl pointer-events-none"></div>
@@ -40,7 +37,6 @@ export  function AboutUs() {
         </div>
       </section>
 
-      {/* ═══════ SECTION 1: OUR VISION ═══════ */}
       <section className="py-16 relative">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid md:grid-cols-3 gap-8">
@@ -77,7 +73,6 @@ export  function AboutUs() {
         </div>
       </section>
 
-      {/* ═══════ SECTION 2: THE INTEGRATED SOLUTION ═══════ */}
       <section className="py-20 border-y border-slate-100 relative overflow-hidden">
         <div className="absolute -right-20 top-20 w-96 h-96 bg-brand-100 rounded-full blur-3xl opacity-50 mix-blend-multiply pointer-events-none"></div>
         <div className="max-w-7xl mx-auto px-6 lg:px-10 relative z-10">
@@ -124,7 +119,6 @@ export  function AboutUs() {
         </div>
       </section>
 
-      {/* ═══════ SECTION 3: OUR STORY ═══════ */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -162,7 +156,6 @@ export  function AboutUs() {
         </div>
       </section>
 
-      {/* ═══════ SECTION 4: OUR VALUES ═══════ */}
       <section className="py-20 bg-slate-50 border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <div className="text-center mb-14 reveal">

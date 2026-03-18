@@ -4,39 +4,34 @@ import { StudentHeader } from "./StudentHeader";
 import { StudentSidebar } from "./StudentSidebar";
 
 export function StudentDashboard() {
-    // --- STATE MANAGEMENT ---
-    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [openDropdowns, setOpenDropdowns] = useState({
+    // 1. Initialize the UI state dynamically to calculate window width on load.
+    // This fixes the React useEffect warning by setting the correct state initially.
+    const [uiState, setUiState] = useState(() => {
+        const width = typeof window !== 'undefined' ? window.innerWidth : 1024;
+        return {
+            isSidebarCollapsed: width >= 640 && width < 768,
+            isSidebarOpen: false,
+            activeMenu: "dashboard"
+        };
+    });
+
+    const defaultDropdowns = {
         profile: true,
         academics: true,
         announcements: true,
         services: true,
         requests: true
-    });
-    const [activeMenu, setActiveMenu] = useState("dashboard");
-    const [tooltip, setTooltip] = useState({ visible: false, text: "", top: 0, left: 0 });
+    };
 
-    // Responsive Behavior
-    useEffect(() => {
-        const handleResize = () => {
-            const width = window.innerWidth;
-            if (width < 640) {
-                setIsSidebarOpen(false);
-                setIsSidebarCollapsed(false);
-            } else if (width < 768) {
-                setIsSidebarCollapsed(true);
-            } else {
-                setIsSidebarCollapsed(false);
-            }
-        };
-        window.addEventListener('resize', handleResize);
-        handleResize();
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    const defaultTooltipState = { 
+        visible: false, 
+        text: "", 
+        top: 0, 
+        left: 0, 
+        position: "right" 
+    };
 
-    // User Data State
-    const [userdata] = useState({
+    const defaultUserData = {
         "_id": "65f0a001c3d4e5f600000101",
         "first_name": "Aarav",
         "last_name": "Patel",
@@ -91,26 +86,66 @@ export function StudentDashboard() {
         "address_line_2": "Near Bridge",
         "createdAt": "2023-08-01T10:00:00.000Z",
         "updatedAt": "2023-09-15T10:00:00.000Z"
-    });
+    };
 
-    // --- HELPER FUNCTIONS ---
-    const handleDropdownClick = (dropdownName) => {
+    const [openDropdowns, setOpenDropdowns] = useState(defaultDropdowns);
+    const [tooltip, setTooltip] = useState(defaultTooltipState);
+    const [userdata] = useState(defaultUserData);
+
+    function handleResize() {
+        const width = window.innerWidth;
+        if (width < 640) {
+            // Added simple bailout checks so it doesn't constantly re-render while scrolling on mobile
+            setUiState(prev => prev.isSidebarCollapsed || prev.isSidebarOpen ? { ...prev, isSidebarOpen: false, isSidebarCollapsed: false } : prev);
+        } else if (width < 768) {
+            setUiState(prev => !prev.isSidebarCollapsed ? { ...prev, isSidebarCollapsed: true } : prev);
+        } else {
+            setUiState(prev => prev.isSidebarCollapsed ? { ...prev, isSidebarCollapsed: false } : prev);
+        }
+    }
+
+    // 2. Removed the synchronous `handleResize()` call here to fix the cascading render error
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    function handleDropdownClick(dropdownName) {
         setOpenDropdowns(prev => ({
             ...prev,
             [dropdownName]: !prev[dropdownName]
         }));
-    };
+    }
 
-    const handleMenuSelection = (menuId) => {
-        setActiveMenu(menuId);
+    function handleMenuSelection(menuId) {
+        setUiState(prev => ({
+            ...prev,
+            activeMenu: menuId,
+            isSidebarOpen: window.innerWidth < 640 ? false : prev.isSidebarOpen
+        }));
+    }
+
+    function handleToggleSidebar() {
         if (window.innerWidth < 640) {
-            setIsSidebarOpen(false);
+            setUiState(prev => ({ ...prev, isSidebarOpen: !prev.isSidebarOpen }));
+        } else {
+            setUiState(prev => ({ ...prev, isSidebarCollapsed: !prev.isSidebarCollapsed }));
         }
-    };
+    }
 
-    const handleMouseEnter = (e, text, position = "right") => {
+    function expandSidebar() {
+        if (uiState.isSidebarCollapsed) {
+            setUiState(prev => ({ ...prev, isSidebarCollapsed: false }));
+        }
+    }
+
+    function handleMobileOverlayClick() {
+        setUiState(prev => ({ ...prev, isSidebarOpen: false }));
+    }
+
+    function handleMouseEnter(e, text, position = "right") {
         const isHeaderItem = e.currentTarget.closest('header');
-        if (!isSidebarCollapsed && !isHeaderItem) return;
+        if (!uiState.isSidebarCollapsed && !isHeaderItem) return;
 
         const rect = e.currentTarget.getBoundingClientRect();
 
@@ -131,44 +166,40 @@ export function StudentDashboard() {
                 position: "right"
             });
         }
-    };
+    }
 
-    const handleMouseLeave = () => {
+    function handleMouseLeave() {
         setTooltip(prev => ({ ...prev, visible: false }));
-    };
+    }
 
-    const getSubMenuLinkClass = (menuId) => {
+    function getSubMenuLinkClass(menuId) {
         const baseClass = "menu-link flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ease-out hover:bg-white/[0.08] hover:translate-x-1.5 hover:brightness-110 text-white group";
-        const activeClass = activeMenu === menuId ? "!bg-white/20 backdrop-blur-md !text-white shadow-inner border border-white/10 brightness-110 translate-x-1" : "";
+        const activeClass = uiState.activeMenu === menuId ? "!bg-white/20 backdrop-blur-md !text-white shadow-inner border border-white/10 brightness-110 translate-x-1" : "";
         return `${baseClass} ${activeClass}`;
-    };
-
-    const handleToggleSidebar = () => {
-        if (window.innerWidth < 640) setIsSidebarOpen(!isSidebarOpen);
-        else setIsSidebarCollapsed(!isSidebarCollapsed);
-    };
+    }
 
     return (
         <div className="bg-gray-50 flex flex-col h-dvh overflow-hidden font-body">
-            {/* Header */}
             <StudentHeader
                 userdata={userdata}
-                onToggleSidebar={handleToggleSidebar}
+                onToggleSidebar={handleToggleSidebar} // 3. BUG FIX: Passed as 'onToggleSidebar' so the Header can read it!
                 handleMouseEnter={handleMouseEnter}
                 handleMouseLeave={handleMouseLeave}
             />
 
-            {/* App Body */}
             <div className="flex flex-1 overflow-hidden relative">
-                {/* Sidebar */}
+                {uiState.isSidebarOpen && (
+                    <div 
+                        className="fixed inset-0 bg-black/50 z-20 sm:hidden" 
+                        onClick={handleMobileOverlayClick}
+                    ></div>
+                )}
+
                 <StudentSidebar
-                    isSidebarCollapsed={isSidebarCollapsed}
-                    setIsSidebarCollapsed={setIsSidebarCollapsed}
-                    isSidebarOpen={isSidebarOpen}
-                    setIsSidebarOpen={setIsSidebarOpen}
+                    uiState={uiState}
+                    expandSidebar={expandSidebar}
                     openDropdowns={openDropdowns}
                     handleDropdownClick={handleDropdownClick}
-                    activeMenu={activeMenu}
                     handleMenuSelection={handleMenuSelection}
                     userdata={userdata}
                     handleMouseEnter={handleMouseEnter}
@@ -176,16 +207,14 @@ export function StudentDashboard() {
                     getSubMenuLinkClass={getSubMenuLinkClass}
                 />
 
-                {/* Main Content Area */}
                 <main className="flex-1 flex flex-col min-w-0 transition-all duration-300 relative bg-gray-50">
                     <div className="p-8 flex-1 overflow-y-auto w-full h-full flex flex-col items-center justify-center text-gray-400">
                         <p className="font-bold text-xl">Main Dashboard Content</p>
-                        <p className="mt-2 text-sm text-gray-500">Currently viewing: <span className="text-blue-500 font-semibold">{activeMenu}</span></p>
+                        <p className="mt-2 text-sm text-gray-500">Currently viewing: <span className="text-blue-500 font-semibold">{uiState.activeMenu}</span></p>
                     </div>
                 </main>
             </div>
 
-            {/* Portal Tooltip */}
             {tooltip.visible && createPortal(
                 <div
                     style={{
@@ -193,7 +222,7 @@ export function StudentDashboard() {
                         left: tooltip.position === "bottom" ? tooltip.left : undefined,
                         marginLeft: tooltip.position === "bottom" ? 0 : "6px"
                     }}
-                    className={`fixed px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg transition-all duration-200 whitespace-nowrap z-[1000] shadow-2xl pointer-events-none border border-white/10 flex items-center ${tooltip.position === "bottom" ? "-translate-x-1/2" : "left-20 -translate-y-1/2"}`}
+                    className={`fixed px-3 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg transition-all duration-200 whitespace-nowrap z-1000 shadow-2xl pointer-events-none border border-white/10 flex items-center ${tooltip.position === "bottom" ? "-translate-x-1/2" : "left-20 -translate-y-1/2"}`}
                 >
                     {tooltip.text}
                     <div className={`absolute border-[6px] border-transparent ${tooltip.position === "bottom" ? "bottom-full left-1/2 -translate-x-1/2 border-b-slate-900" : "right-full top-1/2 -translate-y-1/2 border-r-slate-900"}`}></div>

@@ -1,6 +1,24 @@
 import { Menu, MessageSquare, Bell } from "lucide-react";
 
 export function StudentHeader({ userdata, onToggleSidebar, handleMouseEnter, handleMouseLeave }) {
+    
+    // --- HANDLERS ---
+    function handleImageError(e) {
+        e.currentTarget.src = 'https://ui-avatars.com/api/?name=CVR&background=0D8ABC&color=fff';
+    }
+
+    function onMessagesEnter(e) {
+        handleMouseEnter(e, "Messages", "bottom");
+    }
+
+    function onNotificationsEnter(e) {
+        handleMouseEnter(e, "Notifications", "bottom");
+    }
+
+    function onProfileEnter(e) {
+        handleMouseEnter(e, "User Settings", "bottom");
+    }
+
     return (
         <header className="bg-white shadow-sm h-16 flex items-center justify-between px-4 lg:px-6 shrink-0 z-40 border-b border-gray-200">
             {/* Left Side: Logos and Toggle */}
@@ -28,7 +46,12 @@ export function StudentHeader({ userdata, onToggleSidebar, handleMouseEnter, han
                 {/* College Logo and Name */}
                 <div id="college-info" className="flex items-center gap-3 pl-2 sm:pl-0 group relative">
                     <div className="w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden shrink-0">
-                        <img src="cvr_logo.png" alt="CVR" onError={(e) => e.currentTarget.src = 'https://ui-avatars.com/api/?name=CVR&background=0D8ABC&color=fff'} className="w-full h-full object-contain p-1" />
+                        <img 
+                            src="cvr_logo.png" 
+                            alt="CVR" 
+                            onError={handleImageError} 
+                            className="w-full h-full object-contain p-1" 
+                        />
                     </div>
                     <span className="font-heading font-bold text-[#1130F8] tracking-wide text-sm sm:text-lg uppercase">CVR COLLEGE of engineering</span>
                 </div>
@@ -39,7 +62,7 @@ export function StudentHeader({ userdata, onToggleSidebar, handleMouseEnter, han
                 {/* Messages */}
                 <div className="group relative">
                     <button
-                        onMouseEnter={(e) => handleMouseEnter(e, "Messages", "bottom")}
+                        onMouseEnter={onMessagesEnter}
                         onMouseLeave={handleMouseLeave}
                         className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors hidden sm:block"
                     >
@@ -51,7 +74,7 @@ export function StudentHeader({ userdata, onToggleSidebar, handleMouseEnter, han
                 {/* Notifications */}
                 <div className="group relative">
                     <button
-                        onMouseEnter={(e) => handleMouseEnter(e, "Notifications", "bottom")}
+                        onMouseEnter={onNotificationsEnter}
                         onMouseLeave={handleMouseLeave}
                         className="relative p-2 text-gray-500 hover:bg-gray-100 rounded-full transition-colors"
                     >
@@ -63,7 +86,7 @@ export function StudentHeader({ userdata, onToggleSidebar, handleMouseEnter, han
                 {/* User Profile Thumbnail */}
                 <div className="group relative">
                     <div
-                        onMouseEnter={(e) => handleMouseEnter(e, "User Settings", "bottom")}
+                        onMouseEnter={onProfileEnter}
                         onMouseLeave={handleMouseLeave}
                         className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-blue-100 overflow-hidden cursor-pointer hover:border-blue-300 transition-colors shrink-0 ml-1 sm:ml-2"
                     >

@@ -10,13 +10,13 @@ export function Login() {
   const location = useLocation();
   const navigate = useNavigate();
   const { name, image } = location.state || {};
-  
+
   const defaultUser = {
     email: "",
     password: "",
     remember: false,
   };
-  
+
   const defaultFilter = {
     loading: false,
     eyeStatus: false,
@@ -25,7 +25,7 @@ export function Login() {
       status: false,
     },
   };
-  
+
   const [user, setUser] = useState(defaultUser);
   const [filter, setFilter] = useState(defaultFilter);
 
@@ -74,7 +74,7 @@ export function Login() {
 
   function handleFormSubmit(e) {
     e.preventDefault();
-    
+
     setFilter({
       ...filter,
       loading: true,
@@ -110,23 +110,20 @@ export function Login() {
 
   return (
     <div className="font-body text-slate-600 min-h-screen bg-linear-to-br from-brand-600/80 via-white to-brand-600/20 selection:bg-brand-100 selection:text-brand-900 antialiased">
-      
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-125 h-125 bg-brand-100/30 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-125 h-125 bg-brand-200/20 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 flex flex-col lg:flex-row min-h-screen items-center justify-center lg:justify-end overflow-hidden p-6 md:p-12 lg:p-0 lg:gap-x-20 lg:pr-12 xl:pr-24">
-        
         <div className="relative hidden lg:flex flex-1 min-w-0 items-center justify-center">
           <div className="absolute w-[250%] h-62.5 bg-linear-to-br from-transparent via-brand-600/40 to-transparent blur-2xl opacity-40 animate-soft-light pointer-events-none"></div>
-          <div className="w-full flex items-center max-w-3xl py-3 h-full min-h-[720px]">
+          <div className="w-full flex items-center max-w-3xl py-3 h-full min-h-180">
             <Lottie animationData={animationLogin} loop={true} />
           </div>
         </div>
 
         <div className="relative flex flex-col content-center justify-center w-full max-w-md shrink-0">
-          
           <div className="mb-10 text-center lg:text-left">
             {image && (
               <img
@@ -135,7 +132,7 @@ export function Login() {
                 className="w-20 h-20 object-contain mx-auto lg:mx-0 mb-4 rounded-xl border border-white shadow-sm"
               />
             )}
-            
+
             <h1 className="relative inline-block overflow-hidden font-heading font-bold text-3xl text-blue-700 mb-2.5 pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.75 after:bg-linear-to-br after:from-transparent after:via-[#1957dd] after:to-transparent after:animate-underline-move">
               Welcome Back {name ? `to ${name}` : ""}
             </h1>
@@ -153,9 +150,11 @@ export function Login() {
           </div>
 
           <form onSubmit={handleFormSubmit} className="space-y-6">
-            
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5" htmlFor="email">
+              <label
+                className="block text-sm font-semibold text-slate-700 mb-1.5"
+                htmlFor="email"
+              >
                 Email Address
               </label>
               <input
@@ -171,7 +170,10 @@ export function Login() {
 
             <div>
               <div className="flex justify-between mb-1.5">
-                <label className="text-sm font-semibold text-slate-700" htmlFor="password">
+                <label
+                  className="text-sm font-semibold text-slate-700"
+                  htmlFor="password"
+                >
                   Password
                 </label>
               </div>
@@ -208,7 +210,10 @@ export function Login() {
                   Remember me
                 </span>
               </label>
-              <a href="#" className="text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors">
+              <a
+                href="#"
+                className="text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors"
+              >
                 Forgot Password?
               </a>
             </div>
@@ -225,13 +230,22 @@ export function Login() {
               ) : (
                 <>
                   <span>Get OTP</span>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                    />
                   </svg>
                 </>
               )}
             </button>
-
           </form>
         </div>
       </div>

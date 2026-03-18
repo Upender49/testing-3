@@ -13,11 +13,15 @@ import { TeacherProfile } from "./Pages/TeacherProfile";
 import { AdminProfile } from "./Pages/AdminProfile";
 import { Assignments } from "./Pages/Assignments";
 import { StudentSidebar } from "./Pages/StudentSidebar";
-import { TeacherSidebar } from "./Pages/TeacherSidebar";
-import { AdminSidebar } from "./Pages/AdminSidebar";
+import { TeacherSidebar } from "./Pages/TeacherSideBar";
+import { AdminSidebar } from "./Pages/AdminSideBar";
 import { StudentDashboard } from "./Pages/StudentDashboard";
 import { TeacherDashboard } from "./Pages/TeacherDashboard";
 import {AdminDashboard} from "./Pages/AdminDashboard";
+import { EventRegistration } from "./Pages/EventRegistration";
+import { AssignStudents} from "./Pages/AssignStudents";
+import { CreateAssignment } from "./Pages/CreateAssignment";
+import { TeacherAssignments } from "./Pages/TeacherAssignments";
 function App() {
   const router = createBrowserRouter([
     {
@@ -82,6 +86,18 @@ function App() {
     },{
       path : '/admindashboard',
       element : <AdminDashboard/>
+    },{
+      path : '/eventregistration',
+      element : <EventRegistration/>
+    },{
+      path : '/assignstudents',
+      element : <AssignStudents/>
+    },{
+      path : '/createassignment',
+      element : <CreateAssignment/>
+    },{
+      path : '/teacherassignments',
+      element : <TeacherAssignments/>
     }
   ])
   return (

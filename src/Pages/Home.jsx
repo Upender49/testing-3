@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ScrollReveal from 'scrollreveal';
-import BackgroundEffects  from '../components/BackgroundEffects';
+import BackgroundEffects from '../components/BackgroundEffects';
 
-// Array for the dynamic feature carousel
 const features = [
   {
     mainImg: 'home_chat.jpg',
@@ -38,8 +37,12 @@ const logos = [
 ];
 
 export function Home() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFading, setIsFading] = useState(false);
+  const defaultCarouselState = {
+    currentIndex: 0,
+    isFading: false
+  };
+
+  const [carouselState, setCarouselState] = useState(defaultCarouselState);
 
   useEffect(() => {
     const sr = ScrollReveal({
@@ -52,14 +55,19 @@ export function Home() {
     sr.reveal('.reveal');
     sr.reveal('.reveal-delay-2', { delay: 300 });
 
-    const interval = setInterval(() => {
-      setIsFading(true);
-      setTimeout(() => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % features.length);
-        setIsFading(false); 
-      }, 500); 
-      
-    }, 5000);
+    function completeTransition() {
+      setCarouselState(prev => ({
+        currentIndex: (prev.currentIndex + 1) % features.length,
+        isFading: false
+      }));
+    }
+
+    function triggerFade() {
+      setCarouselState(prev => ({ ...prev, isFading: true }));
+      setTimeout(completeTransition, 500);
+    }
+
+    const interval = setInterval(triggerFade, 5000);
 
     return () => {
       sr.destroy();
@@ -67,12 +75,11 @@ export function Home() {
     };
   }, []);
 
-  const currentFeature = features[currentIndex];
+  const currentFeature = features[carouselState.currentIndex];
 
   return (
     <div className="bg-slate-50 font-body text-slate-600 antialiased selection:bg-brand-100 selection:text-brand-900 flex flex-col min-h-screen">
       
-      {/* ═══════════════════════════════ HERO SECTION ═══════════════════════════════ */}
       <main className="grow flex items-center relative overflow-hidden mt-8 md:mt-12 lg:mt-24 mb-16">
         
         <BackgroundEffects />
@@ -110,7 +117,6 @@ export function Home() {
             </div>
           </div>
 
-          {/* Right: Dynamic Feature Carousel */}
           <div className="relative hidden lg:block reveal reveal-delay-2 group" id="hero-feature-container">
             <div className="absolute inset-0 bg-linear-to-tr from-brand-100 to-white rounded-[2.5rem] transform rotate-3 scale-105 border border-brand-200/50 shadow-lg transition-transform duration-700"></div>
             
@@ -120,7 +126,7 @@ export function Home() {
                 <img 
                   src={currentFeature.mainImg} 
                   alt="ERP Dashboard Mockup" 
-                  className={`w-full h-full object-cover object-top-left transition-opacity duration-500 ease-in-out ${isFading ? 'opacity-30' : 'opacity-100'}`} 
+                  className={`w-full h-full object-cover object-top-left transition-opacity duration-500 ease-in-out ${carouselState.isFading ? 'opacity-30' : 'opacity-100'}`} 
                 />
                 
                 <div className="absolute top-0 left-0 right-0 h-14 bg-linear-to-b from-slate-900/40 to-transparent flex items-center px-4">
@@ -133,7 +139,7 @@ export function Home() {
               </div>
             </div>
 
-            <div className={`absolute -left-12 top-20 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-xl shadow-brand-900/10 border border-brand-100 z-20 animate-float-delayed flex items-center gap-3 transition-opacity duration-500 ease-in-out ${isFading ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`absolute -left-12 top-20 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-xl shadow-brand-900/10 border border-brand-100 z-20 animate-float-delayed flex items-center gap-3 transition-opacity duration-500 ease-in-out ${carouselState.isFading ? 'opacity-0' : 'opacity-100'}`}>
               <div className="w-12 h-12 rounded-xl bg-brand-50 flex items-center justify-center p-2">
                 <img src={currentFeature.f1Img} className="w-full h-full object-contain" alt="Feature Icon 1" />
               </div>
@@ -143,7 +149,7 @@ export function Home() {
               </div>
             </div>
 
-            <div className={`absolute -right-8 bottom-24 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-xl shadow-emerald-900/10 border border-emerald-100 z-20 animate-float flex items-center gap-3 transition-opacity duration-500 ease-in-out ${isFading ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`absolute -right-8 bottom-24 bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-xl shadow-emerald-900/10 border border-emerald-100 z-20 animate-float flex items-center gap-3 transition-opacity duration-500 ease-in-out ${carouselState.isFading ? 'opacity-0' : 'opacity-100'}`}>
                <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center p-2.5">
                 <img src={currentFeature.f2Img} className="w-full h-full object-contain" alt="Feature Icon 2" />
               </div>
@@ -157,7 +163,6 @@ export function Home() {
         </div>
       </main>
         
-      {/* ═══════════════════════════════ LOGO TICKER ═══════════════════════════════ */}
       <section className="w-full overflow-hidden bg-white border-y border-slate-200 py-8 relative z-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 mb-6 text-center">
           <p className="text-[11px] font-heading font-bold uppercase tracking-widest text-slate-400">Trusted by Leading Institutions</p>
