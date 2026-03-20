@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- All styling moved to Tailwind utility classes -->
+</head>
+<body class="flex h-screen w-screen bg-[#f1f5f9] text-[#1e293b] overflow-hidden antialiased selection:bg-blue-100 font-['Inter']">
+
+    <!-- Sidebar Wrapper -->
+    <div id="sidebar" class="flex h-full w-[30%] min-w-[340px] max-w-[45%] flex-col border-r border-[#e2e8f0] bg-[#f8fafc] relative select-none max-md:fixed max-md:inset-0 max-md:z-[100] max-md:w-full max-md:max-w-full max-md:[body.show-chat_&]:hidden">
+        
+        <!-- Sidebar Header -->
+        <div class="flex h-14 items-center px-4 bg-blue-300 border-b border-[#1d4ed8]">
+            <h1 class="text-[17px] font-medium text-white">Chats</h1>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="px-3 pb-2 pt-3 bg-[#ffffff]">
+            <div class="search-container flex items-center rounded-lg bg-[#f1f5f9] px-3 py-1.5 border border-[#e2e8f0] transition-all duration-300 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500">
+                <i data-lucide="search" class="h-4 w-4 text-[#94a3b8]"></i>
+                <input 
+                    type="text" 
+                    placeholder="Search or start a new chat" 
+                    class="ml-3 w-full bg-transparent text-[13px] text-[#1e293b] outline-none placeholder:text-[#94a3b8]"
+                >
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="flex items-center gap-2 overflow-x-auto px-4 py-2 no-scrollbar bg-[#f8fafc] border-b border-[#e2e8f0]">
+            <div class="filter-chip px-3.5 py-1.5 rounded-full text-[13px] font-medium cursor-pointer transition-all duration-300 border border-[#e2e8f0] bg-white text-[#64748b] hover:bg-[#f1f5f9] active">All</div>
+            <div class="filter-chip px-3.5 py-1.5 rounded-full text-[13px] font-medium cursor-pointer transition-all duration-300 border border-[#e2e8f0] bg-white text-[#64748b] hover:bg-[#f1f5f9]">Favorites</div>
+            <div class="filter-chip px-3.5 py-1.5 rounded-full text-[13px] font-medium cursor-pointer transition-all duration-300 border border-[#e2e8f0] bg-white text-[#64748b] hover:bg-[#f1f5f9]">Important</div>
+        </div>
+
+        <!-- Chat List -->
+        <div id="chat-list" class="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-400">
+            <!-- Dynamic content will be injected here -->
+        </div>
+    </div>
+
+    <!-- Resizer Handle -->
+    <div id="resizer" class="max-md:hidden w-[3px] cursor-col-resize bg-transparent hover:bg-slate-400 active:bg-slate-400 transition-colors z-[100]"></div>
+
+    <!-- Main Chat Content -->
+    <div id="main-chat" class="relative flex-1 bg-white overflow-hidden max-md:fixed max-md:inset-0 max-md:z-[100] max-md:hidden max-md:[body.show-chat_&]:flex">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 [background-image:radial-gradient(#e2e8f0_1.5px,transparent_1.5px)] [background-size:40px_40px] opacity-0 transition-opacity duration-500 [body.show-pattern_&]:opacity-40 pointer-events-none"></div>
+        
+        <!-- Hexagonal network pattern -->
+        <svg class="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 [body.show-pattern_&]:opacity-[0.25] pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <style>
+                    .hex-line { stroke: #64748b; stroke-width: 1.2; fill: none; }
+                    .hex-line-thick { stroke: #64748b; stroke-width: 1.8; fill: none; }
+                    .hex-dot { fill: #64748b; }
+                    .hex-light { stroke: #94a3b8; stroke-width: 0.8; fill: none; }
+                </style>
+            </defs>
+
+            <!-- Large hexagons (left cluster) -->
+            <polygon class="hex-line-thick" points="120,80 200,40 280,80 280,160 200,200 120,160"/>
+            <polygon class="hex-line" points="280,80 340,50 400,80 400,140 340,170 280,140"/>
+            <polygon class="hex-line" points="120,160 200,200 200,280 120,320 40,280 40,200"/>
+            <polygon class="hex-light" points="280,160 340,130 400,160 400,240 340,270 280,240"/>
+
+            <!-- Medium hexagons (center-left) -->
+            <polygon class="hex-line" points="400,80 440,55 480,80 480,130 440,155 400,130"/>
+            <polygon class="hex-light" points="340,170 380,145 420,170 420,220 380,245 340,220"/>
+            <polygon class="hex-line" points="200,280 240,255 280,280 280,330 240,355 200,330"/>
+
+            <!-- Right cluster -->
+            <polygon class="hex-line-thick" points="850,120 950,70 1050,120 1050,220 950,270 850,220"/>
+            <polygon class="hex-line" points="1050,120 1120,80 1190,120 1190,200 1120,240 1050,200"/>
+            <polygon class="hex-line" points="850,220 920,180 990,220 990,300 920,340 850,300"/>
+            <polygon class="hex-light" points="1050,220 1100,190 1150,220 1150,280 1100,310 1050,280"/>
+            <polygon class="hex-line" points="1190,120 1230,95 1270,120 1270,170 1230,195 1190,170"/>
+
+            <!-- Bottom cluster -->
+            <polygon class="hex-line-thick" points="500,450 580,410 660,450 660,530 580,570 500,530"/>
+            <polygon class="hex-line" points="660,450 720,420 780,450 780,510 720,540 660,510"/>
+            <polygon class="hex-light" points="500,530 560,500 620,530 620,590 560,620 500,590"/>
+
+            <!-- Scattered Hexagons -->
+            <polygon class="hex-light" points="600,70 620,58 640,70 640,94 620,106 600,94"/>
+            <polygon class="hex-line" points="1300,50 1325,35 1350,50 1350,80 1325,95 1300,80"/>
+            <polygon class="hex-light" points="420,420 445,405 470,420 470,450 445,465 420,450"/>
+
+            <!-- Extra Lines & Connections -->
+            <line class="hex-line" x1="400" y1="130" x2="480" y2="130"/>
+            <line class="hex-light" x1="530" y1="145" x2="600" y2="80"/>
+            <line class="hex-light" x1="760" y1="66" x2="780" y2="90"/>
+            <line class="hex-line" x1="830" y1="120" x2="850" y2="120"/>
+            <line class="hex-light" x1="640" y1="94" x2="700" y2="66"/>
+            <line class="hex-line" x1="470" y1="420" x2="500" y2="450"/>
+            <line class="hex-light" x1="780" y1="500" x2="860" y2="500"/>
+
+            <!-- Dots -->
+            <circle class="hex-dot" cx="200" cy="40" r="3.5"/>
+            <circle class="hex-dot" cx="280" cy="80" r="3"/>
+            <circle class="hex-dot" cx="120" cy="160" r="3"/>
+            <circle class="hex-dot" cx="200" cy="200" r="4"/>
+            <circle class="hex-dot" cx="950" cy="70" r="4"/>
+            <circle class="hex-dot" cx="1050" cy="120" r="3.5"/>
+            <circle class="hex-dot" cx="580" cy="410" r="4"/>
+            <circle class="hex-dot" cx="720" cy="540" r="3"/>
+            <circle class="hex-dot" cx="860" cy="500" r="2.5"/>
+            <circle class="hex-dot" cx="445" cy="405" r="2"/>
+        </svg>
+        <!-- Vertical Stack (Welcome/Chat) -->
+        <div class="relative w-full h-full flex flex-col overflow-hidden z-0">
+        <!-- Default Welcome Screen -->
+        <div id="welcome-screen" class="flex flex-1 flex-col items-center justify-center text-center px-10">
+            <div class="max-w-md">
+                <div class="relative inline-block mb-10">
+                    <div class="w-64 h-64 bg-[#eff6ff] rounded-full flex items-center justify-center border border-[#dbeafe]">
+                         <i data-lucide="message-square" class="w-32 h-32 text-[#2563eb]"></i>
+                    </div>
+                </div>
+                <h1 class="text-3xl font-light text-[#1e293b] mb-4">ERP Chat</h1>
+                <p class="text-[#64748b] text-[14px] leading-relaxed mb-10">
+                    Connect with your college community in real-time.
+                </p>
+                <p class="text-[#94a3b8] text-[12px] flex items-center justify-center gap-1">
+                    <i data-lucide="lock" class="w-3 h-3"></i> Secure Campus Communication
+                </p>
+            </div>
+        </div>
+
+        <!-- Chat Area (Hidden by default) -->
+        <div id="chat-area" class="flex-1 flex flex-col hidden h-full">
+            <!-- Chat Header -->
+            <div class="flex h-14 items-center justify-between px-4 bg-[#2563eb] border-b border-[#1d4ed8] flex-shrink-0">
+                <div class="flex items-center gap-3 min-w-0">
+                    <!-- Back Button (Mobile Only) -->
+                    <button onclick="goBack()" class="hidden max-md:flex items-center justify-center text-[#aebac1] hover:text-white mr-1 outline-none shrink-0">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                    </button>
+                    <div class="flex items-center gap-3 cursor-pointer min-w-0" onclick="toggleContactInfo()">
+                        <div class="h-10 w-10 shrink-0">
+                            <img id="chat-header-avatar" src="" alt="DP" class="h-full w-full rounded-full object-cover">
+                        </div>
+                        <div class="flex flex-col min-w-0">
+                            <h2 id="chat-header-name" class="text-[15.5px] font-medium text-[#ffffff] truncate"></h2>
+                            <p id="chat-header-status" class="text-[12px] text-[#bfdbfe] truncate">online</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-5 text-[#ffffff] relative shrink-0">
+                    <button onclick="toggleDropdown(event, 'header-dropdown')" class="hover:text-white transition-colors outline-none shrink-0">
+                        <i data-lucide="ellipsis-vertical" class="w-5 h-5"></i>
+                    </button>
+                    <!-- Header Dropdown Menu -->
+                    <div id="header-dropdown" class="dropdown-menu absolute hidden right-0 top-full mt-2 bg-white rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.08)] z-50 min-w-[220px] py-2 border border-[#e2e8f0] animate-[fadeIn_0.1s_ease-out]">
+                        <button onclick="event.stopPropagation()" class="flex w-full items-center gap-4 px-6 py-2.5 text-[14.5px] text-[#475569] hover:bg-[#f8fafc] group/item rounded-lg whitespace-nowrap">
+                            <i data-lucide="heart" class="h-4 w-4 text-[#94a3b8] group-hover/item:text-[#2563eb]"></i> Add to favourites
+                        </button>
+                        <button onclick="event.stopPropagation()" class="flex w-full items-center gap-4 px-6 py-2.5 text-[14.5px] text-[#475569] hover:bg-[#f8fafc] group/item rounded-lg whitespace-nowrap">
+                            <i data-lucide="bookmark" class="h-4 w-4 text-[#94a3b8] group-hover/item:text-[#2563eb]"></i> Add to Important
+                        </button>
+                        <hr class="border-[#f1f5f9] my-1">
+                        <button onclick="event.stopPropagation()" class="flex w-full items-center gap-4 px-6 py-2.5 text-[14.5px] text-[#475569] hover:bg-red-50 group/item rounded-lg whitespace-nowrap">
+                            <i data-lucide="eraser" class="h-4 w-4 text-[#94a3b8] group-hover/item:text-red-500"></i> Clear chat
+                        </button>
+                        <button onclick="event.stopPropagation()" class="flex w-full items-center gap-4 px-6 py-2.5 text-[14.5px] text-red-600 hover:bg-red-50 group/item rounded-lg whitespace-nowrap">
+                            <i data-lucide="trash-2" class="h-4 w-4 text-[#94a3b8] group-hover/item:text-red-600"></i> Delete chat
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="message-list" class="flex-1 overflow-y-auto px-4 md:px-10 py-4 flex flex-col gap-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-slate-400">
+                <!-- Messages will be injected here -->
+            </div>
+
+            <!-- Chat Footer -->
+            <div class="relative min-h-[80px] flex items-center px-4 pb-4 pt-2 flex-shrink-0 z-20 bg-transparent">
+                 <!-- Attachment Menu -->
+                 <div id="attach-menu" class="attach-menu absolute hidden flex-col gap-0.5 bottom-[70px] left-[15px] bg-white rounded-xl p-2.5 z-[100] shadow-[0_4px_20px_rgba(0,0,0,0.12)] border border-[#e2e8f0] animate-[fadeIn_0.15s_ease-out] min-w-[180px] mb-3">
+                    <div class="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors text-[#475569] text-sm hover:bg-[#f8fafc]">
+                        <div class="w-8 h-8 rounded-full bg-[#bf59cf] flex items-center justify-center">
+                            <i data-lucide="file-text" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <span>Document</span>
+                    </div>
+                    <div class="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors text-[#475569] text-sm hover:bg-[#f8fafc]">
+                        <div class="w-8 h-8 rounded-full bg-[#007bfc] flex items-center justify-center">
+                            <i data-lucide="image" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <span>Photos</span>
+                    </div>
+                    <div class="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-colors text-[#475569] text-sm hover:bg-[#f8fafc]">
+                        <div class="w-8 h-8 rounded-full bg-[#ff2e74] flex items-center justify-center">
+                            <i data-lucide="video" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <span>Video</span>
+                    </div>
+                 </div>
+
+                  <!-- Footer Pill Container -->
+                 <div class="flex-1 flex items-center bg-[#f1f5f9] rounded-full px-2 py-0.5 gap-1 shadow-sm border-2 border-blue-500 focus-within:ring-4 focus-within:ring-blue-500/30 transition-all duration-300">
+                     <button id="attach-trigger" class="flex items-center justify-center w-10 h-10 text-[#64748b] hover:text-[#2563eb] transition-transform duration-200 outline-none">
+                        <i data-lucide="plus" class="w-6 h-6"></i>
+                     </button>
+                     <div class="flex-1">
+                        <input type="text" placeholder="Type a message" class="w-full bg-transparent px-2 py-2.5 text-[14.5px] outline-none text-[#1e293b]">
+                     </div>
+                 </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Contact Info Panel -->
+        <div id="contact-info" class="absolute hidden right-0 top-0 h-full w-[400px] z-50 bg-white border-l border-[#e2e8f0] shadow-[-4px_0_15px_rgba(0,0,0,0.05)] flex-col shrink-0 max-md:fixed max-md:inset-0 max-md:w-full max-md:z-[200]">
+            <!-- Header -->
+            <div class="flex h-14 items-center px-4 gap-6 bg-[#2563eb] shrink-0 border-b border-[#1d4ed8]">
+                <button onclick="toggleContactInfo()" class="text-[#ffffff] hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <h3 class="text-[#ffffff] font-medium text-[16px]">Info</h3>
+            </div>
+
+            <!-- Content Scrollable -->
+            <div class="flex-1 overflow-y-auto custom-scrollbar bg-[#f1f5f9]">
+                <!-- Profile Section -->
+                <div class="flex flex-col items-center py-8 bg-[#ffffff] shadow-sm mb-2">
+                    <div class="w-48 h-48 mb-4 border-4 border-[#f1f5f9] rounded-full">
+                        <img id="info-avatar" src="" alt="Profile" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <h2 id="info-name" class="text-[24px] text-[#1e293b] font-medium leading-tight"></h2>
+                    <p id="info-subtitle" class="text-[#64748b] text-[14px] mt-1"></p>
+                </div>
+
+                <!-- About -->
+                <div class="p-4 px-6 bg-[#ffffff] mb-2 border-b border-[#f1f5f9]">
+                    <p class="text-[#64748b] text-[14px] mb-2">About</p>
+                    <p id="info-about" class="text-[#1e293b] text-[15px]">Happiness is a decision</p>
+                </div>
+
+                <!-- Media Section -->
+                <div class="p-4 px-6 bg-[#ffffff] mb-2 border-b border-[#f1f5f9]">
+                    <div class="flex items-center justify-between mb-4 cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="image" class="w-4 h-4 text-[#64748b]"></i>
+                            <span class="text-[14px] text-[#475569]">Media, links and docs</span>
+                        </div>
+                        <span class="text-[14px] text-[#64748b]">573</span>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2">
+                        <div class="aspect-square bg-[#f1f5f9] rounded-lg overflow-hidden cursor-pointer border border-[#e2e8f0] hover:opacity-80 transition-opacity">
+                            <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=100&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-[#f1f5f9] rounded-lg overflow-hidden cursor-pointer border border-[#e2e8f0] hover:opacity-80 transition-opacity">
+                            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=100&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-[#f1f5f9] rounded-lg overflow-hidden cursor-pointer border border-[#e2e8f0] hover:opacity-80 transition-opacity">
+                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=100&q=80" class="w-full h-full object-cover">
+                        </div>
+                        <div class="aspect-square bg-[#f1f5f9] rounded-lg overflow-hidden cursor-pointer border border-[#e2e8f0] hover:opacity-80 transition-opacity">
+                            <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=100&q=80" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Members Section (For Groups) -->
+                <div id="members-section" class="hidden">
+                    <div class="p-4 px-6 bg-[#ffffff] border-b border-[#f1f5f9] flex items-center justify-between">
+                        <span id="member-count-header" class="text-[14px] text-[#64748b]"></span>
+                        <button class="text-[#64748b] hover:text-[#2563eb] transition-colors">
+                            <i data-lucide="search" class="w-4.5 h-4.5"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-[#ffffff]">
+                        <!-- Add Member -->
+                        <div class="flex items-center gap-4 px-6 py-3 hover:bg-[#f8fafc] cursor-pointer transition-colors group">
+                            <div class="h-11 w-11 rounded-full bg-[#10b981] flex items-center justify-center text-white">
+                                <i data-lucide="user-plus" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[15.5px] text-[#1e293b] font-medium">Add member</span>
+                        </div>
+
+                        <!-- Member List Container -->
+                        <div id="member-list" class="divide-y divide-[#f1f5f9]">
+                            <!-- Members will be injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings List (Dynamic) -->
+                <div id="info-settings-container" class="bg-[#ffffff] mt-2 mb-8">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chats = [
+            { id: 1, name: "Alexander Pierce", message: "Check this new workspace setup!", time: "Thursday", unread: 0, pinned: true, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex", status: "read" },
+            { id: 2, name: "Sarah Jenkins 🌸", message: "See you later!", time: "07/03/2026", unread: 0, pinned: true, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah", status: "read" },
+            { id: 3, name: "David Miller", message: "Sandy Loading.json", time: "6:08 pm", unread: 0, pinned: true, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=David", status: "read", isFile: true },
+            { id: 4, name: "Emma Wilson ✨", message: "Got it!", time: "5:41 pm", unread: 0, pinned: false, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emma", status: "read" },
+            { 
+                id: 5, 
+                name: "Global Marketing Team", 
+                message: "Director: New campaign starting...", 
+                time: "5:17 pm", 
+                unread: 0, 
+                pinned: false, 
+                isGroup: true, 
+                avatar: "https://api.dicebear.com/7.x/shapes/svg?seed=Marketing",
+                members: [
+                    { name: "You", status: "Available", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=You" },
+                    { name: "Support AI", status: "Here to help!", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bot", isAdmin: true },
+                    { name: "Marketing Lead", status: "Busy with campaign", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lead", isAdmin: true, phone: "+91 99999 99999" },
+                    { name: "Designer 1", status: "Creating magic", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=D1" },
+                    { name: "Developer 1", status: "Coding away", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dev1" },
+                    { name: "QA Tester", status: "Fixing bugs", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=QA" }
+                ],
+                totalMembers: 66
+            },
+            { id: 6, name: "Travel Support", message: "Your booking is confirmed! ✈️", time: "5:15 pm", unread: 0, pinned: false, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Travel" },
+            { id: 7, name: "Michael Thompson", message: "Thanks for the help!", time: "4:19 pm", unread: 0, pinned: false, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael" },
+            { id: 8, name: "DEVELOPERS HUB 🔥", message: "Admin: Check the latest commit", time: "12:52 pm", unread: 0, pinned: false, isGroup: true, avatar: "https://api.dicebear.com/7.x/shapes/svg?seed=Devs", members: [] },
+            { id: 9, name: "The Book Club 📚", message: "Lisa: Reading 'Atomic Habits' next", time: "11:16 am", unread: 0, pinned: false, isGroup: true, avatar: "https://api.dicebear.com/7.x/shapes/svg?seed=Books", members: [] },
+            { id: 10, name: "Corporate Video", message: "Video message", time: "11:15 am", unread: 0, pinned: false, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Corporate", isVideo: true },
+            { id: 11, name: "Robert Fox", message: "Morning! Coffee today?", time: "10:51 am", unread: 0, pinned: false, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Robert" },
+            { id: 12, name: "Family Weekly 👨‍👩‍👧‍👦", message: "Mom: Dinner at 7pm!", time: "Yesterday", unread: 5, pinned: false, isGroup: true, avatar: "https://api.dicebear.com/7.x/shapes/svg?seed=Family", members: [] },
+            { id: 13, name: "John Smith", message: "Sent you the login details", time: "10/03/2026", unread: 1, pinned: false, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John" },
+            { id: 14, name: "Frontend Masters", message: "Guide: CSS Grid is Awesome!", time: "Monday", unread: 0, pinned: false, isGroup: true, avatar: "https://api.dicebear.com/7.x/shapes/svg?seed=Frontend", members: [] },
+            { id: 15, name: "Weekend Vibes 🚀", message: "Josh: Beach tomorrow?", time: "9:45 am", unread: 2, pinned: false, isGroup: true, avatar: "https://api.dicebear.com/7.x/shapes/svg?seed=Weekend", members: [] }
+        ];
+
+        const chatMessagesData = {
+            1: [
+                { type: 'in', content: 'Hey, are you available for a quick call regarding the new workspace layout?', time: '10:15 am' },
+                { type: 'out', content: 'Sure, just finishing up a task. Give me 5 minutes.', time: '10:16 am', status: 'read' },
+                { type: 'in', type_media: 'img', url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80', caption: 'Check this new workspace setup!', time: '10:20 am' },
+                { type: 'out', type_media: 'video', url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80', duration: '0:30', time: '10:25 am', status: 'read' },
+                { type: 'in', type_media: 'doc', name: 'project_spec.pdf', size: '2.4 MB', ext: 'PDF', time: '10:30 am' }
+            ],
+            3: [
+                { type: 'in', content: 'Hey, are you available for a quick call regarding the new workspace layout?', time: '10:15 am' },
+                { type: 'out', content: 'Sure, just finishing up a task. Give me 5 minutes.', time: '10:16 am', status: 'read' },
+                { type: 'in', type_media: 'img', url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80', caption: 'Check this new workspace setup!', time: '10:20 am' },
+                { type: 'out', type_media: 'video', url: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80', duration: '0:30', time: '10:25 am', status: 'read' },
+                { type: 'in', type_media: 'doc', name: 'project_spec.pdf', size: '2.4 MB', ext: 'PDF', time: '10:30 am' }
+            ],
+            5: [
+                { type: 'in', sender: 'Director', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Director', content: 'New campaign starting next week. Everyone ready?', time: '5:10 pm' },
+                { type: 'out', content: 'Yes, looking forward to it!', time: '5:12 pm', status: 'read' },
+                { type: 'in', sender: 'Sandra', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sandra', content: 'I have the drafts ready.', time: '5:15 pm' },
+                { type: 'in', sender: 'Uppi', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Uppi', content: 'Great, send them over.', time: '5:17 pm' }
+            ],
+            10: [
+                { type: 'in', content: 'Check the corporate trailer for the annual event.', time: '11:10 am' },
+                { type: 'out', type_media: 'video', url: 'https://images.unsplash.com/photo-1492691523567-6170c81ef403?w=400&q=80', duration: '1:45', time: '11:15 am', status: 'read' }
+            ]
+        };
+
+        function renderChats(activeId = null) {
+            const chatList = document.getElementById('chat-list');
+            chatList.innerHTML = chats.map(chat => {
+                const isActive = chat.id === activeId;
+                return `
+                    <div onclick="selectChat(${chat.id})" class="chat-card relative flex h-[72px] cursor-pointer items-center gap-3 px-3 hover:bg-[#f1f5f9] transition-colors group ${isActive ? 'bg-[#eff6ff]' : ''}">
+                        <div class="relative h-12 w-12 flex-shrink-0">
+                            ${chat.isGroup && !chat.avatar ? `
+                                <div class="h-full w-full rounded-full bg-[#374045] flex items-center justify-center">
+                                    <i data-lucide="users" class="h-5.5 w-5.5 text-[#aebac1]"></i>
+                                </div>
+                            ` : `
+                                <img src="${chat.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + chat.name}" alt="DP" class="h-full w-full rounded-full object-cover">
+                            `}
+                        </div>
+                        <div class="flex flex-1 flex-col justify-center border-b border-[#f1f5f9] h-full overflow-hidden">
+                            <div class="flex items-center justify-between">
+                                <span class="truncate text-[15.5px] font-medium ${chat.unread > 0 ? 'text-[#1e293b]' : 'text-[#1e293b]'}">${chat.name}</span>
+                                <span class="text-[11px] ${chat.unread > 0 ? 'text-[#2563eb]' : 'text-[#64748b]'}">${chat.time}</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-0.5">
+                                <div class="flex items-center gap-1 text-[13px] text-[#64748b] truncate">
+                                    ${chat.status === 'read' ? '<i data-lucide="check-check" class="h-3.5 w-3.5 text-[#10b981]"></i>' : ''}
+                                    ${chat.isFile ? '<i data-lucide="file-text" class="h-3 w-3 text-[#64748b] ml-0.5"></i>' : ''}
+                                    ${chat.isVideo ? '<i data-lucide="video" class="h-3 w-3 text-[#64748b] ml-0.5"></i>' : ''}
+                                    <span class="truncate ${chat.isFile ? 'text-[#2563eb]' : ''}">${chat.message}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    ${chat.unread > 0 ? `<span class="bg-[#2563eb] text-[#ffffff] text-[11px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">${chat.unread}</span>` : ''}
+                                    ${chat.pinned ? '<i data-lucide="pin" class="h-3 w-3 text-[#94a3b8] rotate-45"></i>' : ''}
+                                    <button class="dropdown-trigger opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:text-[#2563eb] text-[#94a3b8]" onclick="toggleDropdown(event, 'dropdown-${chat.id}')">
+                                        <i data-lucide="chevron-down" class="h-5 w-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="dropdown-${chat.id}" class="hidden absolute right-0 top-full mt-1 bg-white rounded-lg shadow-xl z-50 min-w-[220px] py-1 border border-slate-200">
+                            <button onclick="event.stopPropagation()" class="flex w-full items-center gap-4 px-6 py-2.5 text-[14.5px] text-[#475569] hover:bg-[#f8fafc] group/item rounded-lg whitespace-nowrap">
+                                <i data-lucide="heart" class="h-4 w-4 text-[#94a3b8] group-hover/item:text-[#2563eb]"></i> Add to favourites
+                            </button>
+                            <button onclick="event.stopPropagation()" class="flex w-full items-center gap-4 px-6 py-2.5 text-[14.5px] text-[#475569] hover:bg-[#f8fafc] group/item rounded-lg whitespace-nowrap">
+                                <i data-lucide="bookmark" class="h-4 w-4 text-[#94a3b8] group-hover/item:text-[#2563eb]"></i> Add to Important
+                            </button>
+                            <hr class="border-[#f1f5f9] my-1">
+                            <button onclick="event.stopPropagation()" class="flex w-full items-center gap-4 px-6 py-2.5 text-[14.5px] text-[#475569] hover:bg-red-50 group/item rounded-lg whitespace-nowrap">
+                                <i data-lucide="eraser" class="h-4 w-4 text-[#94a3b8] group-hover/item:text-red-500"></i> Clear chat
+                            </button>
+                            <button onclick="event.stopPropagation()" class="flex w-full items-center gap-4 px-6 py-2.5 text-[14.5px] text-red-600 hover:bg-red-50 group/item rounded-lg whitespace-nowrap">
+                                <i data-lucide="trash-2" class="h-4 w-4 text-[#94a3b8] group-hover/item:text-red-600"></i> Delete chat
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function selectChat(id) {
+            const chat = chats.find(c => c.id === id);
+            if (!chat) return;
+
+            renderChats(id);
+            // Show pattern when chat is selected
+            document.body.classList.add('show-pattern');
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('chat-area').classList.remove('hidden');
+            
+            // Mobile View switching
+            document.body.classList.add('show-chat');
+
+            document.getElementById('chat-header-avatar').src = chat.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + chat.name;
+            document.getElementById('chat-header-name').innerText = chat.name;
+            
+            // Hardfix for "66 members" on Global Marketing Team
+            const membersText = (chat.id === 5) ? "66 members" : (chat.isGroup ? `${chat.totalMembers || chat.members?.length || 0} members` : 'online');
+            document.getElementById('chat-header-status').innerText = membersText;
+            document.getElementById('chat-header-status').classList.remove('hidden');
+
+            const messageList = document.getElementById('message-list');
+            const messages = chatMessagesData[id] || [
+                { type: 'in', content: 'Hey, I saw your message. Let\'s catch up!', time: '10:00 am' },
+                { type: 'out', content: 'Sure thing, I\'m online now.', time: '10:05 am', status: 'read' }
+            ];
+
+            // Update Contact Info Panel
+            document.getElementById('info-avatar').src = chat.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + chat.name;
+            document.getElementById('info-name').innerText = chat.name;
+            document.getElementById('info-about').innerText = chat.isGroup ? 'Group description here' : 'Happiness is a decision';
+            
+            const infoSubtitle = document.getElementById('info-subtitle');
+            const settingsContainer = document.getElementById('info-settings-container');
+
+            const settingClasses = "flex items-center gap-5 px-6 py-3.5 cursor-pointer transition-colors active:bg-[#f1f5f9]";
+            const iconClasses = "w-5 h-5 text-[#64748b]";
+            if (chat.isGroup) {
+                infoSubtitle.classList.remove('hidden');
+                infoSubtitle.innerText = `Group • ${chat.totalMembers || chat.members?.length || 0} members`;
+                
+                settingsContainer.innerHTML = `
+                    <div class="${settingClasses} hover:bg-[#f8fafc]">
+                        <i data-lucide="heart" class="${iconClasses}"></i>
+                        <span class="text-[15px] text-[#1e293b]">Add to Favorites</span>
+                    </div>
+                    <div class="${settingClasses} hover:bg-[#f8fafc]">
+                        <i data-lucide="star" class="${iconClasses}"></i>
+                        <span class="text-[15px] text-[#1e293b]">Add to Important</span>
+                    </div>
+                    <div class="${settingClasses} hover:bg-red-50 text-red-600">
+                        <i data-lucide="eraser" class="w-5 h-5 opacity-70"></i>
+                        <span class="text-[15px]">Clear Chat</span>
+                    </div>
+                    <div class="${settingClasses} hover:bg-red-50 text-red-600">
+                        <i data-lucide="trash" class="w-5 h-5 opacity-70"></i>
+                        <span class="text-[15px]">Delete Group</span>
+                    </div>
+                    <div class="${settingClasses} hover:bg-red-50 text-red-600">
+                        <i data-lucide="shield-alert" class="w-5 h-5 opacity-70"></i>
+                        <span class="text-[15px]">Report Group</span>
+                    </div>
+                    <div class="${settingClasses} hover:bg-red-50 text-red-600">
+                        <i data-lucide="log-out" class="w-5 h-5 opacity-70"></i>
+                        <span class="text-[15px]">Exit Group</span>
+                    </div>
+                `;
+            } else {
+                infoSubtitle.classList.add('hidden');
+                
+                settingsContainer.innerHTML = `
+                    <div class="${settingClasses} hover:bg-[#f8fafc]">
+                        <i data-lucide="heart" class="${iconClasses}"></i>
+                        <span class="text-[15px] text-[#1e293b]">Add to Favorites</span>
+                    </div>
+                    <div class="${settingClasses} hover:bg-[#f8fafc]">
+                        <i data-lucide="star" class="${iconClasses}"></i>
+                        <span class="text-[15px] text-[#1e293b]">Add to Important</span>
+                    </div>
+                    <div class="${settingClasses} hover:bg-red-50 text-red-600">
+                        <i data-lucide="eraser" class="w-5 h-5 opacity-70"></i>
+                        <span class="text-[15px]">Clear Chat</span>
+                    </div>
+                    <div class="${settingClasses} hover:bg-red-50 text-red-600">
+                        <i data-lucide="trash" class="w-5 h-5 opacity-70"></i>
+                        <span class="text-[15px]">Delete Chat</span>
+                    </div>
+                `;
+            }
+            
+            // Handle Members Section
+            const membersSection = document.getElementById('members-section');
+            if (chat.isGroup) {
+                membersSection.classList.remove('hidden');
+                document.getElementById('member-count-header').innerText = `${chat.totalMembers || chat.members?.length || 0} members`;
+                document.getElementById('member-list').innerHTML = (chat.members || []).map(member => `
+                    <div class="flex items-center gap-4 px-6 py-3 hover:bg-[#f8fafc] cursor-pointer transition-colors relative">
+                        <div class="h-10 w-10 shrink-0">
+                            <img src="${member.avatar}" alt="Member" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[15.5px] text-[#1e293b] font-medium truncate">${member.name}</span>
+                                ${member.isAdmin ? '<span class="text-[11px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded font-medium">Group admin</span>' : ''}
+                            </div>
+                            <p class="text-[13px] text-[#64748b] truncate">${member.status}</p>
+                            ${member.phone ? `<p class="text-[11px] text-[#94a3b8] mt-0.5">${member.phone}</p>` : ''}
+                        </div>
+                    </div>
+                `).join('') + `
+                    <div class="p-4 text-center border-t border-[#f1f5f9]">
+                        <button class="text-[14px] text-[#2563eb] font-medium hover:underline">View all (${(chat.totalMembers || 66) - (chat.members?.length || 0)} more)</button>
+                    </div>
+                `;
+            } else {
+                membersSection.classList.add('hidden');
+            }
+
+            messageList.innerHTML = messages.map(msg => {
+                const isOut = msg.type === 'out';
+                const isGroupIn = !isOut && chat.isGroup;
+                const bubbleInClass = `bg-white text-[#1e293b] ${isGroupIn ? 'rounded-[0_12px_12px_12px]' : 'rounded-[0_12px_12px_12px]'} border border-[#e2e8f0] shadow-sm relative before:content-[''] before:absolute before:-left-[8px] before:top-[-1px] before:w-3 before:h-3 before:bg-white before:border-l before:border-t before:border-[#e2e8f0] before:[clip-path:polygon(100%_0,0_0,100%_100%)]`;
+                const bubbleOutClass = `bg-[#2563eb] text-white rounded-[12px_0_12px_12px] shadow-sm relative self-end after:content-[''] after:absolute after:-right-[8px] after:top-[-1px] after:w-3 after:h-3 after:bg-[#2563eb] after:[clip-path:polygon(0_0,100%_0,0_100%)]`;
+                const bubbleClass = isOut ? bubbleOutClass : bubbleInClass;
+                const baseClass = `flex ${isOut ? 'justify-end' : 'justify-start'} ${isGroupIn ? 'mb-2' : ''} w-full`;
+                
+                // Helper for random name colors
+                function getSenderColor(name) {
+                    const colors = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+                    let hash = 0;
+                    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+                    return colors[Math.abs(hash) % colors.length];
+                }
+
+                // Group specific rendering
+                const senderColor = isGroupIn ? getSenderColor(msg.sender || 'Unknown') : '#2563eb';
+                const senderInfo = isGroupIn ? `
+                    <span class="sender-name ml-0.5" style="color: ${senderColor}">${msg.sender || 'Unknown'}</span>
+                ` : '';
+
+                const avatarWrap = isGroupIn ? `
+                    <div class="h-8 w-8 rounded-full overflow-hidden mb-1 flex-shrink-0">
+                        <img src="${msg.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + msg.sender}" class="w-full h-full object-cover">
+                    </div>
+                ` : '';
+
+                let contentHtml = '';
+                if (msg.type_media === 'doc') {
+                    contentHtml = `
+                        <div class="${bubbleClass} p-3 max-w-[320px] relative">
+                            <div class="flex items-center gap-3 bg-[#f8fafc] p-2 rounded-lg border border-[#e2e8f0]">
+                                <div class="h-10 w-10 flex-shrink-0 bg-blue-50 rounded flex items-center justify-center">
+                                    <i data-lucide="file-text" class="w-6 h-6 text-[#2563eb]"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[14px] font-medium text-[#1e293b] truncate">${msg.name}</p>
+                                    <p class="text-[12px] text-[#64748b] uppercase">${msg.ext} • ${msg.size}</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mt-3 gap-2">
+                                <button class="text-[#2563eb] text-[13px] font-medium hover:underline">Open</button>
+                                <button class="text-[#2563eb] text-[13px] font-medium hover:underline">Save as...</button>
+                            </div>
+                            <div class="flex justify-end gap-1 mt-1 text-[11px] text-[#64748b] msg-meta">
+                                <span>${msg.time}</span>
+                                ${isOut ? '<i data-lucide="check-check" class="h-3.5 w-3.5 msg-tick text-[#10b981]"></i>' : ''}
+                            </div>
+                        </div>
+                    `;
+                } else if (msg.type_media === 'img') {
+                    contentHtml = `
+                        <div class="${bubbleClass} p-1 max-w-[320px] relative">
+                            <img src="${msg.url}" class="rounded-md w-full h-auto object-cover mb-1">
+                            ${msg.caption ? `<p class="text-[14px] text-[#1e293b] px-1.5 pb-1">${msg.caption}</p>` : ''}
+                            <div class="flex justify-end items-center gap-1 px-1.5 pb-1 msg-meta">
+                                <span class="text-[11px] text-[#64748b]">${msg.time}</span>
+                                ${isOut ? '<i data-lucide="check-check" class="h-3.5 w-3.5 msg-tick text-[#10b981]"></i>' : ''}
+                            </div>
+                        </div>
+                    `;
+                } else if (msg.type_media === 'video') {
+                    contentHtml = `
+                        <div class="${bubbleClass} p-1 max-w-[320px] relative">
+                            <div class="relative group cursor-pointer">
+                                <img src="${msg.url}" class="rounded-md w-full h-48 object-cover filter brightness-75">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <div class="w-12 h-12 bg-black/40 rounded-full flex items-center justify-center border border-white/50">
+                                         <i data-lucide="play" class="w-6 h-6 text-white fill-white ml-1"></i>
+                                    </div>
+                                </div>
+                                <span class="absolute bottom-2 left-2 text-[11px] text-white bg-black/40 px-1.5 rounded">${msg.duration}</span>
+                            </div>
+                            <div class="flex justify-end items-center gap-1 px-1.5 py-1 msg-meta">
+                                <span class="text-[11px] text-[#64748b]">${msg.time}</span>
+                                ${isOut ? '<i data-lucide="check-check" class="h-3.5 w-3.5 msg-tick text-[#10b981]"></i>' : ''}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    contentHtml = `
+                        <div class="${bubbleClass} px-3 py-2 max-w-[85%] md:max-w-[70%] relative">
+                            ${isGroupIn ? senderInfo : ''}
+                            <p class="text-[14px] whitespace-pre-wrap pb-2">${msg.content}</p>
+                            <div class="flex justify-end items-center gap-1 absolute bottom-1 right-1">
+                                <span class="text-[11px] leading-none opacity-90 msg-meta">${msg.time}</span>
+                                ${isOut ? '<i data-lucide="check-check" class="h-3.5 w-3.5 msg-tick text-[#10b981]"></i>' : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="${baseClass}" style="align-items: flex-start;">
+                        ${avatarWrap}
+                        <div class="flex flex-col ${isGroupIn ? 'bubble-in-group' : ''}">
+                            ${contentHtml}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+            messageList.scrollTop = messageList.scrollHeight;
+        }
+
+        renderChats();
+
+        // Resizer Logic
+        const sidebar = document.getElementById('sidebar');
+        const resizer = document.getElementById('resizer');
+        let isResizing = false;
+
+        resizer.addEventListener('mousedown', () => {
+            isResizing = true;
+            resizer.classList.add('resizing');
+            document.body.style.cursor = 'col-resize';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+            let newWidth = e.clientX;
+            if (newWidth >= 340 && newWidth <= 550) {
+                sidebar.style.width = `${newWidth}px`;
+                sidebar.style.maxWidth = `${newWidth}px`;
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            isResizing = false;
+            resizer.classList.remove('resizing');
+            document.body.style.cursor = 'default';
+        });
+
+        // Dropdown Logic
+        function toggleDropdown(event, id) {
+            event.stopPropagation();
+            const dropdown = document.getElementById(id);
+            const isHidden = dropdown.classList.contains('hidden');
+            
+            // Close all other dropdowns and menus
+            document.querySelectorAll('[id^="dropdown-"], #header-dropdown, #attach-menu').forEach(d => d.classList.add('hidden'));
+            
+            if (isHidden) dropdown.classList.remove('hidden');
+        }
+
+        // Attach Menu Logic
+        const attachTrigger = document.getElementById('attach-trigger');
+        const attachMenu = document.getElementById('attach-menu');
+
+        attachTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isHidden = attachMenu.classList.contains('hidden');
+            
+            // Close other dropdowns
+            document.querySelectorAll('[id^="dropdown-"], #header-dropdown').forEach(d => d.classList.add('hidden'));
+            
+            if (isHidden) {
+                attachMenu.classList.remove('hidden');
+                attachTrigger.style.transform = 'rotate(45deg)';
+            } else {
+                attachMenu.classList.add('hidden');
+                attachTrigger.style.transform = 'rotate(0deg)';
+            }
+        });
+
+        window.addEventListener('click', () => {
+            document.querySelectorAll('[id^="dropdown-"], #header-dropdown, #attach-menu').forEach(d => d.classList.add('hidden'));
+            if (attachTrigger) attachTrigger.style.transform = 'rotate(0deg)';
+        });
+
+        attachMenu.addEventListener('click', (e) => e.stopPropagation());
+
+        // Filter Logic
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                document.querySelectorAll('.filter-chip').forEach(c => {
+                    c.classList.remove('bg-blue-600', 'text-white', 'border-blue-600', 'hover:bg-blue-600');
+                    c.classList.add('bg-white', 'text-[#64748b]', 'border-[#e2e8f0]', 'hover:bg-[#f1f5f9]');
+                });
+                this.classList.remove('bg-white', 'text-[#64748b]', 'border-[#e2e8f0]', 'hover:bg-[#f1f5f9]');
+                this.classList.add('bg-blue-600', 'text-white', 'border-blue-600', 'hover:bg-blue-600');
+            });
+        });
+        
+        // Mark first chip as active by default
+        const firstChip = document.querySelector('.filter-chip');
+        if (firstChip) {
+            firstChip.classList.remove('bg-white', 'text-[#64748b]', 'border-[#e2e8f0]', 'hover:bg-[#f1f5f9]');
+            firstChip.classList.add('bg-blue-600', 'text-white', 'border-blue-600', 'hover:bg-blue-600');
+        }
+
+        // Contact Info Panel Toggle
+        function toggleContactInfo() {
+            const panel = document.getElementById('contact-info');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+            } else {
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
+            }
+        }
+
+        // Back to list (Mobile Only)
+        function goBack() {
+            document.body.classList.remove('show-chat');
+        }
+    </script>
+</body>
+</html>
