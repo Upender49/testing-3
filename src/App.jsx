@@ -22,6 +22,7 @@ import { EventRegistration } from "./Pages/EventRegistration";
 import { AssignStudents} from "./Pages/AssignStudents";
 import { CreateAssignment } from "./Pages/CreateAssignment";
 import { TeacherAssignments } from "./Pages/TeacherAssignments";
+import {MainApp} from "./Pages/Whatsapp/MainApp";
 function App() {
   const router = createBrowserRouter([
     {
@@ -98,6 +99,9 @@ function App() {
     },{
       path : '/teacherassignments',
       element : <TeacherAssignments/>
+    },{
+      path : '/mainapp',
+      element : <MainApp/>
     }
   ])
   return (
