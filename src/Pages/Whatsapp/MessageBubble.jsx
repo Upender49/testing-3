@@ -53,12 +53,12 @@ export function MessageBubble({
   };
 
   const bubbleOutClass = forceWhite
-    ? `bg-white text-[#1e293b] rounded-[12px_0_12px_12px] after:content-[''] after:absolute after:-right-[8px] after:top-[-1px] after:w-3 after:h-3 after:bg-white after:[clip-path:polygon(0_0,100%_0,0_100%)]`
-    : `bg-[#2563eb] text-white rounded-[12px_0_12px_12px] after:content-[''] after:absolute after:-right-[8px] after:top-[-1px] after:w-3 after:h-3 after:bg-[#2563eb] after:[clip-path:polygon(0_0,100%_0,0_100%)]`;
+    ? `bg-white text-slate-800 rounded-[18px_4px_18px_18px] border border-slate-200/60 shadow-sm`
+    : `bg-gradient-to-br from-[#445EFE] to-[#2B47FC] text-white rounded-[18px_4px_18px_18px] shadow-[0_4px_14px_rgba(68,94,254,0.3)] ring-1 ring-white/10`;
 
-  const bubbleInClass = `bg-white text-[#1e293b] rounded-[0_12px_12px_12px] border border-[#e2e8f0] before:content-[''] before:absolute before:-left-[8px] before:top-[-1px] before:w-3 before:h-3 before:bg-white before:border-l before:border-t before:border-[#e2e8f0] before:[clip-path:polygon(100%_0,0_0,100%_100%)]`;
+  const bubbleInClass = `bg-[#a925f5] text-white rounded-[4px_18px_18px_18px] shadow-[0_4px_14px_rgba(169,37,245,0.3)] ring-1 ring-white/10`;
 
-  const bubbleClass = `relative shadow-sm w-fit max-w-full ${isOut ? bubbleOutClass : bubbleInClass}`;
+  const bubbleClass = `relative w-fit max-w-full transition-all duration-200 ${isOut ? bubbleOutClass : bubbleInClass}`;
   const availableEmojis = ["👍", "❤️", "😂", "😮", "😢", "🙏"];
 
   return (
@@ -82,7 +82,7 @@ export function MessageBubble({
         className={`flex flex-col ${isOut ? "items-end" : "items-start"} max-w-[85%] md:max-w-[70%] relative group`}
       >
         {isGroupIn && msg.sender && (
-          <span className="text-[13px] font-medium text-brand-600 ml-1 mb-1">
+          <span className={`text-[13px] font-medium ml-1 mb-1 ${isOut ? 'text-indigo-600' : 'text-[#a925f5]'}`}>
             {msg.sender}
           </span>
         )}
@@ -93,7 +93,7 @@ export function MessageBubble({
               e.stopPropagation();
               setMenuOpen(!menuOpen);
             }}
-            className={`absolute top-1 ${isOut ? "left-1" : "right-1"} p-1 bg-white/90 backdrop-blur-md rounded-full shadow-sm text-slate-500 hover:text-slate-800 z-10 transition-opacity outline-none ${menuOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+            className={`absolute top-1 ${isOut ? "left-1" : "right-1"} p-1 bg-white/90 backdrop-blur-md rounded-full shadow-sm text-slate-500 hover:text-slate-700 z-10 transition-opacity outline-none ${menuOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
           >
             <ChevronDown className="w-4 h-4" />
           </button>
@@ -101,9 +101,9 @@ export function MessageBubble({
           {menuOpen && (
             <div
               ref={menuRef}
-              className={`absolute top-8 ${isOut ? "right-full mr-2" : "left-full ml-2"} bg-white border border-slate-200 shadow-xl rounded-xl z-100 w-52 flex flex-col overflow-hidden animate-[fadeIn_0.1s_ease-out]`}
+              className={`absolute top-8 ${isOut ? "right-full mr-2" : "left-full ml-2"} bg-white/95 backdrop-blur-md border border-slate-200/60 shadow-[0_8px_30px_rgba(0,0,0,0.12)] rounded-2xl z-[100] w-56 flex flex-col overflow-hidden animate-[fadeIn_0.1s_ease-out]`}
             >
-              <div className="flex items-center justify-between px-3 py-2 bg-slate-50 border-b border-slate-100">
+              <div className="flex items-center justify-between px-4 py-2 bg-slate-50 border-b border-slate-100">
                 {availableEmojis.map((emoji) => (
                   <button
                     key={emoji}
@@ -112,20 +112,20 @@ export function MessageBubble({
                       onReactionClick(emoji);
                       setMenuOpen(false);
                     }}
-                    className="text-lg hover:scale-125 transition-transform outline-none leading-none"
+                    className="text-xl hover:scale-125 transition-transform outline-none leading-none p-1"
                   >
                     {emoji}
                   </button>
                 ))}
               </div>
-              <div className="flex flex-col py-1">
+              <div className="flex flex-col py-1.5">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     onReplyClick();
                     setMenuOpen(false);
                   }}
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-slate-100 text-slate-700 text-[14px] outline-none"
+                  className="flex items-center gap-3 px-5 py-2.5 hover:bg-slate-50 text-slate-700 text-[14.5px] font-medium transition-colors outline-none"
                 >
                   <Reply className="w-4 h-4 text-slate-400" /> Reply
                 </button>
@@ -136,7 +136,7 @@ export function MessageBubble({
                       handleCopy();
                       setMenuOpen(false);
                     }}
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-slate-100 text-slate-700 text-[14px] outline-none"
+                    className="flex items-center gap-3 px-5 py-2.5 hover:bg-slate-50 text-slate-700 text-[14.5px] font-medium transition-colors outline-none"
                   >
                     <Copy className="w-4 h-4 text-slate-400" /> Copy
                   </button>
@@ -148,7 +148,7 @@ export function MessageBubble({
                       handleDownloadMedia();
                       setMenuOpen(false);
                     }}
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-slate-100 text-slate-700 text-[14px] outline-none"
+                    className="flex items-center gap-3 px-5 py-2.5 hover:bg-slate-50 text-slate-700 text-[14.5px] font-medium transition-colors outline-none"
                   >
                     <Download className="w-4 h-4 text-slate-400" /> Download
                   </button>
@@ -159,19 +159,20 @@ export function MessageBubble({
                     onForwardClick(msg);
                     setMenuOpen(false);
                   }}
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-slate-100 text-slate-700 text-[14px] outline-none"
+                  className="flex items-center gap-3 px-5 py-2.5 hover:bg-slate-50 text-slate-700 text-[14.5px] font-medium transition-colors outline-none"
                 >
                   <Forward className="w-4 h-4 text-slate-400" /> Forward
                 </button>
+                <div className="h-px bg-slate-100 mx-4 my-1"></div>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     onDeleteClick();
                     setMenuOpen(false);
                   }}
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-red-50 text-red-600 text-[14px] outline-none mt-1 border-t border-slate-100 pt-2"
+                  className="flex items-center gap-3 px-5 py-2.5 hover:bg-red-50 text-red-600 text-[14.5px] font-medium transition-colors outline-none"
                 >
-                  <Trash2 className="w-4 h-4 text-red-400" /> Delete
+                  <Trash2 className="w-4 h-4 text-red-500" /> Delete
                 </button>
               </div>
             </div>
@@ -179,18 +180,18 @@ export function MessageBubble({
 
           {msg.replyTo && (
             <div
-              className={`m-1.5 flex cursor-pointer rounded-lg overflow-hidden ${isOut && !forceWhite ? "bg-black/10 border-l-blue-300" : "bg-slate-100 border-l-blue-500"} border-l-4`}
+              className={`m-1.5 mb-2 flex cursor-pointer rounded-xl overflow-hidden ${isOut && !forceWhite ? "bg-white/20 border-l-white/60" : !isOut ? "bg-white/20 border-l-white/60" : "bg-slate-50/80 border-l-indigo-500"} backdrop-blur-sm border-l-[3px]`}
             >
-              <div className="flex flex-col flex-1 px-2.5 py-1.5 justify-center min-w-0">
+              <div className="flex flex-col flex-1 px-3 py-1.5 justify-center min-w-0">
                 <span
-                  className={`text-[12px] font-bold ${isOut && !forceWhite ? "text-blue-200" : "text-blue-600"} mb-0.5`}
+                  className={`text-[12.5px] font-bold ${isOut && !forceWhite ? "text-white/90" : !isOut ? "text-white/90" : "text-indigo-600"} mb-0.5`}
                 >
                   {msg.replyTo.type === "out"
                     ? "You"
                     : msg.replyTo.sender || activeChat.name}
                 </span>
                 <span
-                  className={`text-[13.5px] truncate opacity-90 ${isOut && !forceWhite ? "text-white" : "text-slate-600"}`}
+                  className={`text-[13.5px] truncate font-medium ${isOut && !forceWhite ? "text-white/80" : !isOut ? "text-white/80" : "text-slate-500"}`}
                 >
                   {msg.replyTo.type_media === "img"
                     ? "📷 Photo"
@@ -240,13 +241,13 @@ export function MessageBubble({
               <a
                 href={msg.url}
                 download={msg.name}
-                className={`flex items-center gap-3 p-3 rounded-lg min-w-50 mb-1 ${isOut && !forceWhite ? "bg-blue-700/50 hover:bg-blue-700" : "bg-slate-100 hover:bg-slate-200"} transition-colors`}
+                className={`flex items-center gap-3 p-3 rounded-lg min-w-50 mb-1 ${isOut && !forceWhite ? "bg-blue-700/30 hover:bg-blue-700/50" : "bg-slate-50 hover:bg-slate-100/80 border border-slate-100"} transition-colors`}
               >
                 <div
-                  className={`p-2 rounded-full ${isOut && !forceWhite ? "bg-blue-500/50" : "bg-white shadow-sm"}`}
+                  className={`p-2 rounded-full ${isOut && !forceWhite ? "bg-white/20" : "bg-white shadow-sm border border-slate-200/60"}`}
                 >
                   <FileText
-                    className={`w-6 h-6 ${isOut && !forceWhite ? "text-white" : "text-blue-500"}`}
+                    className={`w-6 h-6 ${isOut && !forceWhite ? "text-white" : "text-indigo-500"}`}
                   />
                 </div>
                 <div className="flex flex-col flex-1 overflow-hidden">
@@ -260,21 +261,21 @@ export function MessageBubble({
             )}
             {msg.content && (
               <p
-                className={`text-[14.5px] whitespace-pre-wrap break-all leading-relaxed ${msg.type_media ? "mt-1.5 px-1" : ""} ${isOut && !forceWhite ? "text-white" : "text-[#1e293b]"}`}
+                className={`text-[14.5px] whitespace-pre-wrap break-all leading-relaxed ${msg.type_media ? "mt-1.5 px-1" : ""} ${isOut && !forceWhite ? "text-white" : !isOut ? "text-white" : "text-slate-800"}`}
               >
                 {msg.content}
               </p>
             )}
 
             <div
-              className={`flex justify-end items-center gap-1 ${msg.type_media ? "mt-1 px-1 mb-0.5" : "mt-0.5"} ${isOut && !forceWhite ? "text-blue-100" : "text-[#94a3b8]"}`}
+              className={`flex justify-end items-center gap-1 ${msg.type_media ? "mt-1 px-1 mb-0.5" : "mt-0.5"} ${isOut && !forceWhite ? "text-blue-100" : !isOut ? "text-purple-100" : "text-slate-400"}`}
             >
               <span className="text-[10px] leading-none opacity-90">
                 {msg.time}
               </span>
               {isOut && (
                 <CheckCheck
-                  className={`h-3.5 w-3.5 ${forceWhite ? "text-blue-500" : "opacity-80"}`}
+                  className={`h-3.5 w-3.5 ${forceWhite ? "text-indigo-500" : "opacity-80"}`}
                 />
               )}
             </div>
@@ -283,7 +284,7 @@ export function MessageBubble({
 
         {msg.reactions && msg.reactions.length > 0 && (
           <div
-            className={`absolute -bottom-3 ${isOut ? "right-2" : "left-2"} bg-white border border-slate-200 shadow-sm rounded-full px-1.5 py-0.5 flex items-center gap-0.5 z-10 text-[12px]`}
+            className={`absolute -bottom-3 ${isOut ? "right-2" : "left-2"} bg-white border border-slate-200 text-slate-700 shadow-md rounded-full px-1.5 py-0.5 flex items-center gap-0.5 z-10 text-[12px]`}
           >
             {msg.reactions.map((emoji, i) => (
               <span key={i} className="leading-none">

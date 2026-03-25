@@ -148,14 +148,14 @@ const parseDate = (dateString) => {
 };
 
 export function TeacherAssignments() {
-    const [isLoading, setIsLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState('all');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [isSubjectOpen, setIsSubjectOpen] = useState(false);
-    const [dateSortDesc, setDateSortDesc] = useState(true);
-    const [selectedSubject, setSelectedSubject] = useState('All Subjects');
-
+    const [isLoading, setIsLoading] = useState(true); 1
+    const [activeTab, setActiveTab] = useState('all'); 1
+    const [searchQuery, setSearchQuery] = useState(''); 2
+    const [isFilterOpen, setIsFilterOpen] = useState(false); 1
+    const [isSubjectOpen, setIsSubjectOpen] = useState(false); 1
+    const [dateSortDesc, setDateSortDesc] = useState(true); 2
+    const [selectedSubject, setSelectedSubject] = useState('All Subjects'); 2
+    {/* 1.filter 2.BasicFilter*/}
     const [advancedFilters, setAdvancedFilters] = useState({
         course: '',
         batch: '',
@@ -304,10 +304,39 @@ export function TeacherAssignments() {
                     ))}
                 </nav>
 
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                <div className="flex flex-wrap items-center justify-start md:flex-row-reverse md:justify-between gap-4 pb-5">
+                    {/* Date & Subject Section (On Right in Desktop, Top in Mobile/Tablet) */}
+                    <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-start md:justify-end">
+                        <button onClick={() => setDateSortDesc(!dateSortDesc)} className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-medium hover:border-teal-400 transition-all shadow-sm group">
+                            <span className="text-slate-600">Date</span>
+                            <ArrowDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${dateSortDesc ? '' : 'rotate-180'}`} />
+                        </button>
                         
-                        <div className="relative flex-1 sm:flex-none min-w-50">
+                        <div className="relative min-w-55" ref={subjectRef}>
+                            <button onClick={() => setIsSubjectOpen(!isSubjectOpen)} className="w-full flex items-center justify-between gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-medium hover:border-teal-400 transition-all shadow-sm">
+                                <span>{selectedSubject}</span>
+                                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isSubjectOpen ? 'rotate-180' : ''}`} />
+                            </button>
+                            
+                            {isSubjectOpen && (
+                                <div className="absolute right-0 top-full mt-2 w-full min-w-[220px] bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1">
+                                    {['All Subjects', 'Principles of Programming Languages', 'Data Structures & Algorithms', 'Computer Networks', 'Machine Learning', 'Database Management Systems', 'Operating Systems'].map(sub => (
+                                        <button 
+                                            key={sub}
+                                            onClick={() => handleSubjectSelect(sub)} 
+                                            className={`w-full text-left px-4 py-2 text-sm hover:bg-teal-50 transition-colors ${selectedSubject === sub ? 'font-bold text-teal-700 bg-teal-50/50' : 'text-slate-700'}`}
+                                        >
+                                            {sub}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Search & Filter Section (On Left in Desktop, Bottom in Mobile/Tablet) */}
+                    <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-start">
+                        <div className="relative flex-1 md:flex-none min-w-50">
                             <input 
                                 type="text" 
                                 placeholder="Search assignments..." 
@@ -332,7 +361,7 @@ export function TeacherAssignments() {
                             </button>
                             
                             {isFilterOpen && (
-                                <div className="absolute left-0 top-full mt-2 w-full sm:w-120 bg-white border border-slate-200 rounded-2xl p-5 shadow-xl z-50">
+                                <div className="absolute right-0 sm:right-auto sm:left-0 top-full mt-2 w-[calc(100vw-3rem)] max-w-[480px] sm:w-120 bg-white border border-slate-200 rounded-2xl p-5 shadow-xl z-50">
                                     <div className="flex items-center justify-between mb-4">
                                         <h4 className="font-bold text-slate-800">Advanced Filters</h4>
                                         <button 
@@ -401,34 +430,6 @@ export function TeacherAssignments() {
                                             Apply Filters
                                         </button>
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                        <button onClick={() => setDateSortDesc(!dateSortDesc)} className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-medium hover:border-teal-400 transition-all shadow-sm group">
-                            <span className="text-slate-600">Date</span>
-                            <ArrowDown className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${dateSortDesc ? '' : 'rotate-180'}`} />
-                        </button>
-                        
-                        <div className="relative min-w-55" ref={subjectRef}>
-                            <button onClick={() => setIsSubjectOpen(!isSubjectOpen)} className="w-full flex items-center justify-between gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-full text-sm font-medium hover:border-teal-400 transition-all shadow-sm">
-                                <span>{selectedSubject}</span>
-                                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isSubjectOpen ? 'rotate-180' : ''}`} />
-                            </button>
-                            
-                            {isSubjectOpen && (
-                                <div className="absolute left-0 top-full mt-2 w-full bg-white border border-slate-200 rounded-xl shadow-lg z-50 py-1">
-                                    {['All Subjects', 'Principles of Programming Languages', 'Data Structures & Algorithms', 'Computer Networks', 'Machine Learning', 'Database Management Systems', 'Operating Systems'].map(sub => (
-                                        <button 
-                                            key={sub}
-                                            onClick={() => handleSubjectSelect(sub)} 
-                                            className={`w-full text-left px-4 py-2 text-sm hover:bg-teal-50 transition-colors ${selectedSubject === sub ? 'font-bold text-teal-700 bg-teal-50/50' : 'text-slate-700'}`}
-                                        >
-                                            {sub}
-                                        </button>
-                                    ))}
                                 </div>
                             )}
                         </div>

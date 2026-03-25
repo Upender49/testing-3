@@ -20,7 +20,8 @@ export function TeacherSidebar({
         support: true,
         announcements: true,
         requests: true,
-        services: true
+        services: true,
+        assignmentsReview: false
     };
 
     const [openDropdowns, setOpenDropdowns] = useState(defaultDropdowns);
@@ -227,10 +228,30 @@ export function TeacherSidebar({
                             <CalendarCheck className="w-4 h-4 text-emerald-300" />
                             <span className="nav-text font-medium text-sm whitespace-nowrap">Mark Attendance</span>
                         </a>
-                        <a href="#" onClick={(e) => handleLinkClick(e, "assignments-review")} className={getSubMenuLinkClass("assignments-review")}>
-                            <FileCheck className="w-4 h-4 text-emerald-300" />
-                            <span className="nav-text font-medium text-sm whitespace-nowrap">Assignments Review</span>
-                        </a>
+                        <div className="relative w-full">
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleDropdownClick("assignmentsReview");
+                                }}
+                                className={getSubMenuLinkClass("assignments-review")}
+                            >
+                                <div className="flex items-center gap-3">
+                                    <FileCheck className="w-4 h-4 text-emerald-300" />
+                                    <span className="nav-text font-medium text-sm whitespace-nowrap">Assignments Review</span>
+                                </div>
+                                <ChevronDown className={`w-3 h-3 transition-transform duration-300 ml-auto mr-2 ${openDropdowns.assignmentsReview ? "rotate-180" : "rotate-0"}`} />
+                            </button>
+                            <div className={`flex flex-col gap-0.5 overflow-hidden transition-all duration-300 ${openDropdowns.assignmentsReview ? "max-h-24 opacity-100 mt-1 mb-1" : "max-h-0 opacity-0"}`}>
+                                <a href="#" onClick={(e) => handleLinkClick(e, "view-assignments")} className={`${getSubMenuLinkClass("view-assignments")} pl-10 py-1.5`}>
+                                    <span className="nav-text font-medium text-[13px] whitespace-nowrap text-emerald-100/70 group-hover:text-white">View Assignments</span>
+                                </a>
+                                <a href="#" onClick={(e) => handleLinkClick(e, "create-assignment")} className={`${getSubMenuLinkClass("create-assignment")} pl-10 py-1.5`}>
+                                    <span className="nav-text font-medium text-[13px] whitespace-nowrap text-emerald-100/70 group-hover:text-white">Create Assignment</span>
+                                </a>
+                            </div>
+                        </div>
                         <a href="#" onClick={(e) => handleLinkClick(e, "upload-resources")} className={getSubMenuLinkClass("upload-resources")}>
                             <CloudUpload className="w-4 h-4 text-emerald-300" />
                             <span className="nav-text font-medium text-sm whitespace-nowrap">Upload Resources</span>

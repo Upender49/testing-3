@@ -8,7 +8,7 @@ export function ImageModal({ imageUrl, onClose }) {
 
   return (
     <div 
-      className="fixed inset-0 z-300 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center animate-[fadeIn_0.2s_ease-out]" 
+      className="fixed inset-0 z-[300] bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center animate-[fadeIn_0.2s_ease-out]" 
       onClick={onClose}
     >
       <div className="absolute top-5 right-5 flex gap-4 z-10">

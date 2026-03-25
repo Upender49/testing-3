@@ -4,6 +4,7 @@ import { ChatArea } from './ChatArea';
 import {ChatProfile} from './ChatProfile'; 
 import {ImageModal} from './ImageModal';
 import {ForwardModal} from './ForwardModal';
+import {MediaGalleryModal} from './MediaGalleryModal';
 
 const initialChats = [
   { id: 1, name: "Alexander Pierce", message: "Check this new workspace setup!", time: "Thursday", unread: 0, pinned: true, isGroup: false, avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex", status: "read", isFavorite: false, isImportant: false },
@@ -52,12 +53,20 @@ export function MainApp() {
   const [activeChatId, setActiveChatId] = useState(null);
   
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [showMediaGallery, setShowMediaGallery] = useState(false);
   const [fullscreenImage, setFullscreenImage] = useState(null);
   const [forwardMessage, setForwardMessage] = useState(null);
   const [replyingTo, setReplyingTo] = useState(null);
 
   const [sidebarWidth, setSidebarWidth] = useState(340);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const isResizing = useRef(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const startResizing = useCallback(() => {
     isResizing.current = true;
@@ -74,7 +83,7 @@ export function MainApp() {
   const resize = useCallback((e) => {
     if (isResizing.current) {
       let newWidth = e.clientX;
-      const maxAllowedWidth = window.innerWidth / 2; 
+      const maxAllowedWidth = window.innerWidth / 3; 
       
       if (newWidth < 250) newWidth = 250; 
       if (newWidth > maxAllowedWidth) newWidth = maxAllowedWidth; 
@@ -167,9 +176,12 @@ export function MainApp() {
   };
 
   return (
-    <div className="flex h-screen w-screen bg-[#f1f5f9] text-[#1e293b] overflow-hidden antialiased font-['Inter']">
+    <div className="flex h-screen w-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 text-slate-800 overflow-hidden antialiased font-['Inter'] selection:bg-indigo-500/30">
       
-      <div style={{ width: sidebarWidth, minWidth: 250, maxWidth: '50vw' }} className="h-full shrink-0 flex flex-col z-10 max-md:w-full! max-md:fixed max-md:inset-0 max-md:z-50">
+      <div 
+        style={{ width: isMobile ? '100vw' : sidebarWidth, minWidth: isMobile ? '100vw' : 250, maxWidth: isMobile ? '100vw' : '50vw' }} 
+        className={`h-full shrink-0 flex flex-col border-r border-slate-200/80 shadow-[4px_0_24px_rgba(0,0,0,0.02)] transition-transform duration-300 max-md:fixed max-md:inset-0 max-md:z-50 ${activeChatId ? 'max-md:hidden' : 'max-md:flex'}`}
+      >
         <ChatSidebar 
           chats={displayChats} activeChatId={activeChatId} onSelectChat={handleSelectChat} 
           onToggleFavorite={handleToggleFavorite} onToggleImportant={handleToggleImportant}
@@ -179,7 +191,7 @@ export function MainApp() {
       
       <div 
         onMouseDown={startResizing} 
-        className="max-md:hidden w-1 cursor-col-resize bg-transparent hover:bg-blue-400 active:bg-blue-500 transition-colors z-50 shrink-0"
+        className="max-md:hidden w-1.5 cursor-col-resize bg-transparent hover:bg-indigo-100/50 active:bg-indigo-200/60 transition-colors z-50 shrink-0 relative after:content-[''] after:absolute after:inset-y-0 after:-left-1 after:-right-1"
       ></div>
       
       <div className="relative flex-1 flex overflow-hidden">
@@ -193,16 +205,26 @@ export function MainApp() {
         />
 
         {isInfoOpen && activeChat && (
-          <ChatProfile 
-            activeChat={activeChat} messages={messages[activeChatId] || []} onClose={() => setIsInfoOpen(false)} 
-            onToggleFavorite={handleToggleFavorite} onToggleImportant={handleToggleImportant} 
-            onClearChat={handleClearChat} onDeleteChat={handleDeleteChat} onImageClick={(url) => setFullscreenImage(url)} 
-          />
+          <div className="z-40 max-md:fixed max-md:inset-0 max-md:z-[100] shadow-[-8px_0_30px_rgba(0,0,0,0.03)] border-l border-slate-200/80 bg-white transition-all h-full">
+            <ChatProfile 
+              activeChat={activeChat} messages={messages[activeChatId] || []} onClose={() => setIsInfoOpen(false)} 
+              onToggleFavorite={handleToggleFavorite} onToggleImportant={handleToggleImportant} 
+              onClearChat={handleClearChat} onDeleteChat={handleDeleteChat} onImageClick={(url) => setFullscreenImage(url)} 
+              onMediaClick={() => setShowMediaGallery(true)}
+            />
+          </div>
         )}
       </div>
 
       {forwardMessage && <ForwardModal chats={displayChats} onClose={() => setForwardMessage(null)} onForward={handleConfirmForward} />}
       {fullscreenImage && <ImageModal imageUrl={fullscreenImage} onClose={() => setFullscreenImage(null)} />}
+      {showMediaGallery && activeChat && (
+        <MediaGalleryModal 
+          messages={messages[activeChatId] || []} 
+          onClose={() => setShowMediaGallery(false)} 
+          onImageClick={(url) => { setFullscreenImage(url); setShowMediaGallery(false); }} 
+        />
+      )}
     </div>
   );
 }
